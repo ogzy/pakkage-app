@@ -1,0 +1,56 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {}
+    },
+    "installed_plugins": {
+        "cordova-plugin-barcodescanner": {
+            "PACKAGE_NAME": "net.pakkage.beta"
+        },
+        "cordova-plugin-console": {
+            "PACKAGE_NAME": "net.pakkage.beta"
+        },
+        "cordova-plugin-device": {
+            "PACKAGE_NAME": "net.pakkage.beta"
+        },
+        "cordova-plugin-file": {
+            "PACKAGE_NAME": "net.pakkage.beta"
+        },
+        "cordova-plugin-file-transfer": {
+            "PACKAGE_NAME": "net.pakkage.beta"
+        },
+        "cordova-plugin-geolocation": {
+            "PACKAGE_NAME": "net.pakkage.beta"
+        },
+        "cordova-plugin-inappbrowser": {
+            "PACKAGE_NAME": "net.pakkage.beta"
+        },
+        "cordova-plugin-network-information": {
+            "PACKAGE_NAME": "net.pakkage.beta"
+        },
+        "cordova-plugin-splashscreen": {
+            "PACKAGE_NAME": "net.pakkage.beta"
+        },
+        "cordova-plugin-statusbar": {
+            "PACKAGE_NAME": "net.pakkage.beta"
+        },
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "net.pakkage.beta"
+        },
+        "ionic-plugin-keyboard": {
+            "PACKAGE_NAME": "net.pakkage.beta"
+        },
+        "org.apache.cordova.camera": {
+            "PACKAGE_NAME": "net.pakkage.beta"
+        },
+        "phonegap-facebook-plugin": {
+            "APP_ID": "1200298986649296",
+            "APP_NAME": "Pakkage",
+            "PACKAGE_NAME": "net.pakkage.beta"
+        }
+    },
+    "dependent_plugins": {}
+}
