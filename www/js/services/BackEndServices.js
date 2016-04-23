@@ -18,6 +18,7 @@ var registerServiceURL = 'http://46.101.115.69:9096/register',
     getAllStateURL = 'http://46.101.115.69:9096/getAllState',
     getAvailableHubsURL = 'http://46.101.115.69:9096/api/getAvailableHubs',
     changeUserPasswordURL = 'http://46.101.115.69:9096/api/changeUserPassword';
+
 angular.module('Pakkage.BackendServices', [])
     .factory('LocalStorageService', function ($http, localStorageService) {
         return {

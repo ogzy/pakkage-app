@@ -42,6 +42,7 @@
       <a class="item item-thumbnail-left transItem" href="#" ng-click="editPackage(package._id)"
          ng-repeat="package in packages | filter:{ status: 2 }">
         <img ng-src="http://46.101.115.69:9096/uploads/packageImages/thumbnail/{{package.packageImage}}">
+
         <h2>{{package.receiver[0].name}}</h2>
         <p>{{package.receiver[0].address[0].address1 + ' ' + package.receiver[0].address[0].city + ' ' +
           package.receiver[0].address[0].state + ' ' + package.receiver[0].address[0].zipCode}}</p>

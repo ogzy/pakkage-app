@@ -71,6 +71,7 @@ angular.module('Pakkage.HubsController', [])
         });
     }
 }])
+  
 .controller('HubDetailCtrl',['$scope','HubService','LoadingService','PopupService','moment','$filter','$state','$rootScope','$stateParams','$ionicPopup',function($scope,HubService,LoadingService,PopupService,moment,$filter,$state,$rootScope,$stateParams,$ionicPopup){
     //LoadingService.show();
 

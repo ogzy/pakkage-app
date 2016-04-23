@@ -536,6 +536,7 @@ angular.module('Pakkage.PackageController', [])
                 if (package.data.package.packageImage == undefined)
                     package.data.package.packageImage = 'noPackage.png';
 
+              
                 $scope.packagePicture = 'http://46.101.115.69:9096/uploads/packageImages/thumbnail/' + package.data.package.packageImage;
                 saltPackagePicture = package.data.package.packageImage;
 

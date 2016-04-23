@@ -34,6 +34,7 @@ angular.module('Pakkage', ['ionic', 'ngCordova', 'Pakkage.LoginController', 'Pak
       $rootScope.profileThumbnailURL = 'http://46.101.115.69:9096/uploads/images/thumbnail/';
       $rootScope.licenseThumbnailURL = 'http://46.101.115.69:9096/uploads/licenseImages/thumbnail/';
 
+      
       //-- Global Filter Values
       $rootScope.date = '';
       $rootScope.status =
