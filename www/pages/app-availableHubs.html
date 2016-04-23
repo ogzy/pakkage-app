@@ -11,7 +11,7 @@
 	  	</ion-refresher>
         <div class="list" ng-show="hubs.length > 0">
 		  	<a class="item item-thumbnail-left" href="#" ng-click="showDetail(hub._id)" ng-repeat="hub in hubs">
-		      <img ng-src="http://192.99.176.14:9096/uploads/images/thumbnail/{{hub.profilePicture}}" >
+		      <img ng-src="http://46.101.115.69:9096/uploads/images/thumbnail/{{hub.profilePicture}}" >
 		      <h2>{{hub.contactPerson}}</h2>
 		      <p>{{hub.address[0].address1 + ' '  + hub.address[0].address2 + ' ' + hub.address[0].city.title + ' ' + hub.address[0].state + ' ' + hub.address[0].zipCode}}</p>
 		      <p ng-show="hub.email != ''">Email : {{hub.email}}</p>

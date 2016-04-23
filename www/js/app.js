@@ -31,8 +31,8 @@ angular.module('Pakkage', ['ionic', 'ngCordova', 'Pakkage.LoginController', 'Pak
 
 
       //-- Global values
-      $rootScope.profileThumbnailURL = 'http://192.99.176.14:9096/uploads/images/thumbnail/';
-      $rootScope.licenseThumbnailURL = 'http://192.99.176.14:9096/uploads/licenseImages/thumbnail/';
+      $rootScope.profileThumbnailURL = 'http://46.101.115.69:9096/uploads/images/thumbnail/';
+      $rootScope.licenseThumbnailURL = 'http://46.101.115.69:9096/uploads/licenseImages/thumbnail/';
 
       //-- Global Filter Values
       $rootScope.date = '';
