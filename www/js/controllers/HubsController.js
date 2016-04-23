@@ -64,7 +64,6 @@ angular.module('Pakkage.HubsController', [])
                 PopupService.alert('Error', 999);
         });
     };
-
     $scope.showDetail = function (hubId) {
         $state.go('app.hubDetail', {
             hubId: hubId

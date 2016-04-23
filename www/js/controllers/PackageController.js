@@ -518,7 +518,6 @@ angular.module('Pakkage.PackageController', [])
     var getPackagePromise = PackageService.getPackageById(packageId, LocalStorageService.get('email'), LocalStorageService.get('token'));
     getPackagePromise.then(
         function (package) {
-
             if (package.data.errorCode == 0) {
                 console.log(package.data.package.receiver[0].address[0].city);
                 $scope.newPackage.comment = package.data.package.comment;

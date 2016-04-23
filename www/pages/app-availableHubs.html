@@ -8,6 +8,7 @@
 	    <ion-refresher
 	    	pulling-text="Pull to refresh..."
 	    	on-refresh="refreshHubs()">
+				
 	  	</ion-refresher>
         <div class="list" ng-show="hubs.length > 0">
 		  	<a class="item item-thumbnail-left" href="#" ng-click="showDetail(hub._id)" ng-repeat="hub in hubs">
