@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Angular Named Toggle Demo</title>
+        <meta name="viewport" content="width=device-width">
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body ng-app="coUtils">
+
+        <div>
+        Defaults: <div toggle-switch></div>
+        </div>
+        
+        <div>
+            Long label support: <div toggle-switch on-label="'On supporting long labels'" off-label="'Off'"></div>
+        </div>
+        <div style="font-size: 3em;">
+            Font size: <div toggle-switch on-label="'On'" off-label="'Off'"></div>
+        </div>
+        <div>
+            Alternative values: <div toggle-switch model="value" true-value="'Wooo!'" false-value="'Booo!'"></div>
+            The value is: {{value}}
+        </div>
+
+        <div>
+            Or an iOS style switch: <div ios-toggle model="value" true-value="'Wooo!'" false-value="'Booo!'" /></div>
+            The value is: {{value}}
+        </div>
+
+        <div>
+            Or an image toggle: <div image-toggle /></div>
+        </div>
+
+        <script src="../bower_components/angular/angular.js"></script>
+        <script src="../angular-named-toggle.js"></script>
+    </body>
+</html>

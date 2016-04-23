@@ -1,0 +1,14 @@
+@import "../angular-named-toggle.scss";
+@include named-toggle();
+
+@import "../ios-toggle.scss";
+@include ios-toggle();
+
+@import "../image-toggle.scss";
+@include image-toggle($trueImage: 'tick.jpg', $falseImage: 'cross.jpg');
+
+body > div {
+    margin-top: 1em;
+}
+
+

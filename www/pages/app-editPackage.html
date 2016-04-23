@@ -1,0 +1,73 @@
+<ion-view view-title="Edit Package" ng-controller="EditPackageCtrl">
+    <ion-nav-buttons side="right">
+        <button class="button button-clear button-positive rightNavBarButton" ng-click="saveAsDraft()">
+            Save as Draft
+        </button>
+    </ion-nav-buttons>
+    <ion-content>
+        <div class="container-fluid padZero">
+            <div class="row-fluid">
+                <div class="col-xs-12 col-md-12 padZero">
+                    <form class="list" name="ProfileForm">
+
+                        <div class="list wrapText">
+                            <div ng-click="showPackagePicture()" style="position: relative;"><img src="{{packagePicture}}" width="300" /></div>
+                            <div class="changeProfilePicture" ng-click="addMedia()"><span class="changeProfilePictureSpan">Change Package Picture</span></div>
+                        </div>
+                        <div>
+                            <div class="item item-divider" style="margin-bottom:10px;">
+                                Package Receiver:
+                            </div>
+                            <!-- Name -->
+                            <div class="form-group form-groupForProfile">
+                                <input type="text" class="form-control form-controlForProfile" placeholder="Name" ng-model="newPackage.name">
+                            </div>
+                            <!-- Email -->
+                            <div class="form-group form-groupForProfile">
+                                <input type="text" class="form-control form-controlForProfile" placeholder="Email" ng-model="newPackage.email">
+                            </div>
+                            <!-- Phone -->
+                            <div class="form-group form-groupForProfile">
+                                <input type="text" class="form-control form-controlForProfile" placeholder="Phone 123-456-7890" ng-keyup="formatPhone($event)" ng-model="newPackage.phone">
+                            </div>
+                            <!-- Address 1-->
+                            <div class="form-group form-groupForProfile">
+                                <input type="text" class="form-control form-controlForProfile" placeholder="Address 1" ng-model="newPackage.address1">
+                            </div>
+                            <!-- Address 2-->
+                            <div class="form-group form-groupForProfile">
+                                <input type="text" class="form-control form-controlForProfile" placeholder="Address 2" ng-model="newPackage.address2">
+                            </div>
+                            <!-- City-->
+                            <div class="form-group form-groupForProfile">
+                                <div class="treelineCity">
+                                     <angucomplete-alt id="companyCity"
+                                      placeholder="City"
+                                      pause="100"
+                                      selected-object="newPackage.city"
+                                      local-data="cities"
+                                      search-fields="name"
+                                      title-field="name"
+                                      minlength="1"
+                                      input-class="form-control form-controlForProfile "
+                                      ng-model="newPackage.city" initial-value="newPackage.city"/>
+                                  </div>
+                                      <!-- State -->
+                                      <input type="text" class="form-control form-controlForProfile treelineState" placeholder="State" ng-model="newPackage.state">
+                                      <!-- Zip Code -->
+                                      <input type="text" class="form-control form-controlForProfile treeline" placeholder="ZIP Code" ng-model="newPackage.zipcode">
+                                </div>
+                            </div>
+                            <!-- Comment -->
+                            <div class="form-group form-groupForProfile">
+                                <textarea class="form-control form-controlForProfile" placeholder="Comment" ng-model="newPackage.comment" rows="8" cols="10"></textarea>
+                            </div>
+                        </div>
+                        <div class="spacer formSpacer"></div>
+                        <button class="button button-energized button-block regButton" ng-disabled="newPackage.name == undefined || newPackage.name == '' || newPackage.email == undefined || newPackage.email == ''  || newPackage.phone == undefined || newPackage.phone == ''  || newPackage.address1 == undefined || newPackage.address1 == ''  || newPackage.city == undefined || newPackage.city == ''  || newPackage.state == undefined || newPackage.state == '' || newPackage.zipcode == undefined || newPackage.zipcode == '' " ng-click="updatePackageButton()"><i class="ion-paper-airplane"></i><span class="marLeft10">Ready to Send</span></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

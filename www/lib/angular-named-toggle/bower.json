@@ -1,0 +1,9 @@
+{
+  "name": "angular-named-toggle",
+  "main": ["angular-named-toggle.js"],
+  "description": "",
+  "dependencies": {
+    "angular": "1.x"
+  },
+  "devDependencies": {}
+}

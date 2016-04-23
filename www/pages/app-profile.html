@@ -1,0 +1,253 @@
+<ion-view view-title="Your Profile" ng-controller="ProfileCtrl" style="overflow: scroll !important;">
+    <ion-content >
+        <ion-refresher
+            pulling-text="Pull to refresh..."
+            on-refresh="refreshProfile()">
+        </ion-refresher>
+        <div class="container-fluid padZero">
+            <div class="row-fluid">
+                <div class="col-xs-12 col-md-12 padZero">
+                    <form name="ProfileForm" novalidate="">
+
+                        <div class="list wrapText">
+                            <div ng-click="showProfilePicture()" style="position: relative;"><img src="{{profilePicture}}" width="300" /></div>
+                            <div class="changeProfilePicture" ng-click="addMedia()"><span class="changeProfilePictureSpan">Change Profile Picture</span></div>
+                        </div>
+                        <div>
+                            <!-- Name -->
+                            <div class="form-group form-groupForProfile" ng-show="showForAll == true" >
+                                <input type="text" class="form-control form-controlForProfile" id="nameFieldWithStyleInput" ng-click="resetStyleForName()"    placeholder="Name" ng-model="newUser.name">
+                            </div>
+                            <!-- Email -->
+                            <div class="form-group form-groupForProfile" ng-show="showForAll == true">
+                                <input type="text" class="form-control form-controlForProfile" placeholder="Email" ng-model="newUser.email" disabled class="activateDisable" >
+                            </div>
+                            <!-- Username -->
+                            <div class="form-group form-groupForProfile" ng-show="showForAll == true" id="usernameFieldWithStyle" ng-class="{'usernameValid': usernameVerified, 'usernameInvalid': !usernameVerified}">
+                                <input type="text"  class="form-control form-controlForProfile" placeholder="Username (Optional)" ng-model="newUser.username" ng-click="resetStyle()" ng-blur="checkUsernameTaken(newUser.username)" >
+                            </div>
+
+                            <div ng-show="showForDriver == true || showForSender == true">
+                                <div class="halfLabel">
+                                    <!-- Date of Birth -->
+                                    <span class="input-label dateOfBirthHalf" style="margin-top:0px !important;">Date of Birth</span>
+                                </div>
+                                <div class="input-group form-groupForProfile" >
+                                    <span class="input-group-addon">
+                                      <i class="icon ion ion-ios-calendar-outline"></i>
+                                    </span>
+                                    <input type="date" class="form-control form-controlForProfile" ng-model="newUser.dateOfBirth" />
+                                </div>
+                            </div>
+
+                            <!-- Phone -->
+                            <div class="form-group form-groupForProfile" ng-show="showForAll == true">
+                                <input type="text" class="form-control form-controlForProfile" placeholder="Phone 123-456-7890" ng-keyup="formatPhone($event,1)" ng-model="newUser.phone">
+                            </div>
+                            <!-- Address 1-->
+                            <div class="form-group form-groupForProfile" ng-show="showForAll == true">
+                                <input type="text" class="form-control form-controlForProfile" placeholder="Address 1" ng-model="newUser.address1">
+                            </div>
+                            <!-- Address 2-->
+                            <div class="form-group form-groupForProfile" ng-show="showForAll == true">
+                                <input type="text" class="form-control form-controlForProfile" placeholder="Address 2" ng-model="newUser.address2">
+                            </div>
+                            <!-- City-->
+                            <div class="form-group form-groupForProfile" ng-show="showForAll == true">
+                                <div class="treelineCity">
+                                  <angucomplete-alt id="profileCity"
+                                  placeholder="City"
+                                  pause="100"
+                                  selected-object="newUser.city"
+                                  local-data="cities"
+                                  search-fields="name"
+                                  title-field="name"
+                                  minlength="1"
+                                  input-class="form-control form-controlForProfile "
+                                  ng-model="newUser.city"
+                                  initial-value="initialCity" />
+                                </div>
+                                  <!-- State -->
+                                  <input type="text" class="form-control form-controlForProfile treelineState" placeholder="State" ng-model="newUser.state">
+                                  <!-- Zip Code -->
+                                  <input type="text" class="form-control form-controlForProfile treeline" placeholder="ZIP Code" ng-model="newUser.zipcode">
+                            </div>
+                            <!-- Licence ID -->
+                            <div class="form-group form-groupForProfile" ng-show="showForDriver == true">
+                                <input type="number" class="form-control form-controlForProfile" placeholder="Licence ID" ng-model="newUser.licenseId" >
+                            </div>
+                            <!-- Licence Photo -->
+                            <div class="form-group form-groupForProfile" ng-show="showForDriver == true">
+                              <div style="text-align:center;" ng-click="addLicensePicture()">
+                                <p ng-show="scopeSaltLicensePicture == '' || scopeSaltLicensePicture == undefined" class="profPicIcon"><i class="step icon ion ion-image" style="font-size:55px;color: black;"></i></p>
+                                <p ng-show="scopeSaltLicensePicture == '' || scopeSaltLicensePicture == undefined" class="profPicUpload" style="color: black;">Upload License Picture</p>
+                                <img ng-src="{{licenseImage}}" ng-show="scopeSaltLicensePicture != '' && scopeSaltLicensePicture != undefined" class="licensePic" style="margin-bottom: 10px" />
+                              </div>
+                            </div>
+                            <div class="form-group form-groupForProfile" ng-show="showForDriver == true" >
+                              <div class="dateList" style="margin-bottom: 0px;">
+                                  <div class="halfLabel">
+                                      <!-- Licence Expire Date -->
+                                      <span class="input-label dateOfBirthHalf" style="margin-top:0px !important;">Licence Expire Date</span>
+                                  </div>
+                                <div class="input-group form-groupForProfile" >
+                                      <span class="input-group-addon">
+                                        <i class="icon ion ion-ios-calendar-outline"></i>
+                                      </span>
+                                  <input type="date" class="form-control form-controlForProfile" ng-model="newUser.licenceExpireDate" />
+                                </div>
+                              </div>
+                            </div>
+                            <!-- Licence Issue State -->
+                            <div class="form-group form-groupForProfile" ng-show="showForDriver == true">
+                                <input type="text" class="form-control form-controlForProfile" placeholder="Licence Issue State" ng-model="newUser.licenseIssueState">
+                            </div>
+                            <!-- Vehicle -->
+                            <div class="form-group form-groupForProfile" ng-show="showForDriver == true">
+                                <input type="text" class="form-control form-controlForProfile" placeholder="Vehicle" ng-model="newUser.vehicle">
+                            </div>
+                            <!-- Vehicle Type -->
+                            <div class="form-group form-groupForProfile" ng-show="showForDriver == true">
+                                <input type="text" class="form-control form-controlForProfile" placeholder="Vehicle Type" ng-model="newUser.vehicleType">
+                            </div>
+                            <!-- Vehicle Insurance Company -->
+                            <div class="form-group form-groupForProfile" ng-show="showForDriver == true">
+                                <input type="text" class="form-control form-controlForProfile" placeholder="Vehicle Insurance Company" ng-model="newUser.vehicleInsuranceCompany">
+                            </div>
+                            <!-- Car Year -->
+                            <div class="form-group form-groupForProfile" ng-show="showForDriver == true">
+                                <input type="number" class="form-control form-controlForProfile" placeholder="Car Year" ng-model="newUser.vehicleYear">
+                            </div>
+                            <!-- What Towns Do You Frequently Drive to? -->
+                            <div class="dateList" ng-show="showForDriver == true">
+                                <div class="halfLabel" style="width: 100% !important;">
+                                    <span class="input-label dateOfBirthHalf" style="margin-top:0px !important;">What Towns Do You Frequently Drive to?</span>
+                                </div>
+                            </div>
+                            <!-- What Towns Do You Frequently Drive to? -->
+                            <div ng-show="showForDriver == true" ng-repeat="town in driveToS" class="countableInputsMain">
+                                <div class="countableInputsButton" ng-show="town.id != driveToS.length">
+                                    <button ng-click="removeTown()" class="countableInputsButtonInline"><i class="icon ion ion-minus-circled"></i></button>
+                                </div>
+
+                                <div class="countableInputsButton" ng-show="town.id == driveToS.length">
+                                    <button ng-click="addTown()" class="countableInputsButtonInline"><i class="icon ion ion-plus-circled"></i></button>
+                                </div>
+                                <div class="countableInputsInput">
+                                    <angucomplete-alt id="{{town.id}}"
+                                              placeholder="Town {{town.id }}"
+                                              pause="100"
+                                              selected-object="town.value"
+                                              local-data="cities"
+                                              search-fields="name"
+                                              title-field="name"
+                                              minlength="2"
+                                              input-class="form-control form-controlForProfile"
+                                              ng-model="town.value"
+                                              value = "town.value"
+                                              initial-value="town.initialDriveTo"/>
+                                    <!--<input type="text" placeholder="Town {{town.id}}" ng-model="town.value" style="width: 100%;" /> -->
+                                </div>
+                            </div>
+                            <!-- Store Type -->
+                            <div class="form-group form-groupForProfile" ng-show="showForHub == true">
+                              <div class="input-group quickRegIcons"  style="border-radius: 4px;">
+                                <div class="toggleDesc"><span>Are you a business entity/commercial retails store?</span></div>
+                                <div class="toggleButton" ios-toggle model="newUser.businessStore"  ></div>
+                              </div>
+                            </div>
+                            <!-- Located Major Roads-->
+                            <div class="form-group form-groupForProfile" ng-show="showForHub == true">
+                              <div class="input-group quickRegIcons" style="border-radius: 4px;">
+                                <div class="toggleDesc"><span>Are you located by a major Highway/Expressway?</span></div>
+                                <div class="toggleButton" ios-toggle model="newUser.locatedHw" ></div>
+                              </div>
+                            </div>
+                            <!-- Contact Person -->
+                            <div class="form-group form-groupForProfile" ng-show="showForHub == true">
+                                <input type="text" class="form-control form-controlForProfile" placeholder="Contact Person" ng-model="newUser.contactPerson">
+                            </div>
+                            <!-- Work Phone -->
+                            <div class="form-group form-groupForProfile" ng-show="showForHub == true">
+                                <input type="text" class="form-control form-controlForProfile" placeholder="Work Phone 123-456-7890" ng-keyup="formatPhone($event,2)"  ng-model="newUser.workPhone">
+                            </div>
+                            <!-- State Tax ID -->
+                            <div class="form-group form-groupForProfile" ng-show="showForHub == true">
+                                <input type="number" class="form-control form-controlForProfile" placeholder="State Tax ID" ng-model="newUser.stateTaxId">
+                            </div>
+                            <!-- Open Time -->
+                            <div class="item item-input registerDaysOf" ng-if="showForHub == true" style="display: block !important;">
+                                <div class="openTimeTitle" ng-show="showForHub == true">
+                                    <div class="registerToggleLabel"><span class="divInputLabel operationTitles">Operation Hours:</span></div>
+                                    <div class="registerToggleLabel" style="margin-top: 10px;" >
+                                      <span style="font-weight:bold">Work 24/7 : </span>
+                                      <div class="toggleButton" style="margin-top:-7px" ios-toggle model="work724.checked" ></div>
+                                    </div>
+                                </div>
+                                <div class="openTimebuttonsTitle" ng-show="showForHub == true">
+                                    <div class="openTimebuttons">
+                                        <button ng-click="openOpenTimeModal()" class="button button-outline button-positive openTimebuttonsMTop">
+                                            <span ng-show="newUser.opentimeSplit == undefined || newUser.opentimeSplit == ''">Start</span>
+                                            <span ng-show="newUser.opentimeSplit != undefined">{{newUser.opentimeSplit}}</span>
+                                        </button>
+                                    </div>
+                                    <div class="openTimebuttons">
+                                        <button ng-click="openCloseTimeModal()" class="button button-outline button-positive openTimebuttonsMTop">
+                                            <span ng-show="newUser.closeTime == undefined">End</span>
+                                            <span ng-show="newUser.closeTime != undefined">{{newUser.closeTime}}</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group form-groupForProfile" ng-show="showForHub == true">
+                                <div class="form-group form-groupForProfile" >
+                                    <script type="text/ng-template" id="openTimeModalContent.html">
+                                        <div class="modal-header">
+                                            <h3 class="modal-title">Select Open Time : </h3>
+                                        </div>
+                                        <div class="modal-body">
+                                            <ui-timepicker ng-model="opentimepicker"></ui-timepicker>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-primary customColor" type="button" ng-click="ok(opentimepicker)">OK</button>
+                                            <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+                                        </div>
+                                    </script>
+                                    <script type="text/ng-template" id="closeTimeModalContent.html">
+                                        <div class="modal-header">
+                                            <h3 class="modal-title">Select Close Time : </h3>
+                                        </div>
+                                        <div class="modal-body">
+                                            <ui-timepicker ng-model="closetimepicker"></ui-timepicker>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-primary customColor" type="button" ng-click="ok(closetimepicker)">OK</button>
+                                            <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+                                        </div>
+                                    </script>
+                                </div>
+                                <div class="clearfix" ng-show="showForHub == true"></div>
+                            </div>
+                            <!-- Days Of Operation -->
+                            <label class="item item-input itemForProfile" ng-show="showForHub == true">
+                                <span class="input-label">Days Of Operation:</span>
+                                <ion-checkbox ng-click="exceptWeekend(exceptWeekendValue)" ng-model="exceptWeekendValue" class="checkbox-balanced" style="border: none;">Except Weekend</ion-checkbox>
+                                <!--<button class="button button-balanced button-block exceptWeekendButton" ng-click="exceptWeekend()">Except Weekend</button>-->
+                            </label>
+                            <div class="form-group form-groupForProfile" ng-show="showForHub == true">
+                                <ion-list style="width:100%;    margin-right: 10px;">
+                                    <div ng-repeat="day in daysOperation">
+                                        <ion-checkbox ng-model="day.selected" class="checkbox-balanced">{{day.value}}</ion-checkbox>
+                                    </div>
+
+                                </ion-list>
+                            </div>
+                        </div>
+                        <div class="spacer formSpacer"></div>
+                        <button ng-disabled="!usernameVerified"class="button button-energized button-block regButton" ng-click="updateProfileButton()"><i class="ion-android-done"></i><span class="marLeft10">Save</span></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

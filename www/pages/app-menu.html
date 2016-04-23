@@ -1,0 +1,42 @@
+<ion-side-menus enable-menu-with-back-views="false">
+  <ion-side-menu-content>
+    <ion-nav-bar class="bar-stable">
+      <ion-nav-back-button>
+      </ion-nav-back-button>
+
+      <ion-nav-buttons side="left">
+        <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
+        </button>
+      </ion-nav-buttons>
+    </ion-nav-bar>
+    <ion-nav-view name="menuContent"></ion-nav-view>
+  </ion-side-menu-content>
+
+  <ion-side-menu side="left">
+    <ion-header-bar class="bar-stable">
+      <h1 class="title"><img src="img/logo.png" class="menuLogo"/></h1>
+    </ion-header-bar>
+    <ion-content>
+      <ion-list ng-controller="MenuCtrl">
+        <ion-item menu-close href="#/app/home" ng-if="approve || userType == 'Sender'">
+          <i class="icon ion ion-ios-home size-21" style="margin-right:15px" ></i>Home
+        </ion-item>
+        <ion-item menu-close href="#/app/profile"><i class="icon ion ion-person size-21" style="margin-right:15px"></i>Profile</ion-item>
+        <ion-item menu-close  ng-if="approve || userType == 'Sender'">
+          <i class="icon ion ion-cube size-21" style="margin-right:15px"></i>
+          <!-- Disable this link for non completed profile -->
+          <a href="#/app/createPackage" ng-if="fullFilled" class="menuALink">Send A Package</a>
+          <span ng-if="!fullFilled" ng-click="showFullFilledPopup()">Send A Package</span>
+        </ion-item>
+        <!-- <ion-item menu-close href="#/app/filter"><i class="icon ion ion-android-search size-21" style="margin-right:15px"></i>     Search</ion-item> -->
+        <ion-item menu-close href="#/app/changePasswordLogged"><i class="icon ion ion-android-lock size-21"
+                                                                  style="margin-right:15px"></i> Change Password
+        </ion-item>
+        <ion-item menu-close href="#/app/playlists" ng-click="logout()"><i class="icon ion ion-log-out size-21" style="margin-right:15px"></i> Logout
+        </ion-item>
+        <ion-item menu-close href="#/app/qrScanner" ><i class="icon ion ion-log-out size-21" style="margin-right:15px"></i> Scanner
+        </ion-item>
+      </ion-list>
+    </ion-content>
+  </ion-side-menu>
+</ion-side-menus>

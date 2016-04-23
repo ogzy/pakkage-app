@@ -1,0 +1,78 @@
+@import "compass";
+
+@mixin ios-toggle($height:35px, $active:#53d76a, $inactive:#fff, $border:#d3d3d3) {
+    $width: ($height * 2) - ($height / 3.25);
+    $offset: $width - $height - 2;
+
+    .ios-toggle {
+        display: inline-block;
+        vertical-align: middle;
+
+        &> div {
+            // Reset the element
+            margin: 0;
+            padding: 0;
+            border: none;
+
+            // Set the dimensions
+            display: inline-block;
+            height: $height;
+            width: $width;
+            position: relative;
+
+            // Surrounding text should look inline
+            cursor: pointer;
+            vertical-align: middle;
+
+            background-color: darken($inactive, 2%);
+            border: 1px solid $border;
+            @include border-radius($height);
+            @include box-shadow(inset 0 0 0 1px $border);
+            
+            @include transition(border .25s .15s,
+                box-shadow .25s .3s,
+                padding .25s);
+
+            &:after {
+                content: '';
+                display: block;
+                height: $height - 2;
+
+                position: absolute;
+                left: 0;
+                right: $offset;
+                top: 0;
+
+                background-color: $inactive;
+                border: 1px solid $border;
+
+                @include border-radius($height - 2);
+                @include box-shadow(inset 0 -3px 3px hsla(0,0%,0%,.025),
+                    0 1px 4px hsla(0,0%,0%,.15),
+                    0 4px 4px hsla(0,0%,0%,.1));
+
+                @include transition(border .25s .15s,
+                    left .25s .1s,
+                    right .15s .175s);
+            }
+
+            &.coActive {
+                border-color: $active;
+                @include box-shadow(inset 0 0 0 ($height / 2 + 1) $active);
+
+                @include transition(border .25s,
+                    box-shadow .25s,
+                    padding .25s .15s);
+
+                &:after {
+                    border-color: $active;
+                    left: $offset;
+                    right: 0;
+                    @include transition(border .25s,
+                        left .15s .25s,
+                        right .25s .175s);
+                }
+            }
+        }
+    }
+}

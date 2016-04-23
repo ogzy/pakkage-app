@@ -1,0 +1,14 @@
+{
+  "name": "HelloIonic",
+  "private": "true",
+  "devDependencies": {
+    "ionic": "driftyco/ionic-bower#1.2.1"
+  },
+  "dependencies": {
+    "ngCordova": "~0.1.23-alpha",
+    "onezone-datepicker": "*",
+    "angular-bootstrap": "~0.14.3",
+    "angular-local-storage": "~0.2.3",
+    "angucomplete-alt": "~2.2.0"
+  }
+}

@@ -1,0 +1,58 @@
+<ion-view view-title="{{hub.name}}" ng-controller="HubDetailCtrl" style="overflow: scroll !important;">
+    <ion-content>
+        <ion-refresher
+            pulling-text="Pull to refresh..."
+            on-refresh="refreshHub()">
+        </ion-refresher>
+        <div class="container-fluid padZero">
+            <div class="row-fluid">
+                <div class="col-xs-12 col-md-12 padZero">
+                    <div class="list wrapText">
+                        <div ng-click="showProfilePicture()" style="position: relative;"><img src="http://192.99.176.14:9096/uploads/images/thumbnail/{{hub.profilePicture}}" width="300" /></div>
+                    </div>
+                    <div class="list">
+                      <div class="item item-divider">
+                        Company Informations
+                      </div>
+                      <a class="item" href="#">
+                        <b>Name :</b>{{hub.name}}
+                      </a>
+                      <a class="item" href="#">
+                        <b>Email :</b>{{hub.email}}
+                      </a>
+                      <a class="item" href="#">
+                        <b>Phone :</b>{{hub.phone}}
+                      </a>
+                      <a class="item" href="#">
+                        <b>Address :</b>{{hub.address[0].address1 + ' ' + hub.address[0].address2}}
+                      </a>
+                      <a class="item" href="#">
+                        <b>City :</b>{{hub.address[0].city}}
+                      </a>
+                      <a class="item" href="#">
+                        <b>State :</b>{{hub.address[0].state}}
+                      </a>
+                      <a class="item" href="#">
+                        <b>Zipcode :</b>{{hub.address[0].zipCode}}
+                      </a>
+                      <div class="item item-divider">
+                        Operation Informations
+                      </div>
+                      <a class="item" href="#">
+                        <b>Contact Person :</b>{{hub.contactPerson}}
+                      </a>
+                      <a class="item" href="#">
+                        <b>Contact Phone :</b>{{hub.workPhone}}
+                      </a>
+                      <a class="item" href="#">
+                        <b>Open Time :</b>{{hub.openTime}}
+                      </a>
+                      <a class="item" href="#">
+                        <b>Working Days :</b>{{hub.workingDays}}
+                      </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

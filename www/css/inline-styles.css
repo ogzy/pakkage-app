@@ -1,0 +1,345 @@
+/*-------------THEESE CAME FROM INLINE STYLES---------*/
+
+.profPicIcon {
+  margin-bottom: 0px !important;
+}
+
+.profPicUpload {
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.profPic {
+  width: 100%;
+}
+
+.licensePic {
+  width: 30%;
+}
+
+.padZero {
+  padding: 0px;
+}
+
+.accordionTitles {
+  width: 40%;
+  text-align: right;
+}
+
+.formSpacer {
+  width: 300px;
+  height: 0px;
+}
+
+.regButton {
+  background-color: #170F4A !important;
+}
+
+.marLeft10 {
+  margin-left: 10px;
+}
+
+.activateDisable {
+  background-color: white !important;
+}
+
+.wrapText {
+  white-space: normal;
+  text-align: center;
+}
+
+.wrapTextSmall {
+  white-space: normal;
+  text-align: center;
+  font-size: 14px;
+  /* font-weight: normal; */
+  color: green;
+}
+
+.loginAlert {
+  margin-bottom: 0px !important;
+  border: none !important;
+}
+
+.row {
+  margin-left: 0px !important;
+}
+
+.quickRegIcons {
+  border: 1px solid;
+  border-color: lightgray;
+  margin-bottom: 0px !important;
+  width: 100% !important;
+}
+
+.noBorder {
+  border: 0px !important;
+}
+
+.justPadding {
+  padding: 5px !important;
+}
+
+.littleBottom {
+  margin-bottom: 3px !important;
+}
+
+.halfDatePicker {
+  width: 50% !important;
+  float: right;
+  margin-right: 5px;
+}
+
+.halfLabel {
+  /*float: left; */
+  text-align: left;
+  width: 47% !important;
+  /* height: 70px; */
+  margin-bottom: 0px !important;
+  padding-left: 4%;
+}
+
+.dateOfBirthHalf {
+  float: left;
+  width: 100%;
+  margin-top: 15px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #AAA;
+  max-width: 100%;
+}
+
+.dateList {
+  clear: both;
+  margin-bottom: 70px;
+}
+
+.changeProfilePicture {
+  margin-top: -30px;
+  height: 40px;
+  background-color: rgba(128, 128, 128, 0.77);
+  z-index: 2;
+  position: relative;
+}
+
+.changeProfilePictureSpan {
+  font-size: 24px;
+  color: white;
+}
+
+.menuLogo {
+  width: 90%;
+}
+
+.usernameValid {
+  /*border: 1px solid limegreen  !important;*/
+  border-radius: 5px !important;
+}
+
+.usernameInvalid {
+  border: 1px solid red !important;
+  border-radius: 5px !important;
+}
+
+.usernameOrigin {
+  border: 1px solid #ccc;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+}
+
+.usernameOrigin:focus {
+  border-color: #66afe9;
+
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6);
+}
+
+.registerDaysOfLabel {
+  width: 97%;
+  margin-left: 6px;
+  margin-right: 6px !important;
+}
+
+.registerDaysOf {
+  margin-left: 5px;
+  margin-right: 5px !important;
+}
+
+.home-package-draft {
+  margin-right: 15px;
+  color: darkgoldenrod !important;
+}
+
+.home-package-ready {
+  margin-right: 15px;
+  color: green !important;
+}
+
+.noPackage {
+  margin-top: 30px;
+  font-size: 30px;
+  text-transform: uppercase;
+  color: lightgrey;
+}
+
+.rightNavBarButton {
+  font-size: 14px !important;
+}
+
+.openTime {
+  margin-top: 10px;
+  margin-left: 5px;
+  float: left;
+}
+
+.registerToggle {
+  border: none !important;
+  font-size: 11px !important;
+  white-space: normal;
+}
+
+.registerToggleLabel {
+  width: 49%;
+  float: left;
+}
+
+.openTimebuttons {
+  width: 49%;
+  float: left;
+}
+
+.openTimebuttonsMTop {
+  margin-top: 10px;
+  width: 97%;
+}
+
+.customColor {
+  background-color: #01295A !important;
+}
+
+.operationTitles {
+  font-size: 14px !important;
+}
+
+.openTimeTitle {
+  height: 50px !important;
+  width: 100% !important;
+}
+
+.openTimebuttonsTitle {
+  height: 60px !important;
+  width: 100% !important;
+}
+
+.divInputLabel {
+  display: table;
+  padding: 7px 10px 7px 0px;
+  max-width: 200px;
+  width: 35%;
+  color: #444;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.treeline {
+  width: 30% !important;
+  float: left;
+  margin-right: 3px;
+  margin-bottom: 5px;
+}
+
+.treelineState {
+  width: 17% !important;
+  float: left;
+  margin-right: 3px;
+  margin-bottom: 5px;
+}
+
+.treelineCity {
+  width: 47% !important;
+  float: left;
+  margin-right: 3px;
+  margin-bottom: 5px;
+}
+
+.accordion-orange {
+  background-color: #E0861A !important;
+  color: #FFF !important;
+}
+
+.showOpenHubsChck {
+  background-color: transparent;
+  border: none;
+  font-size: 12px;
+  padding: 0px;
+  font-weight: normal;
+
+}
+
+.specificHeaderButton {
+  width: 40% !important;
+}
+
+.specificHeader {
+  right: 0px !important;
+}
+
+.showOpenHubsSpn {
+  margin-top: 10px;
+  font-size: 12px;
+  margin-left: 10px !important;
+  color: #FFF;
+}
+
+.subTitlesBigger {
+  background-color: #FFA252 !important;
+  color: #222 !important;
+  font-weight: bold !important;
+  font-size: 12px !important;
+}
+
+.home-with-background {
+  background-image: url('../img/bodybg.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.transItem {
+  background-color: transparent !important;
+}
+
+.smallCheckbox:after {
+  width: 10px !important;
+}
+
+.smallCheckbox {
+  margin-top: -2px !important;
+  width: 20px !important;
+  height: 20px !important;
+}
+
+.filterRadio {
+  margin-top: -5px;
+  height: 20px;
+  width: 20px;
+}
+
+.menuALink {
+  color: #474747 !important;
+}
+
+.quickToggle {
+  white-space: normal !important;
+  font-size: 14px !important;
+}
+
+.toggleDesc {
+  margin-right: 60px;
+  float: left;
+  white-space: normal;
+  padding: 16px;
+}
+
+.toggleButton {
+  margin-top: -60px;
+  width: 60px;
+  float: right;
+}

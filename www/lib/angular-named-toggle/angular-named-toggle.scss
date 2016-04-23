@@ -1,0 +1,123 @@
+@import "compass";
+
+@mixin named-toggle(
+    $active:       #53d76a,
+    $inactive:     #eee,
+    $knob:         #fff,
+    $border:       #d3d3d3,
+    $activeText:   #FFF,
+    $inactiveText: #000
+) {
+    .co-toggle {
+        display: inline-block;
+        vertical-align: middle;
+
+        &> div {
+            display: inline-block;
+            overflow: hidden;
+            position: relative;
+            min-width: 100px;
+
+            cursor: pointer;
+            
+            border: 1px solid $border;
+            border-radius: 4px;
+
+            text-align: left;
+            line-height: 8px;
+            vertical-align: middle;
+
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            -o-user-select: none;
+            user-select: none;
+
+
+            // This is what forces the switch width
+            &> span.switch-min {
+                height: 0;
+                margin: 0;
+                padding: 0;
+                border: 0;
+            }
+
+            &.disabled {
+                opacity: 0.5;
+                filter: alpha(opacity=50);
+                cursor: default !important;
+
+                .switch-left,
+                .switch-right,
+                .knob {
+                    cursor: default !important;
+                }
+            }
+
+            &> div {
+                position: relative;
+                width: 150%;
+
+                // off by default
+                left: -50%;
+
+                &.coActive {
+                    left: 0%;
+                }
+
+                &.switch-animate {
+                    transition: left 0.2s;
+                    -o-transition: left 0.2s;
+                    -moz-transition: left 0.2s;
+                    -webkit-transition: left 0.2s;
+                }
+            }
+
+            span {
+                display: inline-block;
+                width: 33%;
+                height: 100%;
+                float: left;
+
+                @include box-sizing(border-box);
+
+                cursor: pointer;
+
+                padding: 0.1em;
+                line-height: 1.7em;
+                text-align: center;
+                white-space: nowrap;
+
+                &.knob {
+                    margin-top: -1px;
+                    margin-bottom: -1px;
+                    border-left: 1px solid $border;
+                    border-right: 1px solid $border;
+                    border-bottom: 2px solid $border;
+
+                    background: $knob;
+
+                    width: 34%;
+                    z-index: 100;
+
+                    text-align: center;
+                }
+
+                &.switch-left,
+                &.switch-right {
+                    z-index: 1;
+                }
+
+                &.switch-left {
+                    color: $activeText;
+                    background: $active; //#428bca;
+                }
+
+                &.switch-right {
+                    color: $inactiveText;
+                    background: $inactive;
+                }
+            }
+        }
+    }
+}

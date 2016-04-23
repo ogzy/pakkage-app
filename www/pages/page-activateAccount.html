@@ -1,0 +1,40 @@
+<ion-view ng-controller="ActivateCtrl" cache-view="false">
+    <ion-content padding="true" class="login-background" style="margin-top:0px !important;">
+        <div class="login-align-center">
+            <div class="container-fluid">
+                <div class="row-fluid login-logo">
+                    <img src="img/logo.png" width="100%" />
+                </div>
+                <div class="row-fluid login-slogan">
+                    <span class="motto">A Better Way To Ship</span>
+                </div>
+                <div class="row-fluid">
+                    <form class="list">
+                        <div class="list">
+                            <label class="item item-input wrapText">
+                                <span>Please check your mailbox and fill in the activation code below</span>
+                            </label>
+                        </div>
+                        <div class="list">
+                            <label class="item item-input">
+                                <input type="text" placeholder="Username or Email" class="activateDisable" value="{{email}}" disabled>
+                            </label>
+                        </div>
+                        <div class="list">
+                            <label class="item item-input">
+                                <input type="text" placeholder="Activation Code" ng-model="activationCode">
+                            </label>
+                        </div>
+                        <div class="list">
+                            <label class="item item-input wrapTextSmall">
+                                <span>Please make sure to check your Junk/Spam folder too</span>
+                            </label>
+                        </div>
+                        <div class="spacer" style="width: 300px; height: 0px;"></div>
+                        <button class="button button-positive button-block" style="    background-color: #170F4A !important;" ng-click="activateMe(email,activationCode)"><i class="icon ion-android-mail"></i><span style="margin-left:10px;">Activate</span></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

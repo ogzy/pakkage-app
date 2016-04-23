@@ -1,0 +1,253 @@
+.login-align-center {
+  width: 100%;
+}
+
+.login-background {
+  background-image: url(../img/bodybg.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  margin-top: -40px;
+}
+
+.login-logo {
+  margin-bottom: 25px !important;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.login-slogan {
+  margin: 0 auto;
+  margin-bottom: 25px !important;
+  text-align: center;
+}
+
+.ion {
+  -webkit-touch-callout: text;
+  -webkit-user-select: text;
+  -khtml-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+
+.step {
+  display: inline-block;
+  line-height: 1;
+  position: relative;
+  /*width: 10%;*/
+}
+
+.step i {
+  -webkit-transition: opacity .3s;
+  -moz-transition: opacity .3s;
+  -ms-transition: opacity .3s;
+  -o-transition: opacity .3s;
+  transition: opacity .3s;
+}
+
+.step:hover i {
+  opacity: .3;
+}
+
+.size-12 {
+  font-size: 12px;
+}
+
+.size-14 {
+  font-size: 14px;
+}
+
+.size-16 {
+  font-size: 16px;
+}
+
+.size-18 {
+  font-size: 18px;
+}
+
+.size-21 {
+  font-size: 21px;
+}
+
+.size-24 {
+  font-size: 24px;
+}
+
+.size-32 {
+  font-size: 32px;
+}
+
+.size-48 {
+  font-size: 48px;
+}
+
+.size-64 {
+  font-size: 64px;
+}
+
+.size-80 {
+  font-size: 80px;
+}
+
+.size-96 {
+  font-size: 96px;
+}
+
+.simplyLink {
+  color: black;
+}
+
+.transparentFormBg {
+  background-color: #96AEC1;
+  border: 1px solid white;
+  border-radius: 5px;
+  opacity: 0.5;
+  filter: alpha(opacity=70);
+  -moz-opacity: 0.7;
+  height: 215px;
+  position: absolute;
+  z-index: -1;
+  width: 90%;
+  margin: -20px;
+}
+
+.transparentFormBgBig {
+  background-color: #96AEC1;
+  border: 1px solid white;
+  border-radius: 5px;
+  opacity: 0.5;
+  filter: alpha(opacity=70);
+  -moz-opacity: 0.7;
+  height: 275px;
+  position: absolute;
+  z-index: -1;
+  width: 90%;
+  margin: -20px;
+}
+
+.clickablePageButtons {
+  margin-left: 10px;
+  font-size: 19px;
+}
+
+.motto {
+  font-family: monospace;
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.countableInputsMain {
+  min-height: 50px;
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  padding: 5px;
+  margin-top: 5px;
+}
+
+.countableInputsButton {
+  width: 15%;
+  float: left;
+  margin-top: 5px;
+}
+
+.countableInputsNotShow {
+  display: none !important;
+  visibility: hidden !important;
+  width: 0px !important
+}
+
+.countableInputsInput {
+  float: right;
+  margin-right: 20px;
+  margin-top: 0px;
+  margin-left: 25px;
+  width: 70%;
+}
+
+.countableInputsButtonInline {
+  width: 30px;
+  margin-right: 10px;
+  border: none;
+  font-size: 21px;
+  padding: 0px;
+  background-color: white;
+}
+
+.exceptWeekendButton {
+  float: right !important;
+  font-size: 13px;
+  white-space: normal;
+  line-height: 15px;
+  margin-right: 0px;
+  width: 48% !important;
+}
+
+.countableInputsMainNew {
+  min-height: 50px;
+  /* border: 1px solid lightgray; */
+  border-radius: 5px;
+  /* padding: 5px; */
+  margin-top: 5px;
+  width: 100% !important;
+}
+
+.transparentFormBgForgot {
+  background-color: #96AEC1;
+  border: 1px solid white;
+  border-radius: 5px;
+  opacity: 0.5;
+  filter: alpha(opacity=70);
+  -moz-opacity: 0.7;
+  height: 150px;
+  position: absolute;
+  z-index: -1;
+  width: 109% !important;
+  margin-right: 0px !important;
+  margin: -20px;
+}
+
+.transparentFormBgForgotVerify {
+  background-color: #96AEC1;
+  border: 1px solid white;
+  border-radius: 5px;
+  opacity: 0.5;
+  filter: alpha(opacity=70);
+  -moz-opacity: 0.7;
+  height: 205px;
+  position: absolute;
+  z-index: -1;
+  width: 109% !important;
+  margin-right: 0px !important;
+  margin: -20px;
+}
+
+.transparentFormBgChangePass {
+  background-color: #96AEC1;
+  border: 1px solid white;
+  border-radius: 5px;
+  opacity: 0.5;
+  filter: alpha(opacity=70);
+  -moz-opacity: 0.7;
+  height: 310px;
+  position: absolute;
+  z-index: -1;
+  width: 109% !important;
+  margin-right: 0px !important;
+  margin: -20px;
+}
+
+.transparentFormBgChangePassLogged {
+  background-color: #96AEC1;
+  border: 1px solid white;
+  border-radius: 5px;
+  opacity: 0.5;
+  filter: alpha(opacity=70);
+  -moz-opacity: 0.7;
+  height: 198px;
+  position: absolute;
+  z-index: -1;
+  width: 106% !important;
+  margin-right: 0px !important;
+  margin: -20px;
+  margin-left: -10px !important;
+}

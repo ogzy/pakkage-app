@@ -1,0 +1,8 @@
+<component name="libraryTable">
+  <library name="classes2">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/platforms/android/CordovaLib/build/intermediates/bundles/release/classes.jar!/" />
+    </CLASSES>
+    <SOURCES />
+  </library>
+</component>

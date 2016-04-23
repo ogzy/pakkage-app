@@ -1,0 +1,30 @@
+@import "compass";
+
+@mixin image-toggle($trueImage, $falseImage, $width: 4em, $height: 4em) {
+
+    // Allow background color to be set by the inheriting style sheet
+    .image-toggle {
+        display: inline-block;
+        vertical-align: middle;
+
+        &> div {
+            width: $width;
+            height: $height;
+
+            -webkit-background-size: contain !important;
+            -moz-background-size: contain !important;
+            -ms-background-size: contain !important;
+            -o-background-size: contain !important;
+            background-size: contain !important;
+
+            background-repeat: no-repeat !important;
+            background-position: center center !important;
+
+            background-image: url($falseImage);
+
+            &.trueImg {
+                background-image: url($trueImage);
+            }
+        }
+    }
+}

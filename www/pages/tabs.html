@@ -1,0 +1,19 @@
+<ion-tabs class="tabs-icon-bottom tabs-color-active-positive" ng-controller="TabsCtrl">
+
+  <!-- Register Tab -->
+  <ion-tab title="Register" ng-click="loadRegister()" icon-off="ion-android-create" icon-on="ion-android-clipboard">
+    <ion-nav-view name="tab-register"></ion-nav-view>
+  </ion-tab>
+
+  <!-- Login Tab -->
+  <ion-tab title="Login" icon-off="ion-android-lock" icon-on="ion-android-unlock" href="#/tab/login">
+    <ion-nav-view name="tab-login"></ion-nav-view>
+  </ion-tab>
+
+  <!-- Forgot Password Tab -->
+  <ion-tab title="Forgot Password" icon-off="ion-android-bulb" icon-on="ion-android-sunny" href="#/tab/forgotPassword">
+    <ion-nav-view name="tab-forgotPassword"></ion-nav-view>
+  </ion-tab>
+
+
+</ion-tabs>

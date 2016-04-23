@@ -1,0 +1,70 @@
+/*---------------Relatives Styles --------------------*/
+
+/*///////////////REALLY SMALL DEVICES/////////////////*/
+
+@media (max-width: 390px) {
+  .transparentFormBg {
+    width: 85%;
+  }
+
+  .transparentFormBgForgot {
+    width: 115% !important;
+  }
+
+  .transparentFormBgBig {
+    width: 85%;
+  }
+
+  .clickablePageButtons {
+    font-size: 14px;
+  }
+
+  .motto {
+    font-size: 18px;
+  }
+
+  .exceptWeekendButton {
+    width: 30% !important;
+  }
+}
+
+/*///////////////SMALLER THAN 767PX///////////////////*/
+
+@media (min-width: 391px) and (max-width: 768px) {
+  .transparentFormBg {
+    width: 93%;
+  }
+
+  .transparentFormBgBig {
+    width: 93%;
+  }
+
+  .clickablePageButtons {
+    font-size: 19px;
+  }
+}
+
+/*/////////////BETWEEN 768PX AND 1199PX///////////////*/
+
+@media (min-width: 768px) {
+  .transparentFormBg {
+    width: 95%;
+  }
+
+  .transparentFormBgBig {
+    width: 95%;
+  }
+}
+
+
+@media (min-width: 425px) and (max-width: 484px) {
+  .toggleButton {
+    margin-top: -40px;
+  }
+}
+
+@media (min-width: 485px) and (max-width: 1000px) {
+  .toggleButton {
+    margin-top: 10px;
+  }
+}

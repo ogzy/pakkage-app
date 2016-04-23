@@ -1,0 +1,128 @@
+/*---------------IONIC OVERRIDE STYLES-----------------*/
+
+.popup {
+  width: 90% !important;
+}
+
+.form-controlForProfile {
+  border: 1px solid #ccc !important;
+  padding: 6px 12px !important;
+}
+
+.form-controlForProfile:focus {
+  border-color: #66afe9 !important;
+}
+
+.usernameField {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.usernameField:focus {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.form-groupForProfile {
+  margin-bottom: 5px !important;
+  margin-left: 5px !important;
+  margin-right: 5px !important;
+}
+
+.itemForProfile {
+  margin-left: 5px !important;
+  margin-right: 5px !important;
+  border-radius: 5px !important;
+}
+
+.onezone-content {
+  margin-left: 5px !important;
+  margin-right: 5px !important;
+}
+
+.overflow-scroll {
+  /*overflow: hidden;*/
+}
+
+.form-control::-webkit-input-placeholder {
+  color: #E0E0E0 !important;
+}
+
+.form-control:-moz-placeholder {
+  color: #E0E0E0 !important;
+}
+
+.form-control::-moz-placeholder {
+  color: #E0E0E0 !important;
+}
+
+.form-control:-ms-input-placeholder {
+  color: #E0E0E0 !important;
+}
+
+.tabs-top > .tabs, .tabs.tabs-top /* This is clear top little margin of tabs */
+{
+  top: 40px !important;
+}
+
+.tabs-striped .tabs /* This is dark blue background color for tabs */
+{
+  background-color: #170F4A !important;
+}
+
+ion-tabs.tabs-color-active-positive .tab-item /* This is white text color for tabs pane */
+{
+  color: #FFF !important;
+}
+
+ion-tabs.tabs-color-active-positive .tab-item.tab-item-active, ion-tabs.tabs-color-active-positive .tab-item.active, ion-tabs.tabs-color-active-positive .tab-item.activated /* This is white text color for tabs pane */
+{
+  color: #FFF !important;
+}
+
+/* For bootstrap override,at register accordion tabs menu background color */
+.panel-default > .panel-heading {
+  background-image: none !important;
+  background-color: #170F4A !important;
+  color: #FFF !important;
+}
+
+.panel-body {
+  background-color: white !important;
+}
+
+.title-left {
+  right: 0px !important;
+}
+
+/* This is for header panel background color */
+[nav-bar-transition="android"] [nav-bar="active"] .bar, [nav-bar-transition="android"] [nav-bar="entering"] .bar {
+  background-color: #1F8DEC !important;
+
+}
+
+/* This is for menu button at header panel */
+.bar-stable .button.button-clear {
+  color: #FFF !important;
+}
+
+/* This is for title color at header panel */
+.bar.bar-stable .title {
+  color: #FFF !important;
+}
+
+/* This is for title font */
+.platform-android .bar .title {
+  font-size: 26px !important;
+}
+
+.item-divider {
+  background-color: #FFA252 !important;
+  color: #222 !important;
+  font-weight: bold !important;
+  font-size: 12px !important;
+}
+
+.backdrop-loading{
+  margin-top:0px !important;
+}
