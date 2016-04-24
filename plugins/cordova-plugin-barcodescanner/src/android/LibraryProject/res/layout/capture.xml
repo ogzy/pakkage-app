@@ -24,8 +24,8 @@
 
   <com.google.zxing.client.android.ViewfinderView
       android:id="@+id/viewfinder_view"
-      android:layout_width="fill_parent"
-      android:layout_height="fill_parent"/>
+      android:layout_width="200dip"
+      android:layout_height="200dip"/>
 
   <LinearLayout android:id="@+id/result_view"
                 android:orientation="vertical"
@@ -212,7 +212,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center_horizontal"
             android:background="@color/transparent"
-            android:text="@string/msg_default_status"
+            android:text="Pakkage Custom Barcode Scanner"
             android:textColor="@color/status_text"/>
 
 </FrameLayout>
