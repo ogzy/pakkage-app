@@ -634,7 +634,7 @@ angular.module('Pakkage.ProfileController', [])
                             json = JSON.parse(json);
                             if (json.status == 'OK') {
                               saltLicensePicture = json.imageName;
-                              var registerPromise = RegisterService.updateProfile($scope.newUser,jsonProfile.imageName, LocalStorageService.get('token'),json.imageName);
+                              var registerPromise = ProfileService.updateProfile($scope.newUser,jsonProfile.imageName, LocalStorageService.get('token'),json.imageName);
                               registerPromise.then(
                                 function (process) {
 
@@ -645,9 +645,7 @@ angular.module('Pakkage.ProfileController', [])
                                     if($scope.newUser.city.title)
                                       LocalStorageService.save('userCity', $scope.newUser.city.title);
                                     LoadingService.hide();
-                                    $state.go('activate', {
-                                      email: $scope.newUser.email
-                                    });
+                                    PopupService.alert('Successful', "S103");
                                   } else {
                                     LoadingService.hide();
                                     PopupService.alert('Error', process.data.errorCode);
@@ -828,7 +826,7 @@ angular.module('Pakkage.ProfileController', [])
                             json = JSON.parse(json);
                             if (json.status == 'OK') {
                               saltLicensePicture = json.imageName;
-                              var registerPromise = RegisterService.updateProfile($scope.newUser,jsonProfile.imageName, LocalStorageService.get('token'),json.imageName);
+                              var registerPromise = ProfileService.updateProfile($scope.newUser,jsonProfile.imageName, LocalStorageService.get('token'),json.imageName);
                               registerPromise.then(
                                 function (process) {
 
@@ -839,9 +837,7 @@ angular.module('Pakkage.ProfileController', [])
                                     if($scope.newUser.city.title)
                                       LocalStorageService.save('userCity', $scope.newUser.city.title);
                                     LoadingService.hide();
-                                    $state.go('activate', {
-                                      email: $scope.newUser.email
-                                    });
+                                    PopupService.alert('Successful', "S103");
                                   } else {
                                     LoadingService.hide();
                                     PopupService.alert('Error', process.data.errorCode);
@@ -1059,7 +1055,7 @@ angular.module('Pakkage.ProfileController', [])
                       json = JSON.parse(json);
                       if (json.status == 'OK') {
                         saltLicensePicture = json.imageName;
-                        var registerPromise = RegisterService.updateProfile($scope.newUser,jsonProfile.imageName, LocalStorageService.get('token'),json.imageName);
+                        var registerPromise = ProfileService.updateProfile($scope.newUser,jsonProfile.imageName, LocalStorageService.get('token'),json.imageName);
                         registerPromise.then(
                           function (process) {
 
@@ -1070,9 +1066,7 @@ angular.module('Pakkage.ProfileController', [])
                               if($scope.newUser.city.title)
                                 LocalStorageService.save('userCity', $scope.newUser.city.title);
                               LoadingService.hide();
-                              $state.go('activate', {
-                                email: $scope.newUser.email
-                              });
+                              PopupService.alert('Successful', "S103");
                             } else {
                               LoadingService.hide();
                               PopupService.alert('Error', process.data.errorCode);
