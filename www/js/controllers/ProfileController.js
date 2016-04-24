@@ -407,10 +407,13 @@ angular.module('Pakkage.ProfileController', [])
       LogService.visibleLog('update button initial city : ' + JSON.stringify($scope.initialCity));
       switch (LocalStorageService.get('userType')) {
         case 'Driver':
-          if ($scope.driveToS.length != 0 && $scope.newUser.licenseId != undefined && $scope.newUser.licenseIssueState != undefined && $scope.newUser.vehicle != undefined && $scope.newUser.vehicleType != undefined && $scope.newUser.vehicleInsuranceCompany != undefined && $scope.newUser.vehicleYear != undefined && $scope.newUser.name != undefined && $scope.newUser.phone != undefined && $scope.newUser.address1 != undefined && $scope.newUser.city != undefined && $scope.newUser.state != undefined && $scope.newUser.zipcode != undefined)
-            fullFilled = false;
-          else
-            fullFilled = true;
+        if ($scope.driveToS.length == 0 || $scope.newUser.licenseId == undefined || $scope.newUser.licenseIssueState == undefined || $scope.newUser.vehicle == undefined ||
+          $scope.newUser.vehicleType == undefined || $scope.newUser.vehicleInsuranceCompany == undefined || $scope.newUser.vehicleYear == undefined ||
+          $scope.newUser.name == undefined || $scope.newUser.phone == undefined || $scope.newUser.address1 == undefined || $scope.newUser.city == undefined ||
+          $scope.newUser.state == undefined || $scope.newUser.zipcode == undefined)
+          fullFilled = false;
+        else
+          fullFilled = true;
           $scope.newUser.freqCities = [];
           for(var i = 0;i < $scope.driveToS.length;i++)
           {
@@ -427,19 +430,24 @@ angular.module('Pakkage.ProfileController', [])
             if ($scope.daysOperation[i].selected)
               fullFilled = true;
           };
-          if ($scope.newUser.stateTaxId != undefined && $scope.newUser.contactPerson != undefined && $scope.newUser.workPhone != undefined && $scope.newUser.openTime != undefined && $scope.newUser.closeTime != undefined && $scope.newUser.name != undefined && $scope.newUser.phone != undefined && $scope.newUser.address1 != undefined && $scope.newUser.city != undefined && $scope.newUser.state != undefined && $scope.newUser.zipcode != undefined)
-            fullFilled = true;
-          else
+          if ($scope.newUser.stateTaxId == undefined || $scope.newUser.contactPerson == undefined || $scope.newUser.workPhone == undefined || $scope.newUser.openTime == undefined
+            || $scope.newUser.closeTime == undefined || $scope.newUser.name == undefined || $scope.newUser.phone == undefined || $scope.newUser.address1 == undefined
+            || $scope.newUser.city == undefined || $scope.newUser.state == undefined || $scope.newUser.zipcode == undefined)
             fullFilled = false;
+          else
+            fullFilled = true;
           $scope.newUser.businessStore == undefined ? $scope.newUser.businessStore = false : $scope.newUser.businessStore = $scope.newUser.businessStore;
           $scope.newUser.locatedHw == undefined ? $scope.newUser.locatedHw = false : $scope.newUser.locatedHw = $scope.newUser.locatedHw;
           $scope.newUser.daysOfOperations = $scope.daysOperation;
           break;
         case 'Sender':
           LogService.visibleLog(JSON.stringify('fullfilled casei sender için'));
-          if ($scope.newUser.name != undefined && $scope.newUser.phone != undefined && $scope.newUser.address1 != undefined && $scope.newUser.city != undefined && $scope.newUser.state != undefined && $scope.newUser.zipcode != undefined)
+          if ($scope.newUser.name == undefined || $scope.newUser.phone == undefined || $scope.newUser.address1 == undefined || $scope.newUser.city == undefined
+            || $scope.newUser.state == undefined || $scope.newUser.zipcode == undefined)
           {
-            LogService.visibleLog(JSON.stringify('fullfilled true setlendi'));
+            fullFilled = false;
+          }
+          else{
             fullFilled = true;
           }
           break;
