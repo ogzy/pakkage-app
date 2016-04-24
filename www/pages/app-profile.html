@@ -126,11 +126,11 @@
                             </div>
                             <!-- What Towns Do You Frequently Drive to? -->
                             <div ng-show="showForDriver == true" ng-repeat="town in driveToS" class="countableInputsMain">
-                                <div class="countableInputsButton" ng-show="town.id != driveToS.length">
+                                <div class="countableInputsButton" ng-show="!$last">
                                     <button ng-click="removeTown()" class="countableInputsButtonInline"><i class="icon ion ion-minus-circled"></i></button>
                                 </div>
 
-                                <div class="countableInputsButton" ng-show="town.id == driveToS.length">
+                                <div class="countableInputsButton" ng-show="$last">
                                     <button ng-click="addTown()" class="countableInputsButtonInline"><i class="icon ion ion-plus-circled"></i></button>
                                 </div>
                                 <div class="countableInputsInput">
