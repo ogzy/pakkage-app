@@ -201,8 +201,9 @@ angular.module('Pakkage.ProfileController', [])
         LogService.visibleLog(JSON.stringify($rootScope.cachedUser.freqCities));
         if ($rootScope.cachedUser.freqCities != undefined || $rootScope.cachedUser.freqCities != null) {
           for (var i = 0; i < $rootScope.cachedUser.freqCities.length; i++) {
+              //$scope.driveToS[i + 1] = { id: $rootScope.cachedUser.freqCities[i].key,initialDriveTo : $rootScope.cachedUser.freqCities[i].value };
               $scope.driveToS.push({ id: $rootScope.cachedUser.freqCities[i].key,initialDriveTo : $rootScope.cachedUser.freqCities[i].value });
-              LogService.visibleLog('Drive to' + JSON.stringify($scope.driveToS[i]));
+              LogService.visibleLog('Drive to' + JSON.stringify($scope.driveToS[i+1]));
           };
         }
         if($rootScope.cachedUser.freqCities.length == 0)
@@ -413,7 +414,10 @@ angular.module('Pakkage.ProfileController', [])
           $scope.newUser.freqCities = [];
           for(var i = 0;i < $scope.driveToS.length;i++)
           {
-            $scope.newUser.freqCities.push({key : i + 1,value : $scope.driveToS[i].value.title});
+            if($scope.driveToS[i].initialDriveTo != undefined)
+              $scope.newUser.freqCities.push({key : i + 1,value : $scope.driveToS[i].initialDriveTo});
+            else
+              $scope.newUser.freqCities.push({key : i + 1,value : $scope.driveToS[i].value.title});
             LogService.visibleLog('For içindeki drivetovalue : ' + JSON.stringify($scope.driveToS[i]));
           }
           LogService.visibleLog('Freq city ne : ' + JSON.stringify($scope.newUser.freqCities));
