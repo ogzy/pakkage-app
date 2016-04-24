@@ -13,7 +13,6 @@
       <div class="item item-divider" ng-show="(packages | filter : { status: 0 }).length > 0">
         Draft
       </div>
-
       <a class="item item-thumbnail-left transItem" href="#" ng-click="editPackage(package._id)"
          ng-repeat="package in packages | filter:{ status: 0 }">
         <img ng-src="http://192.99.176.14:9096/uploads/packageImages/thumbnail/{{package.packageImage}}">
