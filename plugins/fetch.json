@@ -106,10 +106,10 @@
             "APP_NAME": "Pakkage"
         }
     },
-    "cordova-plugin-barcodescanner": {
+    "cordova-plugin-cszbar": {
         "source": {
             "type": "registry",
-            "id": "cordova-plugin-barcodescanner"
+            "id": "cordova-plugin-cszbar"
         },
         "is_top_level": true,
         "variables": {}

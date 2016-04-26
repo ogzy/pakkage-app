@@ -7,9 +7,6 @@
         "files": {}
     },
     "installed_plugins": {
-        "cordova-plugin-barcodescanner": {
-            "PACKAGE_NAME": "net.pakkage.beta"
-        },
         "cordova-plugin-console": {
             "PACKAGE_NAME": "net.pakkage.beta"
         },
@@ -49,6 +46,9 @@
         "phonegap-facebook-plugin": {
             "APP_ID": "1200298986649296",
             "APP_NAME": "Pakkage",
+            "PACKAGE_NAME": "net.pakkage.beta"
+        },
+        "cordova-plugin-cszbar": {
             "PACKAGE_NAME": "net.pakkage.beta"
         }
     },

@@ -206,7 +206,7 @@ angular.module('Pakkage.MainController', [])
 .controller('QRCodeCtrl', ['$scope', 'LocalStorageService', '$state', function ($scope, LocalStorageService, $state) {
   document.addEventListener("deviceready", function () {
 
-    cordova.plugins.barcodeScanner.scan(
+    /*cordova.plugins.barcodeScanner.scan(
       function (result) {
         alert("We got a barcode\n" +
           "Result: " + result.text + "\n" +
@@ -216,7 +216,17 @@ angular.module('Pakkage.MainController', [])
       function (error) {
         alert("Scanning failed: " + error);
       }
-    );
+    );*/
+
+    cloudSky.zBar.scan({
+      text_title : 'Pakkage Barcode Scanner',
+      text_instructions : 'Custom QR code scanner description',
+      drawSight : false
+    }, function(success){
+      alert('Success ! Value is : '  + success)
+    },  function(error){
+      console.log('Error.The error is : '  + error)
+    });
 
   }, false);
 
