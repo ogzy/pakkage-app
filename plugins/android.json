@@ -50,6 +50,11 @@
         },
         "cordova-plugin-cszbar": {
             "PACKAGE_NAME": "net.pakkage.beta"
+        },
+        "cordova-fabric-plugin": {
+            "FABRIC_API_KEY": "f9dff3ef73cc5102b48e2f67f21ed8c8fcb99fae",
+            "FABRIC_API_SECRET": "4e57a8baae4e709047520a14f8e72cb31e912d26062cabb8c99096d197af6208",
+            "PACKAGE_NAME": "net.pakkage.beta"
         }
     },
     "dependent_plugins": {}
