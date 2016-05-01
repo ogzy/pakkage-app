@@ -87,7 +87,7 @@ angular.module('Pakkage.routes', [])
         }
       })
       .state('app.availableHubs', {
-        url: '/availableHubs',
+        url: '/availableHubs/:packageId',
         views: {
           'menuContent': {
             templateUrl: 'pages/app-availableHubs.html'
@@ -107,14 +107,6 @@ angular.module('Pakkage.routes', [])
         views: {
           'menuContent': {
             templateUrl: 'pages/app-changePassword.html'
-          }
-        }
-      })
-      .state('app.qrScanner', {
-        url: '/qrScanner',
-        views: {
-          'menuContent': {
-            templateUrl: 'pages/test-qrScanner.html'
           }
         }
       });

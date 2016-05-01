@@ -335,7 +335,8 @@ angular.module('Pakkage.PackageController', [])
                             function (process) {
                                 LoadingService.hide();
                                 if (process.data.errorCode == 0) {
-                                    $state.go('app.availableHubs',{cache:false});
+                                console.log('Pakkage : ' + JSON.stringify(process.data));
+                                    $state.go('app.availableHubs',{packageId : process.data.package._id});
                                 } else {
                                     PopupService.alert('Error', process.data.errorCode);
                                 }
@@ -372,8 +373,8 @@ angular.module('Pakkage.PackageController', [])
                                         function (process) {
                                             LoadingService.hide();
                                             if (process.data.errorCode == 0) {
-
-                                              $state.go('app.availableHubs',{cache:false});
+                                              console.log('Pakkage : ' + JSON.stringify(process.data));
+                                              $state.go('app.availableHubs',{packageId : process.data.package._id});
 
                                             } else {
                                                 PopupService.alert('Error', process.data.errorCode);
@@ -535,7 +536,7 @@ angular.module('Pakkage.PackageController', [])
                 if (package.data.package.packageImage == undefined)
                     package.data.package.packageImage = 'noPackage.png';
 
-              
+
                 $scope.packagePicture = 'http://46.101.115.69:9096/uploads/packageImages/thumbnail/' + package.data.package.packageImage;
                 saltPackagePicture = package.data.package.packageImage;
 
@@ -853,7 +854,8 @@ angular.module('Pakkage.PackageController', [])
                             function (process) {
                                 LoadingService.hide();
                                 if (process.data.errorCode == 0) {
-                                    $state.go('app.availableHubs',{cache:false});
+                                    console.log('Pakkage : ' + JSON.stringify(process.data));
+                                    $state.go('app.availableHubs',{packageId : process.data.package._id});
                                 } else {
                                     PopupService.alert('Error', process.data.errorCode);
                                 }
@@ -891,7 +893,8 @@ angular.module('Pakkage.PackageController', [])
                                         function (process) {
                                             LoadingService.hide();
                                             if (process.data.errorCode == 0) {
-                                                $state.go('app.availableHubs',{cache:false});
+                                                console.log('Pakkage : ' + JSON.stringify(process.data));
+                                                $state.go('app.availableHubs',{ packageId : process.data.package._id});
                                             } else {
                                                 PopupService.alert('Error', process.data.errorCode);
                                             }
