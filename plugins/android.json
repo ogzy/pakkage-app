@@ -42,15 +42,13 @@
         "cordova-plugin-statusbar": {
             "PACKAGE_NAME": "net.pakkage.beta"
         },
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "net.pakkage.beta"
+        },
         "ionic-plugin-keyboard": {
             "PACKAGE_NAME": "net.pakkage.beta"
         },
         "org.apache.cordova.camera": {
-            "PACKAGE_NAME": "net.pakkage.beta"
-        },
-        "phonegap-facebook-plugin": {
-            "APP_ID": "1200298986649296",
-            "APP_NAME": "Pakkage",
             "PACKAGE_NAME": "net.pakkage.beta"
         }
     },

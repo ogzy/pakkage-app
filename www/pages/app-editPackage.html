@@ -20,28 +20,34 @@
                             </div>
                             <!-- Name -->
                             <div class="form-group form-groupForProfile">
-                                <input type="text" class="form-control form-controlForProfile" placeholder="Name" ng-model="newPackage.name">
+                                <input type="text" ng-show="mode =='edit'"  class="form-control form-controlForProfile" placeholder="Name" ng-model="newPackage.name">
+                                <a class="item" href="#"><div ng-show="mode =='readonly'"><b>Name :</b>{{newPackage.name}}</div></a>
                             </div>
                             <!-- Email -->
                             <div class="form-group form-groupForProfile">
-                                <input type="text" class="form-control form-controlForProfile" placeholder="Email" ng-model="newPackage.email">
+                                <input type="text" ng-show="mode =='edit'"  class="form-control form-controlForProfile" placeholder="Email" ng-model="newPackage.email">
+                                <a class="item" href="#"><div ng-show="mode =='readonly'"><b>Email :</b>{{newPackage.email}}</div></a>
                             </div>
                             <!-- Phone -->
                             <div class="form-group form-groupForProfile">
-                                <input type="text" class="form-control form-controlForProfile" placeholder="Phone 123-456-7890" ng-keyup="formatPhone($event)" ng-model="newPackage.phone">
+                                <input type="text" ng-show="mode =='edit'" class="form-control form-controlForProfile" placeholder="Phone 123-456-7890" ng-keyup="formatPhone($event)" ng-model="newPackage.phone">
+                                <a class="item" href="#"><div ng-show="mode =='readonly'"><b>Phone :</b>{{newPackage.phone}}</div></a>
                             </div>
                             <!-- Address 1-->
                             <div class="form-group form-groupForProfile">
-                                <input type="text" class="form-control form-controlForProfile" placeholder="Address 1" ng-model="newPackage.address1">
+                                <input type="text" ng-show="mode =='edit'" class="form-control form-controlForProfile" placeholder="Address 1" ng-model="newPackage.address1">
+                                <a class="item" href="#"><div ng-show="mode =='readonly'"><b>Address 1 :</b>{{newPackage.address1}}</div></a>
                             </div>
                             <!-- Address 2-->
                             <div class="form-group form-groupForProfile">
-                                <input type="text" class="form-control form-controlForProfile" placeholder="Address 2" ng-model="newPackage.address2">
+                                <input type="text" ng-show="mode =='edit'" class="form-control form-controlForProfile" placeholder="Address 2" ng-model="newPackage.address2">
+                                <a class="item" href="#"><div ng-show="mode =='readonly'"><b>Address 2 :</b>{{newPackage.address2}}</div></a>
                             </div>
                             <!-- City-->
                             <div class="form-group form-groupForProfile">
-                                <div class="treelineCity">
+                                <div class="treelineCity" ng-if="mode =='edit'">
                                      <angucomplete-alt id="companyCity"
+
                                       placeholder="City"
                                       pause="100"
                                       selected-object="newPackage.city"
@@ -50,21 +56,28 @@
                                       title-field="name"
                                       minlength="1"
                                       input-class="form-control form-controlForProfile "
-                                      ng-model="newPackage.city" initial-value="newPackage.city"/>
+                                      ng-model="newPackage.city"
+                                      initial-value="initialCity"/>
+
                                   </div>
+                                  <a class="item" href="#"><div ng-show="mode =='readonly'"><b>City :</b>{{newPackage.city}}</div></a>
                                       <!-- State -->
-                                      <input type="text" class="form-control form-controlForProfile treelineState" placeholder="State" ng-model="newPackage.state">
+                                      <input type="text" ng-show="mode =='edit'" class="form-control form-controlForProfile treelineState" placeholder="State" ng-model="newPackage.state">
+                                      <a class="item" href="#"><div ng-show="mode =='readonly'"><b>State :</b>{{newPackage.state}}</div></a>
                                       <!-- Zip Code -->
-                                      <input type="text" class="form-control form-controlForProfile treeline" placeholder="ZIP Code" ng-model="newPackage.zipcode">
+                                      <input type="text" ng-show="mode =='edit'" class="form-control form-controlForProfile treeline" placeholder="ZIP Code" ng-model="newPackage.zipcode">
+                                      <a class="item" href="#"><div ng-show="mode =='readonly'"><b>ZIP Code :</b>{{newPackage.zipcode}}</div></a>
                                 </div>
                             </div>
                             <!-- Comment -->
                             <div class="form-group form-groupForProfile">
-                                <textarea class="form-control form-controlForProfile" placeholder="Comment" ng-model="newPackage.comment" rows="8" cols="10"></textarea>
+                                <textarea ng-show="mode =='edit'"  class="form-control form-controlForProfile" placeholder="Comment" ng-model="newPackage.comment" rows="8" cols="10"></textarea>
+                                <a class="item" href="#"><div ng-show="mode =='readonly'"><b>Comment :</b>{{newPackage.comment}}</div></a>
                             </div>
                         </div>
                         <div class="spacer formSpacer"></div>
-                        <button class="button button-energized button-block regButton" ng-disabled="newPackage.name == undefined || newPackage.name == '' || newPackage.email == undefined || newPackage.email == ''  || newPackage.phone == undefined || newPackage.phone == ''  || newPackage.address1 == undefined || newPackage.address1 == ''  || newPackage.city == undefined || newPackage.city == ''  || newPackage.state == undefined || newPackage.state == '' || newPackage.zipcode == undefined || newPackage.zipcode == '' " ng-click="updatePackageButton()"><i class="ion-paper-airplane"></i><span class="marLeft10">Ready to Send</span></button>
+                        <button class="button button-energized button-block regButton" ng-show="mode =='edit'" ng-disabled="newPackage.name == undefined || newPackage.name == '' || newPackage.email == undefined || newPackage.email == ''  || newPackage.phone == undefined || newPackage.phone == ''  || newPackage.address1 == undefined || newPackage.address1 == ''  || (newPackage.city == undefined && initialCity == undefined) || newPackage.city == ''  || newPackage.state == undefined || newPackage.state == '' || newPackage.zipcode == undefined || newPackage.zipcode == '' " ng-click="updatePackageButton()"><i class="ion-paper-airplane"></i><span class="marLeft10">Ready to Send</span></button>
+                        <button class="button button-energized button-block regButton" ng-show="mode =='readonly' " ng-click="scanFromPackageButton()"><i class="ion-qr-scanner"></i><span class="marLeft10">Scan Qr Code</span></button>
                     </form>
                 </div>
             </div>

@@ -1,10 +1,6 @@
 angular.module('Pakkage.LoginController', [])
 .controller('LoginCtrl', ['$scope', '$state','$stateParams', 'LoginService', 'LocalStorageService','LoadingService','PopupService','$ionicLoading','$q','FacebookService', function ($scope, $state, $stateParams, LoginService, LocalStorageService,LoadingService,PopupService, $ionicLoading,$q,FacebookService) {
     LoadingService.show();
-    if (LocalStorageService.get('isAuthenticated') == true && LocalStorageService.get('approve') == true) {
-        LoadingService.hide();
-        $state.go("app.home");
-    }
     
     $scope.statusMessage = undefined;
     if ($stateParams.errorCode == 0) {
@@ -43,7 +39,7 @@ angular.module('Pakkage.LoginController', [])
                         else
                             $state.go("app.home");
                         //console.log(login.data.token);
-                        
+
                         LoadingService.hide();
                     } else {
                         LoadingService.hide();
@@ -160,7 +156,7 @@ angular.module('Pakkage.LoginController', [])
       };
 }])
 .controller('ActivateCtrl', ['$scope', '$state', '$http', 'RegisterService', '$stateParams', 'PopupService','LoadingService','LocalStorageService', function ($scope, $state, $http, RegisterService, $stateParams, PopupService,LoadingService,LocalStorageService) {
-    
+
     $scope.email = $stateParams.email;
     LocalStorageService.save('activateEmail',$stateParams.email);
     $scope.activateMe = function (email, activationCode) {
@@ -179,7 +175,7 @@ angular.module('Pakkage.LoginController', [])
                             statusMessage: 'Your account activated successfully'
                         });
 
-                    } 
+                    }
                     else {
                         LoadingService.hide();
                         PopupService.alert('Error',activation.data.errorCode);
@@ -213,7 +209,7 @@ angular.module('Pakkage.LoginController', [])
                                  email: email
                              });
                         });
-                        
+
                      } else if (response.data.errorCode == 112) {
                         LoadingService.hide();
                         PopupService.alert('Info',response.data.errorCode).then(function(res){
@@ -228,7 +224,7 @@ angular.module('Pakkage.LoginController', [])
                  },
                  function (error) {
                     LoadingService.hide();
-                    PopupService.alert('Technical Error',999);                    
+                    PopupService.alert('Technical Error',999);
                  }
              );
          }
@@ -287,7 +283,7 @@ angular.module('Pakkage.LoginController', [])
             var changePassPromise = ForgotPassService.changePass($scope.email, newPasword, $scope.restoreCode);
             changePassPromise.then(
                 function (response) {
-                    
+
                     if (response.data.errorCode == 0) {
                         LoadingService.hide();
                         PopupService.alert('Info','S102').then(function () {
@@ -296,7 +292,7 @@ angular.module('Pakkage.LoginController', [])
                                 statusMessage: ErrorCodeService.getError('S102')
                             });
                         });
-                        
+
                     } else {
                         LoadingService.hide();
                         PopupService.alert('Error',response.data.errorCode);

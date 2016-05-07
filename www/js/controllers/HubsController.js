@@ -1,13 +1,50 @@
 angular.module('Pakkage.HubsController', [])
   .controller('HubsCtrl', ['$scope', 'HubService', 'LoadingService', 'PopupService', 'moment', '$filter', '$state', '$rootScope', 'LocalStorageService', '$stateParams', 'PackageService', function($scope, HubService, LoadingService, PopupService, moment, $filter, $state, $rootScope, LocalStorageService, $stateParams, PackageService) {
-      LoadingService.show();
-      console.log(LocalStorageService.get('userCity'));
-      $scope.packageId = $stateParams.packageId;
-      $scope.hubs = [];
-      var saltHubs = [],
+    LoadingService.show();
+    console.log(LocalStorageService.get('userCity'));
+    $scope.packageId = $stateParams.packageId;
+    $scope.hubs = [];
+    var saltHubs = [],
+      openHubs = [];
+    $scope.showOpens = null;
+    $rootScope.availableHubs = [];
+    var hubsPromise = HubService.getAvailableHubs();
+    hubsPromise.then(
+      function(hubs) {
+        if (hubs.data.errorCode == 0) {
+          LoadingService.hide();
+          $scope.hubs = hubs.data.hubs;
+          saltHubs = hubs.data.hubs;
+          $rootScope.availableHubs = hubs.data.hubs;
+        } else {
+          LoadingService.hide();
+          PopupService.alert('Error', 'E110');
+        }
+      },
+      function(errorPayload) {
+        LoadingService.hide();
+        PopupService.alert('Error', 999);
+      });
+    var click = 0;
+    $scope.showOpens = function() {
+      if (click % 2 == 0) //-- True
+      {
         openHubs = [];
-      $scope.showOpens = null;
-      $rootScope.availableHubs = [];
+        for (var i = 0; i < $scope.hubs.length; i++) {
+          if ($filter('filter')($scope.hubs[i].daysOfOperations, function(day) {
+              return day.value == moment().format('dddd');
+            })[0] != undefined) {
+            openHubs.push($scope.hubs[i]);
+          }
+        };
+        $scope.hubs = openHubs;
+      } else //--False
+        $scope.hubs = saltHubs;
+      click++;
+    };
+
+    $scope.refreshHubs = function() {
+      LoadingService.show();
       var hubsPromise = HubService.getAvailableHubs();
       hubsPromise.then(
         function(hubs) {
@@ -20,101 +57,58 @@ angular.module('Pakkage.HubsController', [])
             LoadingService.hide();
             PopupService.alert('Error', 'E110');
           }
+          $scope.$broadcast('scroll.refreshComplete');
         },
         function(errorPayload) {
           LoadingService.hide();
+          $scope.$broadcast('scroll.refreshComplete');
           PopupService.alert('Error', 999);
         });
-      var click = 0;
-      $scope.showOpens = function() {
-        if (click % 2 == 0) //-- True
-        {
-          openHubs = [];
-          for (var i = 0; i < $scope.hubs.length; i++) {
-            if ($filter('filter')($scope.hubs[i].daysOfOperations, function(day) {
-                return day.value == moment().format('dddd');
-              })[0] != undefined) {
-              openHubs.push($scope.hubs[i]);
-            }
-          };
-          $scope.hubs = openHubs;
-        } else //--False
-          $scope.hubs = saltHubs;
-        click++;
-      };
+    };
 
-      $scope.refreshHubs = function() {
-        LoadingService.show();
-        var hubsPromise = HubService.getAvailableHubs();
-        hubsPromise.then(
-          function(hubs) {
-            if (hubs.data.errorCode == 0) {
-              LoadingService.hide();
-              $scope.hubs = hubs.data.hubs;
-              saltHubs = hubs.data.hubs;
-              $rootScope.availableHubs = hubs.data.hubs;
-            } else {
-              LoadingService.hide();
-              PopupService.alert('Error', 'E110');
-            }
-            $scope.$broadcast('scroll.refreshComplete');
+    $scope.scanQR = function() {
+      document.addEventListener("deviceready", function() {
+        cloudSky.zBar.scan({
+            text_title: 'Pakkage QR Code Scanner',
+            text_instructions: 'Please show QR barcode to camera',
+            drawSight: true
           },
-          function(errorPayload) {
-            LoadingService.hide();
-            $scope.$broadcast('scroll.refreshComplete');
-            PopupService.alert('Error', 999);
-          });
-      };
-
-      $scope.scanQR = function() {
-        document.addEventListener("deviceready", function() {
-            cloudSky.zBar.scan({
-								                  text_title: 'Pakkage QR Code Scanner',
-								                  text_instructions: 'Please show QR barcode to camera',
-								                  drawSight: false
-                								},
-								function(success)
-								{
-                  LoadingService.show();
-                  PackageService.scanQrCode(success, 2, 1, $state.packageId).then(
-									function(response)
-									{
-                        if (response.data.errorCode == 0)
-												{
-                          LoadingService.hide();
-                          PopupService.alert('Successful', 'Package scanned successfully');
-                        }
-												else
-												{
-													LoadingService.hide();
-                        	PopupService.alert('Error', response.data.errorCode);
-												}
-
-                  },
-                function(error)
-								{
-                      LoadingService.hide();
-                      PopupService.alert('Error', 999);
-                });
+          function(success) {
+            LoadingService.show();
+            PackageService.scanQrCode(success, 2, 1, $scope.packageId).then(
+              function(response) {
+                if (response.data.errorCode == 0) {
+                  LoadingService.hide();
+                  PopupService.alert('Successful', 'S106').then(function() {
+                    $state.go('app.home');
+                  })
+                } else {
+                  LoadingService.hide();
+                  PopupService.alert('Error', response.data.errorCode);
+                }
 
               },
               function(error) {
-								LoadingService.hide();
-								PopupService.alert('Error', 'Scanner Error');
+                LoadingService.hide();
+                PopupService.alert('Error', 999);
               });
 
-        }, false);
+          },
+          function(error) { });
+
+      }, false);
     };
 
 
     $scope.showDetail = function(hubId) {
       $state.go('app.hubDetail', {
-        hubId: hubId
+        hubId: hubId,
+        packageId : $scope.packageId
       });
     }
   }])
 
-.controller('HubDetailCtrl', ['$scope', 'HubService', 'LoadingService', 'PopupService', 'moment', '$filter', '$state', '$rootScope', '$stateParams', '$ionicPopup', function($scope, HubService, LoadingService, PopupService, moment, $filter, $state, $rootScope, $stateParams, $ionicPopup) {
+.controller('HubDetailCtrl', ['$scope', 'HubService', 'LoadingService', 'PopupService', 'moment', '$filter', '$state', '$rootScope', '$stateParams', '$ionicPopup','PackageService', function($scope, HubService, LoadingService, PopupService, moment, $filter, $state, $rootScope, $stateParams, $ionicPopup,PackageService) {
   //LoadingService.show();
 
   $scope.hub = $filter('filter')($rootScope.availableHubs, function(hub) {
@@ -131,4 +125,37 @@ angular.module('Pakkage.HubsController', [])
       template: '<img style="width:100%" src="http://46.101.115.69:9096/uploads/images/thumbnail/' + $scope.hub.profilePicture + '" />'
     });
   }
+
+  $scope.scanQR = function() {
+    document.addEventListener("deviceready", function() {
+      cloudSky.zBar.scan({
+          text_title: 'Pakkage QR Code Scanner',
+          text_instructions: 'Please show QR barcode to camera',
+          drawSight: true
+        },
+        function(success) {
+          LoadingService.show();
+          PackageService.scanQrCodeFromHubPage(success, 2, 1, $stateParams.packageId,$stateParams.hubId).then(
+            function(response) {
+              if (response.data.errorCode == 0) {
+                LoadingService.hide();
+                PopupService.alert('Successful', 'S106').then(function() {
+                  $state.go('app.home');
+                })
+              } else {
+                LoadingService.hide();
+                PopupService.alert('Error', response.data.errorCode);
+              }
+
+            },
+            function(error) {
+              LoadingService.hide();
+              PopupService.alert('Error', 999);
+            });
+
+        },
+        function(error) {});
+
+    }, false);
+  };
 }]);

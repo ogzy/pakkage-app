@@ -1,10 +1,5 @@
 angular.module('Pakkage.ProfileController', [])
   .controller('ProfileCtrl', ['$scope', 'LocalStorageService', '$state', 'ProfileService', 'LoadingService', 'RegisterService', '$cordovaCamera', '$ionicActionSheet', '$cordovaFile', '$cordovaFileTransfer', 'PopupService', '$rootScope','PhoneControlService','$filter', 'RegisterService','$uibModal','$ionicPopup','LogService', function ($scope, LocalStorageService, $state, ProfileService, LoadingService, RegisterService, $cordovaCamera, $ionicActionSheet, $cordovaFile, $cordovaFileTransfer, PopupService,  $rootScope,PhoneControlService,$filter,RegisterService,$uibModal,$ionicPopup,LogService) {
-
-    if (LocalStorageService.get('isAuthenticated') != true) {
-      $state.go("tab.login");
-    }
-
     var saltProfilePicture = '',staticUsername = '',saltLicensePicture = '';
 
     $scope.scopeSaltLicensePicture = '';
@@ -64,7 +59,7 @@ angular.module('Pakkage.ProfileController', [])
             if (profile.data.user.address[0] != null) {
               $scope.newUser.address1 = profile.data.user.address[0].address1;
               $scope.newUser.address2 = profile.data.user.address[0].address2;
-              $scope.initialCity = profile.data.user.address[0].city.title;
+              $scope.initialCity = profile.data.user.address[0].city.title || '';
               $scope.newUser.state = profile.data.user.address[0].state;
               $scope.newUser.zipcode = profile.data.user.address[0].zipCode;
             }

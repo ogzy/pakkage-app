@@ -18,7 +18,8 @@ var registerServiceURL = 'http://46.101.115.69:9096/register',
   getAllStateURL = 'http://46.101.115.69:9096/getAllState',
   getAvailableHubsURL = 'http://46.101.115.69:9096/api/getAvailableHubs',
   changeUserPasswordURL = 'http://46.101.115.69:9096/api/changeUserPassword',
-  scanQrCodeURL = 'http://46.101.115.69:9096/api/scanQrCode';
+  scanQrCodeURL = 'http://46.101.115.69:9096/api/scanQrCode',
+  scanQrCodeFromHubPageURL = 'http://46.101.115.69:9096/api/scanQrCodeFromHubPage';
 
 angular.module('Pakkage.BackendServices', [])
   .factory('LocalStorageService', function($http, localStorageService) {
@@ -311,10 +312,29 @@ angular.module('Pakkage.BackendServices', [])
           },
           data: {
             email : LocalStorageService.get('email'),
-            oldStatus : newStatus,
-            newStatus : oldStatus,
+            oldStatus : oldStatus,
+            newStatus : newStatus,
             packageId : packageId,
             packageQRId : qrCodeNumber
+          }
+        };
+        return $http(req);
+      },
+      scanQrCodeFromHubPage: function(qrCodeNumber, newStatus,oldStatus,packageId,hubId) {
+        var req = {
+          method: 'POST',
+          url: scanQrCodeFromHubPageURL,
+          headers: {
+            'x-access-token': LocalStorageService.get('token'),
+            'Content-Type': 'application/json; charset=utf-8'
+          },
+          data: {
+            email : LocalStorageService.get('email'),
+            oldStatus : oldStatus,
+            newStatus : newStatus,
+            packageId : packageId,
+            packageQRId : qrCodeNumber,
+            hubId : hubId
           }
         };
         return $http(req);
