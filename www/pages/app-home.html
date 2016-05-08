@@ -1,4 +1,4 @@
-<ion-view view-title="Home" ng-controller="HomeCtrl" cache-view="false" hide-back-button="true">
+<ion-view view-title="Home" ng-controller="HomeCtrl" cache-view="false" >
   <ion-nav-buttons side="right">
     <button class="button button-clear button-positive rightNavBarButton" ng-click="openFilterModal()">
       Filter
@@ -43,10 +43,7 @@
       <div class="noPackage">No packages found
         <img src="img/vector-box.jpg" style="opacity: 0.1;" /></div>
     </div>
-
-
-
-    <uib-accordion close-others="oneAtATime" ng-show="toMePackages.length > 0 && userType == 'Hub'">
+    <uib-accordion close-others="oneAtATime" ng-show="userType == 'Hub'">
       <!--- Send To Me  -->
       <uib-accordion-group is-open="statusToMe.open" ng-show="toMePackages.length > 0">
         <uib-accordion-heading>
@@ -95,15 +92,6 @@
         </a>
       </uib-accordion-group>
     </uib-accordion>
-
-
-
-
-
-
-
-
-
     <script type="text/ng-template" id="openFilterModalContent.html">
       <div class="modal-header">
         <h3 class="modal-title">Select Filter : </h3>

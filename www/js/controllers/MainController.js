@@ -26,9 +26,11 @@ angular.module('Pakkage.MainController', [])
       PopupService.alert('Warning', 'E119');
     };
   }])
-  .controller('HomeCtrl', ['$scope', 'LocalStorageService', '$state', 'PackageService', 'PopupService', 'LoadingService', '$uibModal', '$rootScope', 'PackageFilterService', '$interval', function ($scope, LocalStorageService, $state, PackageService, PopupService, LoadingService, $uibModal, $rootScope, PackageFilterService, $interval) {
+  .controller('HomeCtrl', ['$scope', 'LocalStorageService', '$state', 'PackageService', 'PopupService', 'LoadingService', '$uibModal', '$rootScope', 'PackageFilterService', '$interval','$ionicHistory', function ($scope, LocalStorageService, $state, PackageService, PopupService, LoadingService, $uibModal, $rootScope, PackageFilterService, $interval,$ionicHistory) {
     LoadingService.show();
-
+    $scope.$on('$ionicView.beforeEnter', function (e,config) {
+      config.enableBack = false;
+    });
     $scope.packages = [];
     $rootScope.packages = [];
     $scope.toMePackages = [];
