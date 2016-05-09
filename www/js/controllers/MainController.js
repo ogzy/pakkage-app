@@ -6,15 +6,10 @@ angular.module('Pakkage.MainController', [])
     };
   }])
   .controller('MainCtrl', ['$scope', 'LocalStorageService', '$state', function ($scope, LocalStorageService, $state) {
-    if (LocalStorageService.get('isAuthenticated') != true) {
-      $state.go("tab.login");
-    }
 
   }])
   .controller('MenuCtrl', ['$scope', 'LocalStorageService', '$state', 'PopupService', function ($scope, LocalStorageService, $state, PopupService) {
-    if (LocalStorageService.get('isAuthenticated') != true) {
-      $state.go("tab.login");
-    }
+
     $scope.fullFilled = LocalStorageService.get('fullFilled');
     $scope.approve = LocalStorageService.get('approve');
     $scope.userType = LocalStorageService.get('userType');
@@ -31,18 +26,18 @@ angular.module('Pakkage.MainController', [])
       PopupService.alert('Warning', 'E119');
     };
   }])
-  .controller('HomeCtrl', ['$scope', 'LocalStorageService', '$state', 'PackageService', 'PopupService', 'LoadingService', '$uibModal', '$rootScope', 'PackageFilterService', '$interval', function ($scope, LocalStorageService, $state, PackageService, PopupService, LoadingService, $uibModal, $rootScope, PackageFilterService, $interval) {
-    if (LocalStorageService.get('isAuthenticated') != true) {
-      $state.go("tab.login");
-    }
-
-
+  .controller('HomeCtrl', ['$scope', 'LocalStorageService', '$state', 'PackageService', 'PopupService', 'LoadingService', '$uibModal', '$rootScope', 'PackageFilterService', '$interval','$ionicHistory', function ($scope, LocalStorageService, $state, PackageService, PopupService, LoadingService, $uibModal, $rootScope, PackageFilterService, $interval,$ionicHistory) {
     LoadingService.show();
-
-
+    $scope.$on('$ionicView.beforeEnter', function (e,config) {
+      config.enableBack = false;
+    });
     $scope.packages = [];
     $rootScope.packages = [];
+    $scope.toMePackages = [];
+    $scope.userType = LocalStorageService.get('userType');
+    $scope.statusToMe = {open : true}
 
+    console.log($scope.userType);
     var currentFilters = {
       statusFilter: $rootScope.statusFilter,
       dateFilter: $rootScope.dateFilter,
@@ -65,6 +60,7 @@ angular.module('Pakkage.MainController', [])
             LocalStorageService.save('packages', package.data.packages);
             PackageFilterService.homePackagesFilter(currentFilters, detailFilters);
             $scope.packages = $rootScope.packages;
+            $scope.toMePackages = PackageFilterService.filterHubPackages();
             console.log('$rootScope.directionFilter : ' + $rootScope.directionFilter);
             LoadingService.hide();
           } else {
@@ -90,7 +86,9 @@ angular.module('Pakkage.MainController', [])
           else
             PackageFilterService.homePackagesFilter(currentFilters, detailFilters);
           $scope.packages = $rootScope.packages;
+          $scope.toMePackages = PackageFilterService.filterHubPackages();
           console.log($scope.packages);
+          console.log($scope.toMePackages);
           LoadingService.hide();
         } else {
           LoadingService.hide();
@@ -103,9 +101,11 @@ angular.module('Pakkage.MainController', [])
       });
 
 
-    $scope.editPackage = function (packkageId) {
+    $scope.editPackage = function (packkageId,mode) {
+
       $state.go('app.editPackage', {
-        packageId: packkageId
+        packageId: packkageId,
+        mode : mode
       });
     };
 
@@ -202,32 +202,4 @@ angular.module('Pakkage.MainController', [])
     $scope.cancel = function () {
       $uibModalInstance.dismiss('cancel');
     };
-  }])
-.controller('QRCodeCtrl', ['$scope', 'LocalStorageService', '$state', function ($scope, LocalStorageService, $state) {
-  document.addEventListener("deviceready", function () {
-
-    /*cordova.plugins.barcodeScanner.scan(
-      function (result) {
-        alert("We got a barcode\n" +
-          "Result: " + result.text + "\n" +
-          "Format: " + result.format + "\n" +
-          "Cancelled: " + result.cancelled);
-      },
-      function (error) {
-        alert("Scanning failed: " + error);
-      }
-    );*/
-
-    cloudSky.zBar.scan({
-      text_title : 'Pakkage Barcode Scanner',
-      text_instructions : 'Custom QR code scanner description',
-      drawSight : false
-    }, function(success){
-      alert('Success ! Value is : '  + success)
-    },  function(error){
-      console.log('Error.The error is : '  + error)
-    });
-
-  }, false);
-
-}])
+  }]);

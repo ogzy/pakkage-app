@@ -15,14 +15,6 @@
         "is_top_level": true,
         "variables": {}
     },
-    "cordova-plugin-whitelist": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-whitelist"
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
     "cordova-plugin-splashscreen": {
         "source": {
             "type": "registry",
@@ -95,17 +87,6 @@
         "is_top_level": true,
         "variables": {}
     },
-    "phonegap-facebook-plugin": {
-        "source": {
-            "type": "local",
-            "path": "\\pakkage\\ionic\\facebook-plugin\\phonegap-facebook-plugin"
-        },
-        "is_top_level": true,
-        "variables": {
-            "APP_ID": "1200298986649296",
-            "APP_NAME": "Pakkage"
-        }
-    },
     "cordova-plugin-cszbar": {
         "source": {
             "type": "registry",
@@ -124,5 +105,13 @@
             "FABRIC_API_KEY": "f9dff3ef73cc5102b48e2f67f21ed8c8fcb99fae",
             "FABRIC_API_SECRET": "4e57a8baae4e709047520a14f8e72cb31e912d26062cabb8c99096d197af6208"
         }
+    },
+    "cordova-plugin-whitelist": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-whitelist"
+        },
+        "is_top_level": true,
+        "variables": {}
     }
 }

@@ -1,24 +1,20 @@
-<ion-view view-title="Home" ng-controller="HomeCtrl" cache-view="false" hide-back-button="true">
+<ion-view view-title="Home" ng-controller="HomeCtrl" cache-view="false" >
   <ion-nav-buttons side="right">
     <button class="button button-clear button-positive rightNavBarButton" ng-click="openFilterModal()">
       Filter
     </button>
   </ion-nav-buttons>
   <ion-content class="home-with-background">
-    <ion-refresher
-      pulling-text="Pull to refresh..."
-      on-refresh="refreshPackages()">
+    <ion-refresher pulling-text="Pull to refresh..." on-refresh="refreshPackages()">
     </ion-refresher>
-    <div class="list" ng-show="packages.length > 0">
+    <div class="list" ng-show="packages.length > 0 && userType != 'Hub'">
       <div class="item item-divider" ng-show="(packages | filter : { status: 0 }).length > 0">
         Draft
       </div>
-      <a class="item item-thumbnail-left transItem" href="#" ng-click="editPackage(package._id)"
-         ng-repeat="package in packages | filter:{ status: 0 }">
+      <a class="item item-thumbnail-left transItem" ng-click="editPackage(package._id,'edit')" ng-repeat="package in packages | filter:{ status: 0 }">
         <img ng-src="http://46.101.115.69:9096/uploads/packageImages/thumbnail/{{package.packageImage}}">
         <h2>{{package.receiver[0].name}}</h2>
-        <p>{{package.receiver[0].address[0].address1 + ' ' + package.receiver[0].address[0].city + ' ' +
-          package.receiver[0].address[0].state + ' ' + package.receiver[0].address[0].zipCode}}</p>
+        <p>{{package.receiver[0].address[0].address1 + ' ' + package.receiver[0].address[0].city + ' ' + package.receiver[0].address[0].state + ' ' + package.receiver[0].address[0].zipCode}}</p>
         <p ng-show="package.receiver[0].email != ''">Email : {{package.receiver[0].email}}</p>
         <p ng-show="package.receiver[0].phone != ''">Phone : {{package.receiver[0].phone}}</p>
       </a>
@@ -26,31 +22,76 @@
       <div class="item item-divider" ng-show="(packages | filter : { status: 1 }).length > 0">
         Ready to Send
       </div>
-      <a class="item item-thumbnail-left transItem" href="#" ng-click="editPackage(package._id)"
-         ng-repeat="package in packages | filter:{ status: 1 }">
+      <a class="item item-thumbnail-left transItem" ng-click="editPackage(package._id,'edit')" ng-repeat="package in packages | filter:{ status: 1 }">
         <img ng-src="http://46.101.115.69:9096/uploads/packageImages/thumbnail/{{package.packageImage}}">
         <h2>{{package.receiver[0].name}}</h2>
-        <p>{{package.receiver[0].address[0].address1 + ' ' + package.receiver[0].address[0].city + ' ' +
-          package.receiver[0].address[0].state + ' ' + package.receiver[0].address[0].zipCode}}</p>
+        <p>{{package.receiver[0].address[0].address1 + ' ' + package.receiver[0].address[0].city + ' ' + package.receiver[0].address[0].state + ' ' + package.receiver[0].address[0].zipCode}}</p>
         <p ng-show="package.receiver[0].email != ''">Email : {{package.receiver[0].email}}</p>
         <p ng-show="package.receiver[0].phone != ''">Phone : {{package.receiver[0].phone}}</p>
       </a>
       <div class="item item-divider" ng-show="(packages | filter : { status: 2 }).length > 0">
-        Onroad
+        To Give Hub
       </div>
-      <a class="item item-thumbnail-left transItem" href="#" ng-click="editPackage(package._id)"
-         ng-repeat="package in packages | filter:{ status: 2 }">
+      <a class="item item-thumbnail-left transItem" ng-click="editPackage(package._id,'readonly')" ng-repeat="package in packages | filter:{ status: 2 }">
         <img ng-src="http://46.101.115.69:9096/uploads/packageImages/thumbnail/{{package.packageImage}}">
 
         <h2>{{package.receiver[0].name}}</h2>
-        <p>{{package.receiver[0].address[0].address1 + ' ' + package.receiver[0].address[0].city + ' ' +
-          package.receiver[0].address[0].state + ' ' + package.receiver[0].address[0].zipCode}}</p>
+        <p>{{package.receiver[0].address[0].address1 + ' ' + package.receiver[0].address[0].city + ' ' + package.receiver[0].address[0].state + ' ' + package.receiver[0].address[0].zipCode}}</p>
       </a>
     </div>
-    <div class="list" style="text-align:center" ng-show="packages.length == 0">
+    <div class="list" style="text-align:center" ng-show="packages.length == 0 && toMePackages.length == 0">
       <div class="noPackage">No packages found
-        <img src="img/vector-box.jpg" style="opacity: 0.1;"/></div>
+        <img src="img/vector-box.jpg" style="opacity: 0.1;" /></div>
     </div>
+    <uib-accordion close-others="oneAtATime" ng-show="userType == 'Hub'">
+      <!--- Send To Me  -->
+      <uib-accordion-group is-open="statusToMe.open" ng-show="toMePackages.length > 0">
+        <uib-accordion-heading>
+          <span>Sent To Me <i class="pull-right ion accordionTitles" ng-class="{'ion-android-remove': statusToMe.open, 'ion-android-add': !statusToMe.open}"></i>
+        </uib-accordion-heading>
+        <a class="item item-thumbnail-left transItem" ng-click="editPackage(package._id,'readonly')" ng-repeat="package in toMePackages">
+          <img ng-src="http://46.101.115.69:9096/uploads/packageImages/thumbnail/{{package.packageImage}}">
+          <h2>{{package.receiver[0].name}}</h2>
+          <p>{{package.receiver[0].address[0].address1 + ' ' + package.receiver[0].address[0].city + ' ' + package.receiver[0].address[0].state + ' ' + package.receiver[0].address[0].zipCode}}</p>
+        </a>
+      </uib-accordion-group>
+      <!-- Send From Me -->
+       <uib-accordion-group is-open="statusFromMe.open" ng-show="packages.length > 0">
+        <uib-accordion-heading>
+          <span>Sent From Me <i class="pull-right ion accordionTitles" ng-class="{'ion-android-remove': statusFromMe.open, 'ion-android-add': !statusFromMe.open}"></i>
+        </uib-accordion-heading>
+        <div class="item item-divider" ng-show="(packages | filter : { status: 0 }).length > 0">
+          Draft
+        </div>
+        <a class="item item-thumbnail-left transItem" ng-click="editPackage(package._id,'edit')" ng-repeat="package in packages | filter:{ status: 0 }">
+          <img ng-src="http://46.101.115.69:9096/uploads/packageImages/thumbnail/{{package.packageImage}}">
+          <h2>{{package.receiver[0].name}}</h2>
+          <p>{{package.receiver[0].address[0].address1 + ' ' + package.receiver[0].address[0].city + ' ' + package.receiver[0].address[0].state + ' ' + package.receiver[0].address[0].zipCode}}</p>
+          <p ng-show="package.receiver[0].email != ''">Email : {{package.receiver[0].email}}</p>
+          <p ng-show="package.receiver[0].phone != ''">Phone : {{package.receiver[0].phone}}</p>
+        </a>
+
+        <div class="item item-divider" ng-show="(packages | filter : { status: 1 }).length > 0">
+          Ready to Send
+        </div>
+        <a class="item item-thumbnail-left transItem" ng-click="editPackage(package._id,'edit')" ng-repeat="package in packages | filter:{ status: 1 }">
+          <img ng-src="http://46.101.115.69:9096/uploads/packageImages/thumbnail/{{package.packageImage}}">
+          <h2>{{package.receiver[0].name}}</h2>
+          <p>{{package.receiver[0].address[0].address1 + ' ' + package.receiver[0].address[0].city + ' ' + package.receiver[0].address[0].state + ' ' + package.receiver[0].address[0].zipCode}}</p>
+          <p ng-show="package.receiver[0].email != ''">Email : {{package.receiver[0].email}}</p>
+          <p ng-show="package.receiver[0].phone != ''">Phone : {{package.receiver[0].phone}}</p>
+        </a>
+        <div class="item item-divider" ng-show="(packages | filter : { status: 2 }).length > 0">
+          To Give Hub
+        </div>
+        <a class="item item-thumbnail-left transItem" ng-click="editPackage(package._id,'readonly')" ng-repeat="package in packages | filter:{ status: 2 }">
+          <img ng-src="http://46.101.115.69:9096/uploads/packageImages/thumbnail/{{package.packageImage}}">
+
+          <h2>{{package.receiver[0].name}}</h2>
+          <p>{{package.receiver[0].address[0].address1 + ' ' + package.receiver[0].address[0].city + ' ' + package.receiver[0].address[0].state + ' ' + package.receiver[0].address[0].zipCode}}</p>
+        </a>
+      </uib-accordion-group>
+    </uib-accordion>
     <script type="text/ng-template" id="openFilterModalContent.html">
       <div class="modal-header">
         <h3 class="modal-title">Select Filter : </h3>
@@ -61,8 +102,7 @@
           <div class="item item-divider" style="height: 30px">
             <div class="checkbox showOpenHubsChck" style="margin-top:0px !important;">
               <label>
-                <input type="checkbox" class="smallCheckbox" ng-model="statusFilter"
-                       ng-click="statusCheckboxClicked()"/>
+                <input type="checkbox" class="smallCheckbox" ng-model="statusFilter" ng-click="statusCheckboxClicked()" />
                 <span class="showOpenHubsSpn" style="margin-top:-0px !important;color:#000;font-weight: bold;">Status Filter</span>
               </label>
             </div>
@@ -70,23 +110,19 @@
           <div class="item item-text-wrap">
             <div>
               <p>
-                <input type="checkbox" ng-model="status.draft" ng-click="statusFilterClicked()"
-                       style="margin-top: -2px !important;width:20px;height:20px">
+                <input type="checkbox" ng-model="status.draft" ng-click="statusFilterClicked()" style="margin-top: -2px !important;width:20px;height:20px">
                 <span class="showOpenHubsSpn" style="margin-top:-0px !important;color:#000">Draft</span>
               </p>
               <p>
-                <input type="checkbox" ng-model="status.readyToSend" ng-click="statusFilterClicked()"
-                       style="margin-top: -2px !important;width:20px;height:20px">
+                <input type="checkbox" ng-model="status.readyToSend" ng-click="statusFilterClicked()" style="margin-top: -2px !important;width:20px;height:20px">
                 <span class="showOpenHubsSpn" style="margin-top:-0px !important;color:#000">Ready to Send</span>
               </p>
               <p>
-                <input type="checkbox" ng-model="status.onRoad" ng-click="statusFilterClicked()"
-                       style="margin-top: -2px !important;width:20px;height:20px">
+                <input type="checkbox" ng-model="status.onRoad" ng-click="statusFilterClicked()" style="margin-top: -2px !important;width:20px;height:20px">
                 <span class="showOpenHubsSpn" style="margin-top:-0px !important;color:#000">On Road</span>
               </p>
               <p>
-                <input type="checkbox" ng-model="status.driverPicked" ng-click="statusFilterClicked()"
-                       style="margin-top: -2px !important;width:20px;height:20px">
+                <input type="checkbox" ng-model="status.driverPicked" ng-click="statusFilterClicked()" style="margin-top: -2px !important;width:20px;height:20px">
                 <span class="showOpenHubsSpn" style="margin-top:-0px !important;color:#000">Driver Picked Up</span>
               </p>
             </div>
@@ -110,8 +146,7 @@
                     <span>Today</span>
                   </div>
                   <div class="col-xs-7 col-md-7 padZero">
-                    <input type="radio" id="date_0" name="date" ng-model="radioDate" value="today" ng-checked="date == 'today'" ng-click="dateFilterClicked()"
-                           class="filterRadio"/>
+                    <input type="radio" id="date_0" name="date" ng-model="radioDate" value="today" ng-checked="date == 'today'" ng-click="dateFilterClicked()" class="filterRadio" />
                   </div>
                 </div>
                 <div class="row-fluid">
@@ -119,8 +154,7 @@
                     <span>Last Week</span>
                   </div>
                   <div class="col-xs-7 col-md-7 padZero">
-                    <input type="radio" id="date_1" name="date"  ng-model="radioDate" value="lastWeek" ng-checked="date == 'lastWeek'"  ng-click="dateFilterClicked()"
-                           class="filterRadio"/>
+                    <input type="radio" id="date_1" name="date" ng-model="radioDate" value="lastWeek" ng-checked="date == 'lastWeek'" ng-click="dateFilterClicked()" class="filterRadio" />
                   </div>
                 </div>
                 <div class="row-fluid">
@@ -128,8 +162,7 @@
                     <span>Last Month</span>
                   </div>
                   <div class="col-xs-7 col-md-7 padZero">
-                    <input type="radio" id="date_2" name="date" ng-model="radioDate" value="lastMonth" ng-checked="date == 'lastMonth'"  ng-click="dateFilterClicked()"
-                           class="filterRadio"/>
+                    <input type="radio" id="date_2" name="date" ng-model="radioDate" value="lastMonth" ng-checked="date == 'lastMonth'" ng-click="dateFilterClicked()" class="filterRadio" />
                   </div>
                 </div>
                 <div class="row-fluid">
@@ -137,8 +170,7 @@
                     <span>Last Year</span>
                   </div>
                   <div class="col-xs-7 col-md-7 padZero">
-                    <input type="radio" id="date_3" name="date" ng-model="radioDate" value="lastYear" ng-checked="date == 'lastYear'"  ng-click="dateFilterClicked()"
-                           class="filterRadio"/>
+                    <input type="radio" id="date_3" name="date" ng-model="radioDate" value="lastYear" ng-checked="date == 'lastYear'" ng-click="dateFilterClicked()" class="filterRadio" />
                   </div>
                 </div>
               </div>
@@ -150,10 +182,8 @@
           <div class="item item-divider" style="height: 30px">
             <div class="checkbox showOpenHubsChck" style="margin-top:0px !important;">
               <label>
-                <input type="checkbox" class="smallCheckbox" ng-click="directionCheckboxClicked()"
-                       ng-model="directionFilter">
-                <span class="showOpenHubsSpn"
-                      style="margin-top:-0px !important;color:#000;font-weight: bold;">Direction</span>
+                <input type="checkbox" class="smallCheckbox" ng-click="directionCheckboxClicked()" ng-model="directionFilter">
+                <span class="showOpenHubsSpn" style="margin-top:-0px !important;color:#000;font-weight: bold;">Direction</span>
               </label>
             </div>
           </div>
@@ -165,8 +195,7 @@
                     <span>From me</span>
                   </div>
                   <div class="col-xs-7 col-md-7 padZero">
-                    <input type="checkbox" ng-model="fromMe" ng-click="directionFilterClicked()"
-                           style="margin-top: -2px !important;width:20px;height:20px">
+                    <input type="checkbox" ng-model="fromMe" ng-click="directionFilterClicked()" style="margin-top: -2px !important;width:20px;height:20px">
                   </div>
                 </div>
                 <div class="row-fluid" style="margin-top: 10px">
@@ -174,8 +203,7 @@
                     <span>To Me</span>
                   </div>
                   <div class="col-xs-7 col-md-7 padZero" style="margin-top: 10px;">
-                    <input type="checkbox" ng-model="toMe" ng-click="directionFilterClicked()" ng-model="status.draft"
-                           style="margin-top: -2px !important;width:20px;height:20px">
+                    <input type="checkbox" ng-model="toMe" ng-click="directionFilterClicked()" ng-model="status.draft" style="margin-top: -2px !important;width:20px;height:20px">
                   </div>
                 </div>
               </div>

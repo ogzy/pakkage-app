@@ -1,9 +1,5 @@
 angular.module('Pakkage.PackageController', [])
 .controller('PackageCtrl', ['$scope', 'LocalStorageService', '$state', 'LoadingService', 'PackageService', '$cordovaCamera', '$ionicActionSheet', '$cordovaFile', '$cordovaFileTransfer', 'PopupService', '$rootScope','PhoneControlService','$filter','$ionicPopup', function ($scope, LocalStorageService, $state, LoadingService, PackageService, $cordovaCamera, $ionicActionSheet, $cordovaFile, $cordovaFileTransfer, PopupService, $rootScope,PhoneControlService,$filter,$ionicPopup) {
-    if (LocalStorageService.get('isAuthenticated') != true) {
-        $state.go("tab.login");
-    }
-
     /*if (LocalStorageService.get('fullFilled') != true) {
         PopupService.alert('Warning','E115').then(function(){
             $state.go("app.profile");
@@ -48,10 +44,10 @@ angular.module('Pakkage.PackageController', [])
             $scope.newPackage.zipcode = '';
         //-- Check basic validations
         if ($scope.newPackage.name == undefined || $scope.newPackage.email == undefined || $scope.newPackage.phone == undefined || $scope.newPackage.address1 == undefined ||
-            $scope.newPackage.address2 == undefined || $scope.newPackage.city == undefined || $scope.newPackage.state == undefined || $scope.newPackage.zipcode == undefined) {
+             $scope.newPackage.city == undefined || $scope.newPackage.state == undefined || $scope.newPackage.zipcode == undefined) {
 
             if ($scope.newPackage.name == undefined && $scope.newPackage.email == undefined && $scope.newPackage.phone == undefined && $scope.newPackage.address1 == undefined &&
-                $scope.newPackage.address2 == undefined && $scope.newPackage.city == undefined && $scope.newPackage.state == undefined && $scope.newPackage.zipcode == undefined) {
+                 $scope.newPackage.city == undefined && $scope.newPackage.state == undefined && $scope.newPackage.zipcode == undefined) {
                 LoadingService.hide();
                 PopupService.alert('Warning', 'E112');
             }
@@ -213,9 +209,9 @@ angular.module('Pakkage.PackageController', [])
             $scope.newPackage.zipcode = '';
         //-- Check basic validations
         if ($scope.newPackage.name == undefined || $scope.newPackage.email == undefined || $scope.newPackage.phone == undefined || $scope.newPackage.address1 == undefined ||
-            $scope.newPackage.address2 == undefined || $scope.newPackage.city == undefined || $scope.newPackage.state == undefined || $scope.newPackage.zipcode == undefined) {
+            $scope.newPackage.city == undefined || $scope.newPackage.state == undefined || $scope.newPackage.zipcode == undefined) {
             if ($scope.newPackage.name == undefined && $scope.newPackage.email == undefined && $scope.newPackage.phone == undefined && $scope.newPackage.address1 == undefined &&
-                $scope.newPackage.address2 == undefined && $scope.newPackage.city == undefined && $scope.newPackage.state == undefined && $scope.newPackage.zipcode == undefined) {
+                $scope.newPackage.city == undefined && $scope.newPackage.state == undefined && $scope.newPackage.zipcode == undefined) {
                 LoadingService.hide();
                 PopupService.alert('Warning', 'E112');
             }
@@ -492,11 +488,7 @@ angular.module('Pakkage.PackageController', [])
     };
 
 }])
-.controller('EditPackageCtrl', ['$scope', 'LocalStorageService', '$state', 'PackageService', '$ionicPopup', '$cordovaCamera', '$ionicActionSheet', '$cordovaFile', '$cordovaFileTransfer', 'PopupService', '$stateParams', 'LoadingService','PhoneControlService','$filter', function ($scope, LocalStorageService, $state, PackageService, $ionicPopup, $cordovaCamera, $ionicActionSheet, $cordovaFile, $cordovaFileTransfer, PopupService, $stateParams, LoadingService,PhoneControlService,$filter) {
-    if (LocalStorageService.get('isAuthenticated') != true) {
-        $state.go("tab.login");
-    }
-
+.controller('EditPackageCtrl', ['$scope', 'LocalStorageService', '$state', 'PackageService', '$ionicPopup', '$cordovaCamera', '$ionicActionSheet', '$cordovaFile', '$cordovaFileTransfer', 'PopupService', '$stateParams', 'LoadingService','PhoneControlService','$filter','LogService', function ($scope, LocalStorageService, $state, PackageService, $ionicPopup, $cordovaCamera, $ionicActionSheet, $cordovaFile, $cordovaFileTransfer, PopupService, $stateParams, LoadingService,PhoneControlService,$filter,LogService) {
     LoadingService.show();
 
     var packageId = $stateParams.packageId;
@@ -504,10 +496,12 @@ angular.module('Pakkage.PackageController', [])
     $scope.newPackage = {};
     $scope.packagePicture = '';
     $scope.imageName = '';
+    $scope.initialCity = '';
+    $scope.mode = $stateParams.mode;
     var saltPackagePicture  = '';
     $scope.cities = LocalStorageService.get('cities')[0].cities;
     $scope.$watch('newPackage.city',function(newValue, oldValue){
-        if(newValue != undefined && newValue != '')
+        if(newValue != undefined && newValue != '' && newValue != $scope.initialCity)
         {
             if(newValue.title != undefined && newValue.title != '')
             {
@@ -528,7 +522,7 @@ angular.module('Pakkage.PackageController', [])
                 if (package.data.package.receiver[0].address[0] != undefined) {
                     $scope.newPackage.address1 = package.data.package.receiver[0].address[0].address1;
                     $scope.newPackage.address2 = package.data.package.receiver[0].address[0].address2 || '';
-                    $scope.newPackage.city = package.data.package.receiver[0].address[0].city || '';
+                    $scope.initialCity = package.data.package.receiver[0].address[0].city  || '';
                     $scope.newPackage.state = package.data.package.receiver[0].address[0].state || '';
                     $scope.newPackage.zipcode = package.data.package.receiver[0].address[0].zipCode || '';
                 }
@@ -565,21 +559,18 @@ angular.module('Pakkage.PackageController', [])
 
     $scope.saveAsDraft = function(){
         LoadingService.show();
-        if($scope.newPackage.city != undefined)
-        {
-            if($scope.newPackage.city.title == undefined)
-                $scope.newPackage.city = { title : $scope.newPackage.city };
-        }
+        if($scope.newPackage.city == undefined)
+            $scope.newPackage.city = { title : $scope.initialCity };
 
 
         if ($scope.newPackage.zipcode == undefined)
             $scope.newPackage.zipcode = '';
         //-- Check basic validations
         if ($scope.newPackage.name == undefined || $scope.newPackage.email == undefined || $scope.newPackage.phone == undefined || $scope.newPackage.address1 == undefined ||
-            $scope.newPackage.address2 == undefined || $scope.newPackage.city == undefined || $scope.newPackage.state == undefined || $scope.newPackage.zipcode == undefined) {
+            $scope.newPackage.city == undefined || $scope.newPackage.state == undefined || $scope.newPackage.zipcode == undefined) {
 
             if ($scope.newPackage.name == undefined && $scope.newPackage.email == undefined && $scope.newPackage.phone == undefined && $scope.newPackage.address1 == undefined &&
-                $scope.newPackage.address2 == undefined && $scope.newPackage.city == undefined && $scope.newPackage.state == undefined && $scope.newPackage.zipcode == undefined) {
+                $scope.newPackage.city == undefined && $scope.newPackage.state == undefined && $scope.newPackage.zipcode == undefined) {
                 LoadingService.hide();
                 PopupService.alert('Warning', 'E112');
             }
@@ -737,7 +728,11 @@ angular.module('Pakkage.PackageController', [])
 
     $scope.updatePackageButton = function () {
         LoadingService.show();
+        LogService.visibleLog('update button initial city : ' + JSON.stringify($scope.initialCity));
 
+        if($scope.newPackage.city == undefined)
+          $scope.newPackage.city = { title : $scope.initialCity };
+        LogService.visibleLog(JSON.stringify('initial city ne : ' + $scope.initialCity));
         //-- Check basic validations
         if ($scope.newPackage.name == undefined || $scope.newPackage.email == undefined || $scope.newPackage.phone == undefined || $scope.newPackage.address1 == undefined || $scope.newPackage.city == undefined || $scope.newPackage.state == undefined || $scope.newPackage.zipcode == undefined ||
             $scope.newPackage.name == '' || $scope.newPackage.email == '' || $scope.newPackage.phone == '' || $scope.newPackage.address1 == '' ||

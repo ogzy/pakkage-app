@@ -79,7 +79,7 @@ angular.module('Pakkage.routes', [])
         }
       })
       .state('app.editPackage', {
-        url: '/editPackage/:packageId',
+        url: '/editPackage/:packageId/:mode',
         views: {
           'menuContent': {
             templateUrl: 'pages/app-editPackage.html'
@@ -95,7 +95,7 @@ angular.module('Pakkage.routes', [])
         }
       })
       .state('app.hubDetail', {
-        url: '/hubDetail/:hubId',
+        url: '/hubDetail/:hubId/:packageId',
         views: {
           'menuContent': {
             templateUrl: 'pages/app-hubDetail.html'
