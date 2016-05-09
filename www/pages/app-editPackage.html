@@ -21,27 +21,27 @@
                             <!-- Name -->
                             <div class="form-group form-groupForProfile">
                                 <input type="text" ng-show="mode =='edit'"  class="form-control form-controlForProfile" placeholder="Name" ng-model="newPackage.name">
-                                <a class="item" href="#"><div ng-show="mode =='readonly'"><b>Name :</b>{{newPackage.name}}</div></a>
+                                <a class="item" href="#" ng-show="mode =='readonly'"><div ><b>Name :</b>{{newPackage.name}}</div></a>
                             </div>
                             <!-- Email -->
                             <div class="form-group form-groupForProfile">
                                 <input type="text" ng-show="mode =='edit'"  class="form-control form-controlForProfile" placeholder="Email" ng-model="newPackage.email">
-                                <a class="item" href="#"><div ng-show="mode =='readonly'"><b>Email :</b>{{newPackage.email}}</div></a>
+                                <a class="item" href="#"  ng-show="mode =='readonly'"><div><b>Email :</b>{{newPackage.email}}</div></a>
                             </div>
                             <!-- Phone -->
                             <div class="form-group form-groupForProfile">
                                 <input type="text" ng-show="mode =='edit'" class="form-control form-controlForProfile" placeholder="Phone 123-456-7890" ng-keyup="formatPhone($event)" ng-model="newPackage.phone">
-                                <a class="item" href="#"><div ng-show="mode =='readonly'"><b>Phone :</b>{{newPackage.phone}}</div></a>
+                                <a class="item" href="#"  ng-show="mode =='readonly'"><div><b>Phone :</b>{{newPackage.phone}}</div></a>
                             </div>
                             <!-- Address 1-->
                             <div class="form-group form-groupForProfile">
                                 <input type="text" ng-show="mode =='edit'" class="form-control form-controlForProfile" placeholder="Address 1" ng-model="newPackage.address1">
-                                <a class="item" href="#"><div ng-show="mode =='readonly'"><b>Address 1 :</b>{{newPackage.address1}}</div></a>
+                                <a class="item" href="#"  ng-show="mode =='readonly'"><div><b>Address 1 :</b>{{newPackage.address1}}</div></a>
                             </div>
                             <!-- Address 2-->
                             <div class="form-group form-groupForProfile">
                                 <input type="text" ng-show="mode =='edit'" class="form-control form-controlForProfile" placeholder="Address 2" ng-model="newPackage.address2">
-                                <a class="item" href="#"><div ng-show="mode =='readonly'"><b>Address 2 :</b>{{newPackage.address2}}</div></a>
+                                <a class="item" href="#"  ng-show="mode =='readonly'"><div><b>Address 2 :</b>{{newPackage.address2}}</div></a>
                             </div>
                             <!-- City-->
                             <div class="form-group form-groupForProfile">
@@ -60,19 +60,19 @@
                                       initial-value="initialCity"/>
 
                                   </div>
-                                  <a class="item" href="#"><div ng-show="mode =='readonly'"><b>City :</b>{{newPackage.city}}</div></a>
+                                  <a class="item" href="#"  ng-show="mode =='readonly'"><div><b>City :</b>{{newPackage.city}}</div></a>
                                       <!-- State -->
                                       <input type="text" ng-show="mode =='edit'" class="form-control form-controlForProfile treelineState" placeholder="State" ng-model="newPackage.state">
-                                      <a class="item" href="#"><div ng-show="mode =='readonly'"><b>State :</b>{{newPackage.state}}</div></a>
+                                      <a class="item" href="#"  ng-show="mode =='readonly'"><div><b>State :</b>{{newPackage.state}}</div></a>
                                       <!-- Zip Code -->
                                       <input type="text" ng-show="mode =='edit'" class="form-control form-controlForProfile treeline" placeholder="ZIP Code" ng-model="newPackage.zipcode">
-                                      <a class="item" href="#"><div ng-show="mode =='readonly'"><b>ZIP Code :</b>{{newPackage.zipcode}}</div></a>
+                                      <a class="item" href="#"  ng-show="mode =='readonly'"><div><b>ZIP Code :</b>{{newPackage.zipcode}}</div></a>
                                 </div>
                             </div>
                             <!-- Comment -->
                             <div class="form-group form-groupForProfile">
                                 <textarea ng-show="mode =='edit'"  class="form-control form-controlForProfile" placeholder="Comment" ng-model="newPackage.comment" rows="8" cols="10"></textarea>
-                                <a class="item" href="#"><div ng-show="mode =='readonly'"><b>Comment :</b>{{newPackage.comment}}</div></a>
+                                <a class="item" href="#"  ng-show="mode =='readonly'"><div><b>Comment :</b>{{newPackage.comment}}</div></a>
                             </div>
                         </div>
                         <div class="spacer formSpacer"></div>
