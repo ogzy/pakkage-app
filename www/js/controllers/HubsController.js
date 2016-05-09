@@ -110,7 +110,9 @@ angular.module('Pakkage.HubsController', [])
 
 .controller('HubDetailCtrl', ['$scope', 'HubService', 'LoadingService', 'PopupService', 'moment', '$filter', '$state', '$rootScope', '$stateParams', '$ionicPopup','PackageService', function($scope, HubService, LoadingService, PopupService, moment, $filter, $state, $rootScope, $stateParams, $ionicPopup,PackageService) {
   //LoadingService.show();
-
+  $scope.$on('$ionicView.beforeEnter', function (e,config) {
+    config.enableBack = false;
+  });
   $scope.hub = $filter('filter')($rootScope.availableHubs, function(hub) {
     return hub._id == $stateParams.hubId
   })[0];
