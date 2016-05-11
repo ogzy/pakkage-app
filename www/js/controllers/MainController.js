@@ -60,7 +60,8 @@ angular.module('Pakkage.MainController', [])
             LocalStorageService.save('packages', package.data.packages);
             PackageFilterService.homePackagesFilter(currentFilters, detailFilters);
             $scope.packages = $rootScope.packages;
-            $scope.toMePackages = PackageFilterService.filterHubPackages();
+            if($scope.userType == 'Hub' || $scope.userType == 'Driver')
+                $scope.toMePackages = PackageFilterService.filterHubPackages();
             console.log('$rootScope.directionFilter : ' + $rootScope.directionFilter);
             LoadingService.hide();
           } else {

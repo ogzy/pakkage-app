@@ -155,11 +155,15 @@ angular.module('Pakkage', ['ionic', 'ngCordova', 'Pakkage.LoginController', 'Pak
     });
 
     if (LocalStorageService.get('isAuthenticated') == true) {
-
-      if (LocalStorageService.get('approve') == true)
-        window.location.assign("#/app/home");
+      console.log('Pakkage Log : is authen:' + LocalStorageService.get('isAuthenticated'));
+      console.log('Pakkage Log : approven:' + LocalStorageService.get('approve'));
+      console.log('Pakkage Log : fullFilled:' + LocalStorageService.get('fullFilled'));
+      if(LocalStorageService.get('fullFilled') != true)
+        $state.go("app.profile");
+      else if (LocalStorageService.get('approve') == true)
+        $state.go("app.home");
       else
-        window.location.assign("#/app/profile");
+        $state.go("app.profile");
     }
 
   });

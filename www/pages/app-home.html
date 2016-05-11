@@ -30,9 +30,18 @@
         <p ng-show="package.receiver[0].phone != ''">Phone : {{package.receiver[0].phone}}</p>
       </a>
       <div class="item item-divider" ng-show="(packages | filter : { status: 2 }).length > 0">
-        To Give Hub
+        To be Accepted by Org. Hub
       </div>
       <a class="item item-thumbnail-left transItem" ng-click="editPackage(package._id,'readonly')" ng-repeat="package in packages | filter:{ status: 2 }">
+        <img ng-src="http://46.101.115.69:9096/uploads/packageImages/thumbnail/{{package.packageImage}}">
+
+        <h2>{{package.receiver[0].name}}</h2>
+        <p>{{package.receiver[0].address[0].address1 + ' ' + package.receiver[0].address[0].city + ' ' + package.receiver[0].address[0].state + ' ' + package.receiver[0].address[0].zipCode}}</p>
+      </a>
+      <div class="item item-divider" ng-show="(packages | filter : { status: 3 }).length > 0">
+        At Org. Hub
+      </div>
+      <a class="item item-thumbnail-left transItem" ng-click="editPackage(package._id,'readonly')" ng-repeat="package in packages | filter:{ status: 3 }">
         <img ng-src="http://46.101.115.69:9096/uploads/packageImages/thumbnail/{{package.packageImage}}">
 
         <h2>{{package.receiver[0].name}}</h2>
@@ -49,7 +58,18 @@
         <uib-accordion-heading>
           <span>Sent To Me <i class="pull-right ion accordionTitles" ng-class="{'ion-android-remove': statusToMe.open, 'ion-android-add': !statusToMe.open}"></i>
         </uib-accordion-heading>
-        <a class="item item-thumbnail-left transItem" ng-click="editPackage(package._id,'readonly')" ng-repeat="package in toMePackages">
+        <div class="item item-divider" ng-show="(toMePackages | filter : { status: 2  }).length > 0">
+          Pending to Accept
+        </div>
+        <a class="item item-thumbnail-left transItem" ng-click="editPackage(package._id,'readonly')" ng-repeat="package in toMePackages | filter:{ status: 2 }">
+          <img ng-src="http://46.101.115.69:9096/uploads/packageImages/thumbnail/{{package.packageImage}}">
+          <h2>{{package.receiver[0].name}}</h2>
+          <p>{{package.receiver[0].address[0].address1 + ' ' + package.receiver[0].address[0].city + ' ' + package.receiver[0].address[0].state + ' ' + package.receiver[0].address[0].zipCode}}</p>
+        </a>
+        <div class="item item-divider" ng-show="(toMePackages | filter : { status: 3  }).length > 0">
+          Accepted
+        </div>
+        <a class="item item-thumbnail-left transItem" ng-click="editPackage(package._id,'readonly')" ng-repeat="package in toMePackages | filter:{ status: 3 }">
           <img ng-src="http://46.101.115.69:9096/uploads/packageImages/thumbnail/{{package.packageImage}}">
           <h2>{{package.receiver[0].name}}</h2>
           <p>{{package.receiver[0].address[0].address1 + ' ' + package.receiver[0].address[0].city + ' ' + package.receiver[0].address[0].state + ' ' + package.receiver[0].address[0].zipCode}}</p>
@@ -82,7 +102,16 @@
           <p ng-show="package.receiver[0].phone != ''">Phone : {{package.receiver[0].phone}}</p>
         </a>
         <div class="item item-divider" ng-show="(packages | filter : { status: 2 }).length > 0">
-          To Give Hub
+          To be Accepted by Org. Hub
+        </div>
+        <a class="item item-thumbnail-left transItem" ng-click="editPackage(package._id,'readonly')" ng-repeat="package in packages | filter:{ status: 2 }">
+          <img ng-src="http://46.101.115.69:9096/uploads/packageImages/thumbnail/{{package.packageImage}}">
+
+          <h2>{{package.receiver[0].name}}</h2>
+          <p>{{package.receiver[0].address[0].address1 + ' ' + package.receiver[0].address[0].city + ' ' + package.receiver[0].address[0].state + ' ' + package.receiver[0].address[0].zipCode}}</p>
+        </a>
+        <div class="item item-divider" ng-show="(packages | filter : { status: 3  }).length > 0">
+          At Org. Hub
         </div>
         <a class="item item-thumbnail-left transItem" ng-click="editPackage(package._id,'readonly')" ng-repeat="package in packages | filter:{ status: 2 }">
           <img ng-src="http://46.101.115.69:9096/uploads/packageImages/thumbnail/{{package.packageImage}}">

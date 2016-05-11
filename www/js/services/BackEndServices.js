@@ -19,7 +19,8 @@ var registerServiceURL = 'http://46.101.115.69:9096/register',
   getAvailableHubsURL = 'http://46.101.115.69:9096/api/getAvailableHubs',
   changeUserPasswordURL = 'http://46.101.115.69:9096/api/changeUserPassword',
   scanQrCodeURL = 'http://46.101.115.69:9096/api/scanQrCode',
-  scanQrCodeFromHubPageURL = 'http://46.101.115.69:9096/api/scanQrCodeFromHubPage';
+  scanQrCodeFromHubPageURL = 'http://46.101.115.69:9096/api/scanQrCodeFromHubPage',
+  scanPakkageForHubAndDriverURL = 'http://46.101.115.69:9096/api/scanPakkageForHubAndDriver';
 
 angular.module('Pakkage.BackendServices', [])
   .factory('LocalStorageService', function($http, localStorageService) {
@@ -338,7 +339,26 @@ angular.module('Pakkage.BackendServices', [])
           }
         };
         return $http(req);
-      }
+      },
+      scanQrCodeForHubAndDrive: function(qrCodeNumber, newStatus,oldStatus,packageId,hubId) {
+              var req = {
+                method: 'POST',
+                url: scanPakkageForHubAndDriverURL,
+                headers: {
+                  'x-access-token': LocalStorageService.get('token'),
+                  'Content-Type': 'application/json; charset=utf-8'
+                },
+                data: {
+                  email : LocalStorageService.get('email'),
+                  oldStatus : oldStatus,
+                  newStatus : newStatus,
+                  packageId : packageId,
+                  packageQRId : qrCodeNumber,
+                  hubId : hubId
+                }
+              };
+              return $http(req);
+            }
     }
   })
   .factory('StateService', function($http, LocalStorageService) {

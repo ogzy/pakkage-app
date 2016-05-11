@@ -166,6 +166,12 @@ angular.module('Pakkage.ErrorcodeServices', [])
           case "S106":
             returnMessage = 'Package scanned successfully.Now you can give that to hub';
             break;
+          case "S107":
+            returnMessage = 'Package scanned successfully.Now you can give that to driver';
+            break;
+          case "S108":
+            returnMessage = 'Package scanned successfully.Now you can take care of it';
+            break;
           case "S999Temp":
             returnMessage = 'List of available hubs';
             break;
