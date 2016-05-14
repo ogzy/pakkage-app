@@ -1,14 +1,14 @@
 angular.module('Pakkage.MainController', [])
-  .controller('TabsCtrl', ['$scope', '$state', 'LoadingService', function ($scope, $state, LoadingService) {
-    $scope.loadRegister = function () {
+  .controller('TabsCtrl', ['$scope', '$state', 'LoadingService', function($scope, $state, LoadingService) {
+    $scope.loadRegister = function() {
       LoadingService.show();
       $state.go('tab.register');
     };
   }])
-  .controller('MainCtrl', ['$scope', 'LocalStorageService', '$state', function ($scope, LocalStorageService, $state) {
+  .controller('MainCtrl', ['$scope', 'LocalStorageService', '$state', function($scope, LocalStorageService, $state) {
 
   }])
-  .controller('MenuCtrl', ['$scope', 'LocalStorageService', '$state', 'PopupService', function ($scope, LocalStorageService, $state, PopupService) {
+  .controller('MenuCtrl', ['$scope', 'LocalStorageService', '$state', 'PopupService', 'ProfileService', function($scope, LocalStorageService, $state, PopupService, ProfileService) {
 
     $scope.fullFilled = LocalStorageService.get('fullFilled');
     $scope.approve = LocalStorageService.get('approve');
@@ -18,50 +18,81 @@ angular.module('Pakkage.MainController', [])
     console.log('PakkageBeta: MainController fullFilled : ' + $scope.fullFilled);
     console.log('PakkageBeta: MainController userType : ' + $scope.userType);
 
-    $scope.logout = function () {
+    $scope.logout = function() {
       LocalStorageService.clear();
       $state.go("tab.login");
     };
-    $scope.showFullFilledPopup = function () {
-      PopupService.alert('Warning', 'E119');
+
+    $scope.navigateCreatePackage = function() {
+      if ($scope.fullFilled)
+        $state.go('app.createPackage');
+      else
+        PopupService.alert('Warning', 'E119');
     };
+
+    $scope.refreshMenu = function() {
+      ProfileService.getUserProfile(LocalStorageService.get('email'), LocalStorageService.get('token')).then(function(user) {
+          //console.log(JSON.stringify(login));
+
+          if (user.data.errorCode == 0) {
+
+            console.log(user.data.user);
+            LocalStorageService.save('fullFilled', user.data.user.fullFilled);
+            LocalStorageService.save('approve', user.data.user.approve);
+            $scope.fullFilled = user.data.user.fullFilled;
+            $scope.approve = user.data.user.approve;
+            $scope.$broadcast('scroll.refreshComplete');
+          } else {
+            $scope.$broadcast('scroll.refreshComplete');
+            PopupService.alert('Error', login.data.errorCode);
+          }
+        },
+        function(error) {
+          $scope.$broadcast('scroll.refreshComplete');
+          PopupService.alert('Technical Error', 999);
+        });
+    };
+
   }])
-  .controller('HomeCtrl', ['$scope', 'LocalStorageService', '$state', 'PackageService', 'PopupService', 'LoadingService', '$uibModal', '$rootScope', 'PackageFilterService', '$interval','$ionicHistory', function ($scope, LocalStorageService, $state, PackageService, PopupService, LoadingService, $uibModal, $rootScope, PackageFilterService, $interval,$ionicHistory) {
+  .controller('HomeCtrl', ['$scope', 'LocalStorageService', '$state', 'PackageService', 'PopupService', 'LoadingService', '$uibModal', '$rootScope', 'PackageFilterService', '$interval', '$ionicHistory','ScanQR', function($scope, LocalStorageService, $state, PackageService, PopupService, LoadingService, $uibModal, $rootScope, PackageFilterService, $interval, $ionicHistory,ScanQR) {
     LoadingService.show();
-    $scope.$on('$ionicView.beforeEnter', function (e,config) {
+    $scope.$on('$ionicView.beforeEnter', function(e, config) {
       config.enableBack = false;
     });
     $scope.packages = [];
     $rootScope.packages = [];
     $scope.toMePackages = [];
     $scope.userType = LocalStorageService.get('userType');
-    $scope.statusToMe = {open : true}
+    $scope.statusToMe = {
+      open: true
+    }
 
     console.log($scope.userType);
     var currentFilters = {
-      statusFilter: $rootScope.statusFilter,
-      dateFilter: $rootScope.dateFilter,
-      directionFilter: $rootScope.directionFilter
-    }, detailFilters = {
-      status: $rootScope.status,
-      fromMe: $scope.fromMe,
-      toMe: $scope.toMe,
-      date : $scope.date
-    };
+        statusFilter: $rootScope.statusFilter,
+        dateFilter: $rootScope.dateFilter,
+        directionFilter: $rootScope.directionFilter
+      },
+      detailFilters = {
+        status: $rootScope.status,
+        fromMe: $scope.fromMe,
+        toMe: $scope.toMe,
+        date: $scope.date
+      };
 
-    $scope.refreshPackages = function () {
+    $scope.refreshPackages = function() {
       console.log('$rootScope.directionFilter : ' + $rootScope.directionFilter);
       LoadingService.show();
       var getPackagesPromise = PackageService.getPackages(LocalStorageService.get('userId'), LocalStorageService.get('email'), LocalStorageService.get('token'));
       getPackagesPromise.then(
-        function (package) {
+        function(package) {
 
           if (package.data.errorCode == 0) {
             LocalStorageService.save('packages', package.data.packages);
             PackageFilterService.homePackagesFilter(currentFilters, detailFilters);
             $scope.packages = $rootScope.packages;
-            if($scope.userType == 'Hub' || $scope.userType == 'Driver')
-                $scope.toMePackages = PackageFilterService.filterHubPackages();
+            if ($scope.userType == 'Hub' || $scope.userType == 'Driver')
+              $scope.toMePackages = PackageFilterService.filterHubPackages();
             console.log('$rootScope.directionFilter : ' + $rootScope.directionFilter);
             LoadingService.hide();
           } else {
@@ -70,7 +101,7 @@ angular.module('Pakkage.MainController', [])
           }
           $scope.$broadcast('scroll.refreshComplete');
         },
-        function (errorPayload) {
+        function(errorPayload) {
           LoadingService.hide();
           $scope.$broadcast('scroll.refreshComplete');
           PopupService.alert('Error', 999);
@@ -79,7 +110,7 @@ angular.module('Pakkage.MainController', [])
 
     var getPackagesPromise = PackageService.getPackages(LocalStorageService.get('userId'), LocalStorageService.get('email'), LocalStorageService.get('token'));
     getPackagesPromise.then(
-      function (package) {
+      function(package) {
         if (package.data.errorCode == 0) {
           LocalStorageService.save('packages', package.data.packages);
           if (!currentFilters.statusFilter)
@@ -96,25 +127,25 @@ angular.module('Pakkage.MainController', [])
           PopupService.alert('Error', package.data.errorCode);
         }
       },
-      function (errorPayload) {
+      function(errorPayload) {
         LoadingService.hide();
         PopupService.alert('Error', 999);
       });
 
 
-    $scope.editPackage = function (packkageId,mode) {
+    $scope.editPackage = function(packkageId, mode) {
 
       $state.go('app.editPackage', {
         packageId: packkageId,
-        mode : mode
+        mode: mode
       });
     };
 
-    $rootScope.$on("callSyncPackagesMethod", function () {
+    $rootScope.$on("callSyncPackagesMethod", function() {
       $scope.syncPackages();
     });
 
-    $scope.syncPackages = function () {
+    $scope.syncPackages = function() {
 
       if ($rootScope.packages) {
         $scope.packages = $rootScope.packages;
@@ -123,52 +154,85 @@ angular.module('Pakkage.MainController', [])
     };
 
 
-    $scope.openFilterModal = function () {
+    $scope.openFilterModal = function() {
       var modalInstance = $uibModal.open({
         animation: true,
         templateUrl: 'openFilterModalContent.html',
         controller: 'OpenFilterModalInstanceCtrl',
         size: 'sm',
         resolve: {
-          filters: function () {
+          filters: function() {
             return $scope.filters;
           }
         }
       });
       $rootScope.filterModalInstance = modalInstance;
 
-      modalInstance.result.then(function (selectedItem) {
-      }, function () {
+      modalInstance.result.then(function(selectedItem) {}, function() {
         //$log.info('Modal dismissed at: ' + new Date());
       });
 
     };
 
+    $scope.scanQRFromHomePage = function() {
+      document.addEventListener("deviceready", function() {
+        cloudSky.zBar.scan(ScanQR.scanMessages({
+          text_title: 'Package Scanner',
+          text_instructions: 'Search package with this QRCode',
+          drawSight: true
+        }),
+          function(success) {
+            LoadingService.show();
+            PackageService.getPackageByQrCodeId(success, LocalStorageService.get('email'),LocalStorageService.get('token')).then(
+              function(response) {
+                if (response.data.errorCode == 0) {
+                  LoadingService.hide();
+                  $state.go('app.editPackage', {
+                    packageId: response.data.packageId._id,
+                    mode: 'readonly'
+                  });
+                } else {
+                  LoadingService.hide();
+                  PopupService.alert('Error', response.data.errorCode);
+                }
+
+              },
+              function(error) {
+                LoadingService.hide();
+                PopupService.alert('Error', 999);
+              });
+          },
+          function(error) {});
+      }, false);
+
+    };
+
   }])
-  .controller('OpenFilterModalInstanceCtrl', ['$scope', '$uibModalInstance', 'filters', 'moment', 'LocalStorageService', '$filter', '$rootScope', 'PackageFilterService', 'PopupService', '$uibModal', function ($scope, $uibModalInstance, filters, moment, LocalStorageService, $filter, $rootScope, PackageFilterService, PopupService, $uibModal) {
+  .controller('OpenFilterModalInstanceCtrl', ['$scope', '$uibModalInstance', 'filters', 'moment', 'LocalStorageService', '$filter', '$rootScope', 'PackageFilterService', 'PopupService', '$uibModal', function($scope, $uibModalInstance, filters, moment, LocalStorageService, $filter, $rootScope, PackageFilterService, PopupService, $uibModal) {
     $scope.date = $rootScope.date;
-    $scope.ok = function () {
+    $scope.ok = function() {
       var currentFilters = {
-        statusFilter: $scope.statusFilter,
-        dateFilter: $scope.dateFilter,
-        directionFilter: $scope.directionFilter
-      }, detailFilters = {
-        status: $scope.status,
-        fromMe: $scope.fromMe,
-        toMe: $scope.toMe,
-        date : $scope.radioDate
-      };
+          statusFilter: $scope.statusFilter,
+          dateFilter: $scope.dateFilter,
+          directionFilter: $scope.directionFilter
+        },
+        detailFilters = {
+          status: $scope.status,
+          fromMe: $scope.fromMe,
+          toMe: $scope.toMe,
+          date: $scope.radioDate
+        };
       PackageFilterService.homePackagesFilter(currentFilters, detailFilters);
       $uibModalInstance.close();
 
     };
-    $scope.statusFilterClicked = function () {
+    $scope.statusFilterClicked = function() {
       if (!$scope.status.draft && !$scope.status.readyToSend && !$scope.status.onRoad && !$scope.status.driverPicked)
         $scope.statusFilter = false;
       else
         $scope.statusFilter = true;
     };
-    $scope.statusCheckboxClicked = function () {
+    $scope.statusCheckboxClicked = function() {
       if (!$scope.statusFilter) {
         $scope.status.draft = false;
         $scope.status.readyToSend = false;
@@ -177,30 +241,29 @@ angular.module('Pakkage.MainController', [])
       }
     };
 
-    $scope.dateFilterClicked = function () {
+    $scope.dateFilterClicked = function() {
       $scope.dateFilter = true;
     };
 
-    $scope.directionFilterClicked = function () {
+    $scope.directionFilterClicked = function() {
       if (!$scope.fromMe && !$scope.toMe)
         $scope.directionFilter = false;
       else
         $scope.directionFilter = true;
     };
 
-    $scope.directionCheckboxClicked = function () {
+    $scope.directionCheckboxClicked = function() {
       if (!$scope.directionFilter) {
         $scope.fromMe = false;
         $scope.toMe = false;
-      }
-      else {
+      } else {
         $scope.fromMe = true;
         $scope.toMe = true;
       }
     };
 
 
-    $scope.cancel = function () {
+    $scope.cancel = function() {
       $uibModalInstance.dismiss('cancel');
     };
   }]);

@@ -1,5 +1,5 @@
 angular.module('Pakkage.ErrorcodeServices', [])
-  .factory('ErrorCodeService', function($ionicLoading) {
+  .factory('ErrorCodeService', function() {
     return {
       getError: function(code) {
         var returnMessage = null;

@@ -477,7 +477,7 @@ angular.module('Pakkage.PackageController', [])
     };
 
   }])
-  .controller('EditPackageCtrl', ['$scope', 'LocalStorageService', '$state', 'PackageService', '$ionicPopup', '$cordovaCamera', '$ionicActionSheet', '$cordovaFile', '$cordovaFileTransfer', 'PopupService', '$stateParams', 'LoadingService', 'PhoneControlService', '$filter', 'LogService', function($scope, LocalStorageService, $state, PackageService, $ionicPopup, $cordovaCamera, $ionicActionSheet, $cordovaFile, $cordovaFileTransfer, PopupService, $stateParams, LoadingService, PhoneControlService, $filter, LogService) {
+  .controller('EditPackageCtrl', ['$scope', 'LocalStorageService', '$state', 'PackageService', '$ionicPopup', '$cordovaCamera', '$ionicActionSheet', '$cordovaFile', '$cordovaFileTransfer', 'PopupService', '$stateParams', 'LoadingService', 'PhoneControlService', '$filter', 'LogService', 'ScanQR', function($scope, LocalStorageService, $state, PackageService, $ionicPopup, $cordovaCamera, $ionicActionSheet, $cordovaFile, $cordovaFileTransfer, PopupService, $stateParams, LoadingService, PhoneControlService, $filter, LogService, ScanQR) {
     LoadingService.show();
 
     var packageId = $stateParams.packageId;
@@ -501,6 +501,7 @@ angular.module('Pakkage.PackageController', [])
     });
 
     var getPackagePromise = PackageService.getPackageById(packageId, LocalStorageService.get('email'), LocalStorageService.get('token'));
+
     getPackagePromise.then(
       function(package) {
         if (package.data.errorCode == 0) {
@@ -546,7 +547,6 @@ angular.module('Pakkage.PackageController', [])
     $scope.formatPhone = function(keyEvent) {
       $scope.newPackage.phone = PhoneControlService.formatPhone(keyEvent, $scope.newPackage.phone);
     };
-
 
     $scope.saveAsDraft = function() {
       LoadingService.show();
@@ -907,11 +907,7 @@ angular.module('Pakkage.PackageController', [])
 
     $scope.scanFromPackageButton = function() {
       document.addEventListener("deviceready", function() {
-        cloudSky.zBar.scan({
-            text_title: 'Pakkage QR Code Scanner',
-            text_instructions: 'Please show QR barcode to camera',
-            drawSight: true
-          },
+        cloudSky.zBar.scan(ScanQR.scanMessages('EditPackage-scanFromPackageButton'),
           function(success) {
             LoadingService.show();
             var newStatus = -1,
@@ -919,16 +915,16 @@ angular.module('Pakkage.PackageController', [])
               errorCode = 'S107';
             switch (LocalStorageService.get('userType')) {
               case 'Hub':
-                newStatus = 3, oldStatus = 2,errorCode = 'S107';
+                newStatus = 3, oldStatus = 2, errorCode = 'S107';
                 break;
               case 'Driver':
-                newStatus = 4, oldStatus = 3,errorCode = 'S108';
+                newStatus = 4, oldStatus = 3, errorCode = 'S108';
                 break;
               default:
 
             }
 
-            PackageService.scanQrCodeForHubAndDrive(success, newStatus, oldStatus, packageId).then(
+            PackageService.scanQrCodeForHubAndDrive(success, newStatus, oldStatus, packageId, LocalStorageService.get('userId')).then(
               function(response) {
                 if (response.data.errorCode == 0) {
                   LoadingService.hide();
@@ -946,12 +942,11 @@ angular.module('Pakkage.PackageController', [])
                 LoadingService.hide();
                 PopupService.alert('Error', 999);
               });
-
           },
           function(error) {});
-
       }, false);
-    }
+
+    };
 
     $scope.addMedia = function() {
 
@@ -1036,6 +1031,34 @@ angular.module('Pakkage.PackageController', [])
         }
 
       });
+
+    };
+
+    $scope.scanFromPackageForSender = function() {
+      document.addEventListener("deviceready", function() {
+        cloudSky.zBar.scan(ScanQR.scanMessages('EditPackage-scanFromPackageForSender'),
+          function(success) {
+            LoadingService.show();
+            PackageService.scanQrCode(success, 2, 1, packageId).then(
+              function(response) {
+                if (response.data.errorCode == 0) {
+                  LoadingService.hide();
+                  PopupService.alert('Successful', 'S106').then(function() {
+                    $state.go('app.home');
+                  })
+                } else {
+                  LoadingService.hide();
+                  PopupService.alert('Error', response.data.errorCode);
+                }
+
+              },
+              function(error) {
+                LoadingService.hide();
+                PopupService.alert('Error', 999);
+              });
+          },
+          function(error) {});
+      }, false);
 
     };
 

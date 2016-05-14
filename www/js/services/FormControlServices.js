@@ -146,15 +146,31 @@ angular.module('Pakkage.FormControlServices', [])
       filterHubPackages: function() {
         var toMePackages = [],willSplice = [];
         for (var i = 0; i < $rootScope.packages.length; i++) {
-          if ($rootScope.packages[i].hubs != undefined) {
-            if ($rootScope.packages[i].hubs.hubId === LocalStorageService.get('userId')) {
-              console.log('PakkageBeta : Silinmeden onceki d object : ' + JSON.stringify($rootScope.packages[i]));
-              //console.log('PakkageBeta : indexof : ' + $rootScope.packages.indexOf($rootScope.packages[i]));
+          var userType = LocalStorageService.get('userType')
+          if(userType == 'Hub')
+          {
+            if ($rootScope.packages[i].hubs != undefined) {
+              if ($rootScope.packages[i].hubs.hubId === LocalStorageService.get('userId')) {
+                console.log('PakkageBeta : Silinmeden onceki d object : ' + JSON.stringify($rootScope.packages[i]));
+                //console.log('PakkageBeta : indexof : ' + $rootScope.packages.indexOf($rootScope.packages[i]));
 
-              toMePackages.push($rootScope.packages[i]);
-              willSplice.push(i);
+                toMePackages.push($rootScope.packages[i]);
+                willSplice.push(i);
+              }
             }
           }
+          else if (userType == 'Driver') {
+            if ($rootScope.packages[i].drivers != undefined) {
+              if ($rootScope.packages[i].drivers.hubId === LocalStorageService.get('userId')) {
+                console.log('PakkageBeta : Silinmeden onceki d object : ' + JSON.stringify($rootScope.packages[i]));
+                //console.log('PakkageBeta : indexof : ' + $rootScope.packages.indexOf($rootScope.packages[i]));
+
+                toMePackages.push($rootScope.packages[i]);
+                willSplice.push(i);
+              }
+            }
+          }
+
         }
         for (var i = 0; i < willSplice.length; i++) {
           $rootScope.packages.splice(willSplice[i], 1);

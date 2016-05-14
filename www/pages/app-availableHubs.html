@@ -1,4 +1,4 @@
-<ion-view view-title="Available Hubs" class="specificHeader" ng-controller="HubsCtrl" cache-view="false" >
+<ion-view view-title="Available Hubs" class="specificHeader" ng-controller="AvailableHubsCtrl" cache-view="false" >
 	<ion-nav-buttons side="right" class="specificHeaderButton">
 		<div class="checkbox showOpenHubsChck">
 			<label style="margin-top: -10px;">
@@ -9,7 +9,7 @@
 		<ion-refresher pulling-text="Pull to refresh..." on-refresh="refreshHubs()">
 
 		</ion-refresher>
-		<button class="button button-positive avHubsScanButton" ng-click="scanQR()">
+		<button class="button button-positive avHubsScanButton" ng-click="scanQRAvailableHubs()">
 			<i class="icon ion ion-qr-scanner"></i>  Scan QR Code
 		</button>
 		<div class="list" ng-show="hubs.length > 0">

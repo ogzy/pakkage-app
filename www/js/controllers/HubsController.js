@@ -1,5 +1,8 @@
 angular.module('Pakkage.HubsController', [])
-  .controller('HubsCtrl', ['$scope', 'HubService', 'LoadingService', 'PopupService', 'moment', '$filter', '$state', '$rootScope', 'LocalStorageService', '$stateParams', 'PackageService', function($scope, HubService, LoadingService, PopupService, moment, $filter, $state, $rootScope, LocalStorageService, $stateParams, PackageService) {
+  .controller('AvailableHubsCtrl', ['$scope', 'HubService', 'LoadingService', 'PopupService', 'moment', '$filter', '$state', '$rootScope', 'LocalStorageService', '$stateParams', 'PackageService', 'ScanQR', function($scope, HubService, LoadingService, PopupService, moment, $filter, $state, $rootScope, LocalStorageService, $stateParams, PackageService, ScanQR) {
+    $scope.$on('$ionicView.beforeEnter', function(e, config) {
+      config.enableBack = false;
+    });
     LoadingService.show();
     console.log(LocalStorageService.get('userCity'));
     $scope.packageId = $stateParams.packageId;
@@ -66,13 +69,9 @@ angular.module('Pakkage.HubsController', [])
         });
     };
 
-    $scope.scanQR = function() {
+    $scope.scanQRAvailableHubs = function() {
       document.addEventListener("deviceready", function() {
-        cloudSky.zBar.scan({
-            text_title: 'Pakkage QR Code Scanner',
-            text_instructions: 'Please show QR barcode to camera',
-            drawSight: true
-          },
+        cloudSky.zBar.scan(ScanQR.scanMessages('AvailableHubs-scanQRAvailableHubs'),
           function(success) {
             LoadingService.show();
             PackageService.scanQrCode(success, 2, 1, $scope.packageId).then(
@@ -92,27 +91,24 @@ angular.module('Pakkage.HubsController', [])
                 LoadingService.hide();
                 PopupService.alert('Error', 999);
               });
-
           },
-          function(error) { });
-
+          function(error) {});
       }, false);
+
     };
 
 
     $scope.showDetail = function(hubId) {
       $state.go('app.hubDetail', {
         hubId: hubId,
-        packageId : $scope.packageId
+        packageId: $scope.packageId
       });
     }
   }])
 
-.controller('HubDetailCtrl', ['$scope', 'HubService', 'LoadingService', 'PopupService', 'moment', '$filter', '$state', '$rootScope', '$stateParams', '$ionicPopup','PackageService', function($scope, HubService, LoadingService, PopupService, moment, $filter, $state, $rootScope, $stateParams, $ionicPopup,PackageService) {
+.controller('HubDetailCtrl', ['$scope', 'HubService', 'LoadingService', 'PopupService', 'moment', '$filter', '$state', '$rootScope', '$stateParams', '$ionicPopup', 'PackageService', 'ScanQR', function($scope, HubService, LoadingService, PopupService, moment, $filter, $state, $rootScope, $stateParams, $ionicPopup, PackageService, ScanQR) {
   //LoadingService.show();
-  $scope.$on('$ionicView.beforeEnter', function (e,config) {
-    config.enableBack = false;
-  });
+
   $scope.hub = $filter('filter')($rootScope.availableHubs, function(hub) {
     return hub._id == $stateParams.hubId
   })[0];
@@ -128,16 +124,12 @@ angular.module('Pakkage.HubsController', [])
     });
   }
 
-  $scope.scanQR = function() {
+  $scope.scanQRHubsDetail = function() {
     document.addEventListener("deviceready", function() {
-      cloudSky.zBar.scan({
-          text_title: 'Pakkage QR Code Scanner',
-          text_instructions: 'Please show QR barcode to camera',
-          drawSight: true
-        },
+      cloudSky.zBar.scan(ScanQR.scanMessages('HubDetail-scanQRHubsDetail'),
         function(success) {
           LoadingService.show();
-          PackageService.scanQrCodeFromHubPage(success, 2, 1, $stateParams.packageId,$stateParams.hubId).then(
+          PackageService.scanQrCodeFromHubPage(success, 2, 1, $stateParams.packageId, $stateParams.hubId).then(
             function(response) {
               if (response.data.errorCode == 0) {
                 LoadingService.hide();
@@ -157,7 +149,7 @@ angular.module('Pakkage.HubsController', [])
 
         },
         function(error) {});
-
     }, false);
+
   };
 }]);

@@ -20,7 +20,8 @@ var registerServiceURL = 'http://46.101.115.69:9096/register',
   changeUserPasswordURL = 'http://46.101.115.69:9096/api/changeUserPassword',
   scanQrCodeURL = 'http://46.101.115.69:9096/api/scanQrCode',
   scanQrCodeFromHubPageURL = 'http://46.101.115.69:9096/api/scanQrCodeFromHubPage',
-  scanPakkageForHubAndDriverURL = 'http://46.101.115.69:9096/api/scanPakkageForHubAndDriver';
+  scanPakkageForHubAndDriverURL = 'http://46.101.115.69:9096/api/scanPakkageForHubAndDriver',
+  getPackageByQrCodeIdURL = 'http://46.101.115.69:9096/api/getPackageByQrCodeId';
 
 angular.module('Pakkage.BackendServices', [])
   .factory('LocalStorageService', function($http, localStorageService) {
@@ -295,6 +296,18 @@ angular.module('Pakkage.BackendServices', [])
         var req = {
           method: 'GET',
           url: getPackageByIdURL + '/' + packageId + '/' + email + '/' + LocalStorageService.get('version'),
+          headers: {
+            'x-access-token': token,
+            'Content-Type': 'application/json; charset=utf-8'
+          },
+          data: {}
+        };
+        return $http(req);
+      },
+      getPackageByQrCodeId: function(qrCodeId, email, token) {
+        var req = {
+          method: 'GET',
+          url: getPackageByQrCodeIdURL + '/' + qrCodeId + '/' + email + '/' + LocalStorageService.get('version'),
           headers: {
             'x-access-token': token,
             'Content-Type': 'application/json; charset=utf-8'
