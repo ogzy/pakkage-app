@@ -21,7 +21,8 @@ var registerServiceURL = 'http://46.101.115.69:9096/register',
   scanQrCodeURL = 'http://46.101.115.69:9096/api/scanQrCode',
   scanQrCodeFromHubPageURL = 'http://46.101.115.69:9096/api/scanQrCodeFromHubPage',
   scanPakkageForHubAndDriverURL = 'http://46.101.115.69:9096/api/scanPakkageForHubAndDriver',
-  getPackageByQrCodeIdURL = 'http://46.101.115.69:9096/api/getPackageByQrCodeId';
+  getPackageByQrCodeIdURL = 'http://46.101.115.69:9096/api/getPackageByQrCodeId',
+  getUserByIdURL = 'http://46.101.115.69:9096/api/getUserById';
 
 angular.module('Pakkage.BackendServices', [])
   .factory('LocalStorageService', function($http, localStorageService) {
@@ -221,6 +222,13 @@ angular.module('Pakkage.BackendServices', [])
             username: username,
             version: LocalStorageService.get('version')
           }
+        };
+        return $http(req);
+      },
+      getUserById: function(id, token) {
+        var req = {
+          method: 'GET',
+          url: getUserByIdURL + '/' +  LocalStorageService.get('email') + '/' + id + '/' + LocalStorageService.get('version') + '?token=' + token
         };
         return $http(req);
       }

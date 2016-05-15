@@ -95,7 +95,7 @@ angular.module('Pakkage.routes', [])
         }
       })
       .state('app.hubDetail', {
-        url: '/hubDetail/:hubId/:packageId',
+        url: '/hubDetail/:hubId/:packageId/:mode',
         views: {
           'menuContent': {
             templateUrl: 'pages/app-hubDetail.html'

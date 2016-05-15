@@ -434,8 +434,8 @@ angular.module('Pakkage.ProfileController', [])
             || $scope.newUser.name == undefined || $scope.newUser.phone == undefined || $scope.newUser.address1 == undefined
             || ($scope.newUser.city == undefined && $scope.initialCity == undefined) || $scope.newUser.state == undefined || $scope.newUser.zipcode == undefined)
             {
-              console.log($scope.newUser.city);
-              console.log('fullFilled false girdi');
+              //console.log($scope.newUser.city);
+              //console.log('fullFilled false girdi');
               fullFilled = false;
             }
 

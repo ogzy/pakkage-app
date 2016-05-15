@@ -1,6 +1,6 @@
 <ion-view view-title="Edit Package" ng-controller="EditPackageCtrl">
     <ion-nav-buttons side="right">
-        <button class="button button-clear button-positive rightNavBarButton" ng-click="saveAsDraft()">
+        <button class="button button-clear button-positive rightNavBarButton" ng-click="saveAsDraft()" ng-show="status == 0 || status == 1">
             Save as Draft
         </button>
     </ion-nav-buttons>
@@ -17,6 +17,18 @@
                         <div>
                             <div class="item item-divider" style="margin-bottom:10px;">
                                 Package Receiver:
+                            </div>
+                            <!-- Status -->
+                            <div class="form-group form-groupForProfile" ng-show="newPackage.status != 0 && newPackage.status != 1">
+                                <a class="item" href="#" ng-show="mode =='readonly'"><div ><b>Status :</b>{{ friendlyStatus }}</div></a>
+                            </div>
+                            <!-- Hub -->
+                            <div class="form-group form-groupForProfile" ng-show="(newPackage.status == 2 || newPackage.status == 3 || newPackage.status == 5) && newPackage.hubs != undefined">
+                                <a class="item" ng-href="#/app/hubDetail/{{ newPackage.hubs._id}}/{{ newPackage._id }}/fromDb" ng-show="mode =='readonly'"><div ><b>Hub :</b>{{ newPackage.hubs.name }} (Click for detail)</div></a>
+                            </div>
+                            <!-- Driver -->
+                            <div class="form-group form-groupForProfile" ng-show="newPackage.status == 4">
+                                <a class="item" href="#" ng-show="mode =='readonly'"><div ><b>Driver :</b>{{ newPackage.drivers.name }}</div></a>
                             </div>
                             <!-- Name -->
                             <div class="form-group form-groupForProfile">
@@ -89,7 +101,7 @@
                         <!-- Scan for Hub and Driver -->
                         <button class="button button-energized button-block regButton" ng-show="mode =='readonly' && userType != 'Sender' && ((newPackage.status == 2 && userType == 'Hub') || (newPackage.status == 3 && userType == 'Driver')) " ng-click="scanFromPackageButton()"><i class="ion-qr-scanner"></i><span class="marLeft10">Scan Qr Code</span></button>
                         <!-- Scan for Sender -->
-                        <button class="button button-energized button-block regButton" ng-show="mode =='readonly' && userType == 'Sender' " ng-click="scanFromPackageForSender()"><i class="ion-qr-scanner"></i><span class="marLeft10">Scan Qr Code</span></button>
+                        <button class="button button-energized button-block regButton" ng-show="mode =='readonly' && userType == 'Sender' && (newPackage.status == 0 || newPackage.status == 1)" ng-click="scanFromPackageForSender()"><i class="ion-qr-scanner"></i><span class="marLeft10">Scan Qr Code</span></button>
                     </form>
                 </div>
             </div>

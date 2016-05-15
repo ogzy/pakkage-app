@@ -2,8 +2,8 @@ angular.module('Pakkage.TestService', [])
   .factory('ServiceTest', function($ionicLoading) {
     return {
       scan: function(purpose) {
-        console.log('PakkageBeta : Scan fonksiyonuna girdi')
-        console.log('PakkageBeta : scanmess = ' + JSON.stringify(this.scanMessages(purpose)))
+        //console.log('PakkageBeta : Scan fonksiyonuna girdi')
+        //console.log('PakkageBeta : scanmess = ' + JSON.stringify(this.scanMessages(purpose)))
         return { data : 'deneem' };
       },
       scanMessages: function(code) {

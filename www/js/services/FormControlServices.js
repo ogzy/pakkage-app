@@ -51,7 +51,7 @@ angular.module('Pakkage.FormControlServices', [])
             field = field.substring(0, field.length - 1);
         }
         //alert("\nKey Identifier : " + keyEvent.keyIdentifier + "\n" +"Which : " + keyEvent.which + "\n" + "Key Code : " + keyEvent.keyCode + "\n" + "Char Code : " + keyEvent.charCode + "\n" + "Code : " + keyEvent.code + "\n");
-        //console.log(keyEvent);
+        ////console.log(keyEvent);
         return field;
       }
     }
@@ -62,7 +62,7 @@ angular.module('Pakkage.FormControlServices', [])
       homePackagesFilter: function(filters, detailFilters) {
 
         //-- Set main filters for caching
-        console.log(filters.directionFilter);
+        //console.log(filters.directionFilter);
         $rootScope.statusFilter = filters.statusFilter;
         $rootScope.dateFilter = filters.dateFilter;
         $rootScope.directionFilter = filters.directionFilter;
@@ -127,7 +127,7 @@ angular.module('Pakkage.FormControlServices', [])
           }
 
         }
-        console.log(filteredPackages);
+        //console.log(filteredPackages);
         if (!filters.statusFilter && !filters.dateFilter && !filters.directionFilter)
           $rootScope.packages = LocalStorageService.get('packages');
         else
@@ -138,8 +138,8 @@ angular.module('Pakkage.FormControlServices', [])
           $rootScope.packages.push(filteredPackages);
         }*/
 
-        console.log($rootScope.packages);
-        console.log(typeof(filteredPackages));
+        //console.log($rootScope.packages);
+        //console.log(typeof(filteredPackages));
         $rootScope.$emit("callSyncPackagesMethod", {});
         //return filteredPackages;
       },
@@ -150,10 +150,7 @@ angular.module('Pakkage.FormControlServices', [])
           if(userType == 'Hub')
           {
             if ($rootScope.packages[i].hubs != undefined) {
-              if ($rootScope.packages[i].hubs.hubId === LocalStorageService.get('userId')) {
-                console.log('PakkageBeta : Silinmeden onceki d object : ' + JSON.stringify($rootScope.packages[i]));
-                //console.log('PakkageBeta : indexof : ' + $rootScope.packages.indexOf($rootScope.packages[i]));
-
+              if ($rootScope.packages[i].hubs._id === LocalStorageService.get('userId')) {
                 toMePackages.push($rootScope.packages[i]);
                 willSplice.push(i);
               }
@@ -161,10 +158,7 @@ angular.module('Pakkage.FormControlServices', [])
           }
           else if (userType == 'Driver') {
             if ($rootScope.packages[i].drivers != undefined) {
-              if ($rootScope.packages[i].drivers.hubId === LocalStorageService.get('userId')) {
-                console.log('PakkageBeta : Silinmeden onceki d object : ' + JSON.stringify($rootScope.packages[i]));
-                //console.log('PakkageBeta : indexof : ' + $rootScope.packages.indexOf($rootScope.packages[i]));
-
+              if ($rootScope.packages[i].drivers._id === LocalStorageService.get('userId')) {
                 toMePackages.push($rootScope.packages[i]);
                 willSplice.push(i);
               }
@@ -173,11 +167,8 @@ angular.module('Pakkage.FormControlServices', [])
 
         }
         for (var i = 0; i < willSplice.length; i++) {
-          $rootScope.packages.splice(willSplice[i], 1);
+          $rootScope.packages.splice(0, 1);
         }
-
-
-        console.log('PakkageBeta : toMePackages pure : ' + JSON.stringify(toMePackages));
         return toMePackages;
       }
     }

@@ -82,6 +82,12 @@ angular.module('Pakkage.ErrorcodeServices', [])
           case 121: //-- Forgot password
             returnMessage = 'Password Restore Code was expired.Please check your mail box for new restoration code.';
             break;
+          case 123: //-- Scan QR Code
+            returnMessage = 'This package couldn\t find in the system.';
+            break;
+          case 124: //-- Scan QR Code
+            returnMessage = 'This hub couldn\t find in the system.';
+            break;
           case "E100":
             returnMessage = 'Please put activation code';
             break;

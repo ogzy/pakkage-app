@@ -4,7 +4,7 @@ angular.module('Pakkage.HubsController', [])
       config.enableBack = false;
     });
     LoadingService.show();
-    console.log(LocalStorageService.get('userCity'));
+    //console.log(LocalStorageService.get('userCity'));
     $scope.packageId = $stateParams.packageId;
     $scope.hubs = [];
     var saltHubs = [],
@@ -106,16 +106,33 @@ angular.module('Pakkage.HubsController', [])
     }
   }])
 
-.controller('HubDetailCtrl', ['$scope', 'HubService', 'LoadingService', 'PopupService', 'moment', '$filter', '$state', '$rootScope', '$stateParams', '$ionicPopup', 'PackageService', 'ScanQR', function($scope, HubService, LoadingService, PopupService, moment, $filter, $state, $rootScope, $stateParams, $ionicPopup, PackageService, ScanQR) {
+.controller('HubDetailCtrl', ['$scope', 'HubService', 'LoadingService', 'PopupService', 'moment', '$filter', '$state', '$rootScope', '$stateParams', '$ionicPopup', 'PackageService', 'ScanQR','ProfileService','LocalStorageService',function($scope, HubService, LoadingService, PopupService, moment, $filter, $state, $rootScope, $stateParams, $ionicPopup, PackageService, ScanQR,ProfileService,LocalStorageService) {
   //LoadingService.show();
+  $scope.hub = {};
+  $scope.mode = $stateParams.mode;
 
-  $scope.hub = $filter('filter')($rootScope.availableHubs, function(hub) {
-    return hub._id == $stateParams.hubId
-  })[0];
-  $scope.hub.workingDays = '';
-  for (var i = 0; i < $scope.hub.daysOfOperations.length; i++) {
-    $scope.hub.workingDays += $scope.hub.daysOfOperations[i].value + ' ';
-  };
+  if($stateParams.mode != undefined)
+  {
+      ProfileService.getUserById($stateParams.hubId, LocalStorageService.get('token')).then(function(hub){
+        //console.log(hub);
+          $scope.hub = hub.data.user;
+          $scope.hub.workingDays = '';
+          for (var i = 0; i < $scope.hub.daysOfOperations.length; i++) {
+            $scope.hub.workingDays += $scope.hub.daysOfOperations[i].value + ' ';
+          };
+      });
+  }
+  else {
+    $scope.hub = $filter('filter')($rootScope.availableHubs, function(hub) {
+      return hub._id == $stateParams.hubId
+    })[0];
+    $scope.hub.workingDays = '';
+    for (var i = 0; i < $scope.hub.daysOfOperations.length; i++) {
+      $scope.hub.workingDays += $scope.hub.daysOfOperations[i].value + ' ';
+    };
+  }
+
+
 
   $scope.showProfilePicture = function() {
     var alertPopup = $ionicPopup.alert({

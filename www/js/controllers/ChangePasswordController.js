@@ -6,7 +6,7 @@ angular.module('Pakkage.ChangePassword', [])
     $scope.user = {};
     $scope.changePasswordButton = function(){
       LoadingService.show();
-      console.log($scope.user.newPassword);
+      //console.log($scope.user.newPassword);
       if($scope.user.newPassword  != $scope.user.confirmPassword)
       {
         LoadingService.hide();

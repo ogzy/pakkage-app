@@ -14,9 +14,9 @@ angular.module('Pakkage.MainController', [])
     $scope.approve = LocalStorageService.get('approve');
     $scope.userType = LocalStorageService.get('userType');
 
-    console.log('PakkageBeta: MainController approve : ' + $scope.approve);
-    console.log('PakkageBeta: MainController fullFilled : ' + $scope.fullFilled);
-    console.log('PakkageBeta: MainController userType : ' + $scope.userType);
+    //console.log('PakkageBeta: MainController approve : ' + $scope.approve);
+    //console.log('PakkageBeta: MainController fullFilled : ' + $scope.fullFilled);
+    //console.log('PakkageBeta: MainController userType : ' + $scope.userType);
 
     $scope.logout = function() {
       LocalStorageService.clear();
@@ -32,11 +32,11 @@ angular.module('Pakkage.MainController', [])
 
     $scope.refreshMenu = function() {
       ProfileService.getUserProfile(LocalStorageService.get('email'), LocalStorageService.get('token')).then(function(user) {
-          //console.log(JSON.stringify(login));
+          ////console.log(JSON.stringify(login));
 
           if (user.data.errorCode == 0) {
 
-            console.log(user.data.user);
+            //console.log(user.data.user);
             LocalStorageService.save('fullFilled', user.data.user.fullFilled);
             LocalStorageService.save('approve', user.data.user.approve);
             $scope.fullFilled = user.data.user.fullFilled;
@@ -67,7 +67,7 @@ angular.module('Pakkage.MainController', [])
       open: true
     }
 
-    console.log($scope.userType);
+    //console.log($scope.userType);
     var currentFilters = {
         statusFilter: $rootScope.statusFilter,
         dateFilter: $rootScope.dateFilter,
@@ -81,7 +81,7 @@ angular.module('Pakkage.MainController', [])
       };
 
     $scope.refreshPackages = function() {
-      console.log('$rootScope.directionFilter : ' + $rootScope.directionFilter);
+      //console.log('$rootScope.directionFilter : ' + $rootScope.directionFilter);
       LoadingService.show();
       var getPackagesPromise = PackageService.getPackages(LocalStorageService.get('userId'), LocalStorageService.get('email'), LocalStorageService.get('token'));
       getPackagesPromise.then(
@@ -93,7 +93,7 @@ angular.module('Pakkage.MainController', [])
             $scope.packages = $rootScope.packages;
             if ($scope.userType == 'Hub' || $scope.userType == 'Driver')
               $scope.toMePackages = PackageFilterService.filterHubPackages();
-            console.log('$rootScope.directionFilter : ' + $rootScope.directionFilter);
+            //console.log('$rootScope.directionFilter : ' + $rootScope.directionFilter);
             LoadingService.hide();
           } else {
             LoadingService.hide();
@@ -119,8 +119,8 @@ angular.module('Pakkage.MainController', [])
             PackageFilterService.homePackagesFilter(currentFilters, detailFilters);
           $scope.packages = $rootScope.packages;
           $scope.toMePackages = PackageFilterService.filterHubPackages();
-          console.log($scope.packages);
-          console.log($scope.toMePackages);
+          //console.log($scope.packages);
+          //console.log($scope.toMePackages);
           LoadingService.hide();
         } else {
           LoadingService.hide();

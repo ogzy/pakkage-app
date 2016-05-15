@@ -1,6 +1,6 @@
 <ion-view view-title="Home" ng-controller="HomeCtrl" cache-view="false" >
   <ion-nav-buttons side="right">
-    <button class="button button-clear button-positive rightNavBarButton" style="margin-right: 10px;" ng-click="scanQRFromHomePage()">
+    <button class="button button-clear button-positive rightNavBarButton" style="margin-right: 10px;" ng-click="scanQRFromHomePage()" ng-show="userType != 'Sender'">
       <i class="icon ion ion-qr-scanner"></i>
     </button>
     <button class="button button-clear button-positive rightNavBarButton" ng-click="openFilterModal()">

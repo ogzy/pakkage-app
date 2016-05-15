@@ -18,10 +18,10 @@ angular.module('Pakkage.LoginController', [])
             var loginPromise = LoginService.loginUser(email, password);
             loginPromise.then(
                 function (login) {
-                    //console.log(JSON.stringify(login));
-                    console.log('PakkageBeta: Login errorCode : ' + login.data.errorCode);
+                    ////console.log(JSON.stringify(login));
+                    //console.log('PakkageBeta: Login errorCode : ' + login.data.errorCode);
                     if (login.data.errorCode == 0) {
-                        //console.log(login.data.user.fullFilled);
+                        ////console.log(login.data.user.fullFilled);
                         LocalStorageService.save('fullFilled', login.data.user.fullFilled);
                         LocalStorageService.save('token', login.data.token);
                         LocalStorageService.save('isAuthenticated', true);
@@ -38,7 +38,7 @@ angular.module('Pakkage.LoginController', [])
                             $state.go("app.profile");
                         else
                             $state.go("app.home");
-                        //console.log(login.data.token);
+                        ////console.log(login.data.token);
 
                         LoadingService.hide();
                     } else {
@@ -77,13 +77,13 @@ angular.module('Pakkage.LoginController', [])
           $state.go('app.home');
         }, function(fail){
           // Fail get profile info
-          console.log('profile info fail', fail);
+          //console.log('profile info fail', fail);
         });
       };
 
       // This is the fail callback from the login method
       var fbLoginError = function(error){
-        console.log('fbLoginError', error);
+        //console.log('fbLoginError', error);
         $ionicLoading.hide();
       };
 
@@ -93,11 +93,11 @@ angular.module('Pakkage.LoginController', [])
 
         facebookConnectPlugin.api('/me?fields=email,name,location&access_token=' + authResponse.accessToken, null,
           function (response) {
-    				console.log(JSON.stringify(response));
+    				//console.log(JSON.stringify(response));
             info.resolve(response);
           },
           function (response) {
-    				console.log(JSON.stringify(response));
+    				//console.log(JSON.stringify(response));
             info.reject(response);
           }
         );
@@ -111,7 +111,7 @@ angular.module('Pakkage.LoginController', [])
             // The user is logged in and has authenticated your app, and response.authResponse supplies
             // the user's ID, a valid access token, a signed request, and the time the access token
             // and signed request each expire
-            console.log('getLoginStatus', success.status);
+            //console.log('getLoginStatus', success.status);
 
         		// Check if we have our user saved
         		var user = FacebookService.getUser('facebook');
@@ -131,7 +131,7 @@ angular.module('Pakkage.LoginController', [])
     						$state.go('app.home');
     					}, function(fail){
     						// Fail get profile info
-    						console.log('profile info fail', fail);
+    						//console.log('profile info fail', fail);
     					});
     				}else{
     					$state.go('app.home');
@@ -142,7 +142,7 @@ angular.module('Pakkage.LoginController', [])
             // Else the person is not logged into Facebook,
     				// so we're not sure if they are logged into this app or not.
 
-    				console.log('getLoginStatus', success.status);
+    				//console.log('getLoginStatus', success.status);
 
     				$ionicLoading.show({
               template: 'Logging in...'
@@ -243,7 +243,7 @@ angular.module('Pakkage.LoginController', [])
             var forgotVerifyPromise = ForgotPassService.forgotVerify(email, restoreCode);
             forgotVerifyPromise.then(
                 function (response) {
-                    //console.log(JSON.stringify(response));
+                    ////console.log(JSON.stringify(response));
                     if (response.data.errorCode == 0) {
                         LoadingService.hide();
                         PopupService.alert('Info','S101').then(function () {

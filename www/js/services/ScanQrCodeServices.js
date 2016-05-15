@@ -3,13 +3,13 @@ angular.module('Pakkage.ScanQrCodeService', [])
     return {
       scan: function(purpose) {
         //--  Bazı sorunlar çıkardı.Şimdilik kullanılmıyor
-        console.log('PakkageBeta : Scan fonksiyonuna girdi')
+        //console.log('PakkageBeta : Scan fonksiyonuna girdi')
         document.addEventListener("deviceready", function() {
-          console.log('PakkageBeta : Scan device ready')
-          console.log('PakkageBeta : scanmess = ' + JSON.stringify(scanMessages(purpose)))
+          //console.log('PakkageBeta : Scan device ready')
+          //console.log('PakkageBeta : scanmess = ' + JSON.stringify(scanMessages(purpose)))
           cloudSky.zBar.scan(scanMessages(purpose),
             function(success) {
-              console.log('PakkageBeta : camera açtı')
+              //console.log('PakkageBeta : camera açtı')
               return success;
             },
             function(error) {});

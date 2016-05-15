@@ -25,10 +25,10 @@
           <i class="icon ion ion-ios-home size-21" style="margin-right:15px" ></i>Home
         </ion-item>
         <ion-item menu-close href="#/app/profile"><i class="icon ion ion-person size-21" style="margin-right:15px"></i>Profile</ion-item>
-        <ion-item menu-close  ng-if="approve || userType == 'Sender'">
+        <ion-item menu-close  ng-if="approve || userType == 'Sender'" ng-click="navigateCreatePackage()">
           <i class="icon ion ion-cube size-21" style="margin-right:15px"></i>
           <!-- Disable this link for non completed profile -->
-          <a ng-click="navigateCreatePackage()" class="menuALink">Send A Package</a>
+          Send A Package
           <!-- <span ng-if="!fullFilled" ng-click="showFullFilledPopup()">Send A Package</span>-->
         </ion-item>
         <!-- <ion-item menu-close href="#/app/filter"><i class="icon ion ion-android-search size-21" style="margin-right:15px"></i>     Search</ion-item> -->

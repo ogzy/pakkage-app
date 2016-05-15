@@ -17,7 +17,7 @@ angular.module('Pakkage.PackageController', [])
     };
 
     $rootScope.$watch('clearedPackage', function(newValue, oldValue) {
-      console.log($rootScope.clearedPackage);
+      //console.log($rootScope.clearedPackage);
       $scope.newPackage = $rootScope.clearedPackage;
       /*if (LocalStorageService.get('fullFilled') != true) {
           PopupService.alert('Warning','E115').then(function(){
@@ -230,7 +230,7 @@ angular.module('Pakkage.PackageController', [])
               LoadingService.show();
 
               if (click) {
-                //console.log($scope.imageName);
+                ////console.log($scope.imageName);
                 if ($scope.imageName != '') {
                   if ($scope.imageType == 0)
                     var imagePath = $scope.imageName;
@@ -321,7 +321,7 @@ angular.module('Pakkage.PackageController', [])
                   function(process) {
                     LoadingService.hide();
                     if (process.data.errorCode == 0) {
-                      console.log('Pakkage : ' + JSON.stringify(process.data));
+                      //console.log('Pakkage : ' + JSON.stringify(process.data));
                       $state.go('app.availableHubs', {
                         packageId: process.data.package._id
                       });
@@ -360,7 +360,7 @@ angular.module('Pakkage.PackageController', [])
                         function(process) {
                           LoadingService.hide();
                           if (process.data.errorCode == 0) {
-                            console.log('Pakkage : ' + JSON.stringify(process.data));
+                            //console.log('Pakkage : ' + JSON.stringify(process.data));
                             $state.go('app.availableHubs', {
                               packageId: process.data.package._id
                             });
@@ -488,6 +488,7 @@ angular.module('Pakkage.PackageController', [])
     $scope.initialCity = '';
     $scope.mode = $stateParams.mode;
     $scope.userType = LocalStorageService.get('userType');
+    $scope.friendlyStatus = '';
     var saltPackagePicture = '';
     $scope.cities = LocalStorageService.get('cities')[0].cities;
     $scope.$watch('newPackage.city', function(newValue, oldValue) {
@@ -505,7 +506,8 @@ angular.module('Pakkage.PackageController', [])
     getPackagePromise.then(
       function(package) {
         if (package.data.errorCode == 0) {
-          console.log(package.data.package.receiver[0].address[0].city);
+          //console.log(package.data.package);
+          $scope.newPackage._id =  package.data.package._id;
           $scope.newPackage.comment = package.data.package.comment;
           $scope.newPackage.name = package.data.package.receiver[0].name;
           $scope.newPackage.email = package.data.package.receiver[0].email;
@@ -521,11 +523,33 @@ angular.module('Pakkage.PackageController', [])
 
           if (package.data.package.packageImage == undefined)
             package.data.package.packageImage = 'noPackage.png';
-
+          if (package.data.package.hubs != undefined)
+            $scope.newPackage.hubs = package.data.package.hubs;
+          if (package.data.package.drivers != undefined)
+            $scope.newPackage.drivers = package.data.package.drivers;
 
           $scope.packagePicture = 'http://46.101.115.69:9096/uploads/packageImages/thumbnail/' + package.data.package.packageImage;
           saltPackagePicture = package.data.package.packageImage;
-          console.log('PakkageBeta : package statuus : ' + $scope.newPackage.status);
+          //console.log('PakkageBeta : package statuus : ' + $scope.newPackage.status);
+          switch ($scope.newPackage.status) {
+            case 2:
+              $scope.friendlyStatus = 'Delivered to Org. Hub';
+              break;
+            case 3:
+              $scope.friendlyStatus = 'Picked up by Org. Hub';
+              break;
+            case 4:
+              $scope.friendlyStatus = 'Picked up by Driver';
+              break;
+            case 5:
+              $scope.friendlyStatus = 'Delivered to Dest. Hub';
+              break;
+            case 6:
+              $scope.friendlyStatus = 'Received';
+              break;
+            default:
+
+          }
           LoadingService.hide();
         } else {
           LoadingService.hide();
@@ -835,7 +859,7 @@ angular.module('Pakkage.PackageController', [])
                   function(process) {
                     LoadingService.hide();
                     if (process.data.errorCode == 0) {
-                      console.log('Pakkage : ' + JSON.stringify(process.data));
+                      //console.log('Pakkage : ' + JSON.stringify(process.data));
                       $state.go('app.availableHubs', {
                         packageId: process.data.package._id
                       });
@@ -875,7 +899,7 @@ angular.module('Pakkage.PackageController', [])
                         function(process) {
                           LoadingService.hide();
                           if (process.data.errorCode == 0) {
-                            console.log('Pakkage : ' + JSON.stringify(process.data));
+                            //console.log('Pakkage : ' + JSON.stringify(process.data));
                             $state.go('app.availableHubs', {
                               packageId: process.data.package._id
                             });
