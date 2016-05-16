@@ -9,6 +9,13 @@
     "onezone-datepicker": "*",
     "angular-bootstrap": "~0.14.3",
     "angular-local-storage": "~0.2.3",
-    "angucomplete-alt": "~2.2.0"
+    "angucomplete-alt": "~2.2.0",
+    "angular-animate": "^1.5.5",
+    "leaflet": "^0.7.7"
+  },
+  "resolutions": {
+    "angular-animate": "^1.5.5",
+    "angular": "1.5.5",
+    "angular-sanitize": "1.5.3"
   }
 }
