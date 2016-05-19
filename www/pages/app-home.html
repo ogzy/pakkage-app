@@ -8,7 +8,7 @@
     </button>
   </ion-nav-buttons>
   <ion-content class="home-with-background">
-    <ion-refresher pulling-text="Pull to refresh..." on-refresh="refreshPackages()">
+    <ion-refresher pulling-text="Pull to refresh..." on-refresh="refreshPackages()" refresher-class="scroll-refresher">
     </ion-refresher>
     <div class="list" ng-show="packages.length > 0 && userType == 'Sender'">
       <div class="item item-divider" ng-show="(packages | filter : { status: 0 }).length > 0">

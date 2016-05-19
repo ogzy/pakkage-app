@@ -4,9 +4,31 @@ angular.module('Pakkage.MapController', [])
         istanbul: {
             lat: 41.045002,
             lng: 29.001957,
-            zoom: 18
+            zoom: 12
         },
+        layers: {
 
+                  baselayers: {
+                    googleRoadmap: {
+                        name: 'Google Streets',
+                        layerType: 'ROADMAP',
+                        type: 'google'
+                    },
+                      googleTerrain: {
+                          name: 'Google Terrain',
+                          layerType: 'TERRAIN',
+                          type: 'google'
+                      },
+                      googleHybrid: {
+                        name: 'Google Hybrid',
+                        layerType: 'HYBRID',
+                        type: 'google'
+                    }
+
+                  }
+
+
+        },
         markers: {
 
             uskudar: {
@@ -14,10 +36,7 @@ angular.module('Pakkage.MapController', [])
                 lat: 41.011559,
                 lng: 29.052887,
                 label: {
-                    message: "Üsküdar da bir yer",
-                    options: {
-                        noHide: true
-                    }
+                    message: "<h1>Üsküdar da bir yer</h1><br /> alt satır"
                 }
             },
 
@@ -26,10 +45,7 @@ angular.module('Pakkage.MapController', [])
                 lat: 41.045738,
                 lng: 29.096907,
                 label: {
-                    message: "Ümraniyede bir yer ",
-                    options: {
-                        noHide: true
-                    }
+                    message: "Ümraniyede bir yer "
                 }
             }
         },

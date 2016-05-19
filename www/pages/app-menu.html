@@ -18,7 +18,7 @@
     </ion-header-bar>
 
     <ion-content ng-controller="MenuCtrl">
-      <ion-refresher pulling-text="Pull to refresh..." on-refresh="refreshMenu()">
+      <ion-refresher pulling-text="Pull to refresh..." refresher-class="scroll-refresher-left-menu" on-refresh="refreshMenu()">
       </ion-refresher>
       <ion-list >
         <ion-item menu-close href="#/app/home" ng-if="approve || userType == 'Sender'">

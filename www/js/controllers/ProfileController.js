@@ -403,8 +403,6 @@ angular.module('Pakkage.ProfileController', [])
       LoadingService.show();
 
       var fullFilled = false;
-      LogService.visibleLog('City ne olarak gidecek : ' + JSON.stringify($scope.newUser.city));
-      LogService.visibleLog('update button initial city : ' + JSON.stringify($scope.initialCity));
       switch (LocalStorageService.get('userType')) {
         case 'Driver':
         if ($scope.driveToS.length == 0 || $scope.newUser.licenseId == undefined || $scope.newUser.licenseIssueState == undefined || $scope.newUser.vehicle == undefined ||

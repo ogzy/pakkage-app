@@ -1,8 +1,9 @@
 <ion-view view-title="Your Profile" ng-controller="ProfileCtrl" style="overflow: scroll !important;">
     <ion-content >
         <ion-refresher
+            refresher-class="scroll-refresher"
             pulling-text="Pull to refresh..."
-            on-refresh="refreshProfile()">
+            on-refresh="refreshProfile()" >
         </ion-refresher>
         <div class="container-fluid padZero">
             <div class="row-fluid">
@@ -74,7 +75,7 @@
                             </div>
                             <!-- Licence ID -->
                             <div class="form-group form-groupForProfile" ng-show="showForDriver == true">
-                                <input type="text" class="form-control form-controlForProfile" placeholder="Licence ID" ng-model="newUser.licenseId" >
+                                <input type="text" class="form-control form-controlForProfile" placeholder="Licence ID" ng-model="newUser.licenseID" >
                             </div>
                             <!-- Licence Photo -->
                             <div class="form-group form-groupForProfile" ng-show="showForDriver == true">
