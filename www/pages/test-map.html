@@ -2,9 +2,10 @@
   <ion-content class="home-with-background">
     <div class="container-fluid padZero">
       <div class="row-fluid" style="margin-top: 20px;margin-left: 15px;margin-right: 15px;">
-        <leaflet lf-center="istanbul" layers="layers" markers="markers" height="480px" width="100%"></leaflet>
+        <div id="map_canvas"></div>
         <h1>Marker clustering example without layers</h1>
       </div>
     </div>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCk0wHvx7Xq_gZLoGta7MB9Jy1X4SdaCRs&callback=initMap" async defer></script>
   </ion-content>
 </ion-view>

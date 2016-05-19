@@ -201,6 +201,10 @@
         },
         "org.apache.cordova.camera": {
             "PACKAGE_NAME": "net.pakkage.beta"
+        },
+        "plugin.google.maps": {
+            "API_KEY_FOR_ANDROID": "AIzaSyCk0wHvx7Xq_gZLoGta7MB9Jy1X4SdaCRs",
+            "PACKAGE_NAME": "net.pakkage.beta"
         }
     },
     "dependent_plugins": {}

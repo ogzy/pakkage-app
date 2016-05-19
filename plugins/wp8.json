@@ -50,6 +50,9 @@
         },
         "org.apache.cordova.camera": {
             "PACKAGE_NAME": "{48d913f0-1dde-11e6-bd58-f94698919ad5}"
+        },
+        "plugin.google.maps": {
+            "PACKAGE_NAME": "{48d913f0-1dde-11e6-bd58-f94698919ad5}"
         }
     },
     "dependent_plugins": {}
