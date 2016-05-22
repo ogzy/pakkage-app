@@ -114,15 +114,24 @@
         "is_top_level": true,
         "variables": {}
     },
-    "plugin.google.maps": {
+    "cordova-plugin-armsoft-googlemaps": {
         "source": {
             "type": "registry",
-            "id": "cordova-plugin-googlemaps"
+            "id": "cordova-plugin-armsoft-googlemaps"
         },
         "is_top_level": true,
         "variables": {
-            "API_KEY_FOR_ANDROID": "AIzaSyCk0wHvx7Xq_gZLoGta7MB9Jy1X4SdaCRs",
-            "API_KEY_FOR_IOS": "AIzaSyCQugXETF-L_PXDLCIJboWmB1jK3aWygH4"
+            "API_KEY_FOR_ANDROID": "AIzaSyBUOfYHdo-J_r7v6mxgSXOCDundW6MeYNk"
         }
+    },
+    "cordova-google-play-services": {
+        "source": {
+            "type": "git",
+            "url": "https://github.com/roberthovhannisyan/cordova-plugin-google-play-services",
+            "subdir": ".",
+            "ref": "v25.0.0"
+        },
+        "is_top_level": false,
+        "variables": {}
     }
 }
