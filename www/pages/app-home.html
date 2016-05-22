@@ -64,7 +64,7 @@
       <div class="noPackage">No packages found
         <img src="img/vector-box.jpg" style="opacity: 0.1;" /></div>
     </div>
-    <uib-accordion close-others="oneAtATime" ng-show="userType == 'Hub' || userType == 'Driver'">
+    <uib-accordion close-others="oneAtATime" ng-show="userType == 'Hub'">
       <!--<button class="button button-positive avHubsScanButton" ng-click="scanQRFromHomePage()">
         <i class="icon ion ion-qr-scanner"></i>  Scan QR Code
       </button>-->
@@ -148,6 +148,9 @@
         </a>
       </uib-accordion-group>
     </uib-accordion>
+    <div id="driverHomeMap" data-tap-disabled="true" ng-show="userType == 'Driver'">
+
+    </div>
     <script type="text/ng-template" id="openFilterModalContent.html">
       <div class="modal-header">
         <h3 class="modal-title">Select Filter : </h3>

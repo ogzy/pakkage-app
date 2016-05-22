@@ -54,7 +54,7 @@ angular.module('Pakkage.MainController', [])
     };
 
   }])
-  .controller('HomeCtrl', ['$scope', 'LocalStorageService', '$state', 'PackageService', 'PopupService', 'LoadingService', '$uibModal', '$rootScope', 'PackageFilterService', '$interval', '$ionicHistory','ScanQR', function($scope, LocalStorageService, $state, PackageService, PopupService, LoadingService, $uibModal, $rootScope, PackageFilterService, $interval, $ionicHistory,ScanQR) {
+  .controller('HomeCtrl', ['$scope', 'LocalStorageService', '$state', 'PackageService', 'PopupService', 'LoadingService', '$uibModal', '$rootScope', 'PackageFilterService', '$interval', '$ionicHistory','ScanQR','$timeout','$cordovaGeolocation', function($scope, LocalStorageService, $state, PackageService, PopupService, LoadingService, $uibModal, $rootScope, PackageFilterService, $interval, $ionicHistory,ScanQR,$timeout,$cordovaGeolocation) {
     LoadingService.show();
     $scope.$on('$ionicView.beforeEnter', function(e, config) {
       config.enableBack = false;
@@ -206,6 +206,128 @@ angular.module('Pakkage.MainController', [])
       }, false);
 
     };
+    if(LocalStorageService.get('userType') == 'Driver')
+    {
+      LoadingService.show();
+
+      $cordovaGeolocation
+        .getCurrentPosition()
+        .then(function(positionSuccess) {
+
+          var map = new google.maps.Map(document.getElementById('driverHomeMap'), {
+            center: {
+              lat: positionSuccess.coords.latitude,
+              lng: positionSuccess.coords.longitude
+            },
+            zoom: 11,
+            disableDefaultUI: true,
+            zoomControl: true,
+            mapTypeControl: true,
+            scaleControl: true
+          }),
+          currentLatLng = new google.maps.LatLng(positionSuccess.coords.latitude,positionSuccess.coords.longitude),
+          currentLatLng2 = new google.maps.LatLng(40.830530, 29.299939),
+          currentLatLng3 = new google.maps.LatLng(40.900888, 29.309802),
+          currentLatLng4 = new google.maps.LatLng(40.939111, 29.246596),
+
+          thisIsYou = new google.maps.InfoWindow({
+              content: '<b>This is you</b>'
+            }),
+          currentMarker = new google.maps.Marker({
+              position: currentLatLng,
+              animation: google.maps.Animation.DROP
+          }),
+          currentCircle = new google.maps.Circle({
+            strokeColor: '#136BFF',
+            strokeOpacity: 0.5,
+            strokeWeight: 1,
+            fillColor: '#89B3F9',
+            fillOpacity: 0.1,
+            map: map,
+            center: {
+              lat: positionSuccess.coords.latitude,
+              lng: positionSuccess.coords.longitude
+            },
+            radius: 1000*15
+          }),
+          currentMarker2 = new google.maps.Marker({
+              position: currentLatLng2,
+              animation: google.maps.Animation.DROP
+          }),
+          currentMarker3 = new google.maps.Marker({
+              position: currentLatLng3,
+              animation: google.maps.Animation.DROP
+          }),
+          currentMarker4 = new google.maps.Marker({
+              position: currentLatLng4,
+              animation: google.maps.Animation.DROP
+          });
+
+          currentMarker.setMap(map);
+          $timeout(function () {
+            currentMarker2.setMap(map);
+            currentMarker3.setMap(map);
+            currentMarker4.setMap(map);
+          }, 3000);
+
+          var dragged = 0;
+          map.addListener('tilesloaded', function() {
+            // 3 seconds after the center of the map has changed, pan back to the
+            // marker.
+            console.log('tilesloaded')
+            window.setTimeout(function() {
+              console.log(' after timeout tilesloaded')
+              if(dragged == 0)
+                thisIsYou.open(map, currentMarker);
+                dragged++;
+            }, 1000);
+          });
+
+              var currentPosition = {
+                lat: positionSuccess.coords.latitude,
+                lng: positionSuccess.coords.longitude
+              }
+
+
+
+
+              var directionsDisplay = new google.maps.DirectionsRenderer;
+              var directionsService = new google.maps.DirectionsService;
+
+              directionsService.route({
+                origin: {
+                  lat: currentPosition.lat,
+                  lng:currentPosition.lng
+                },
+                destination: {
+                    lat: 40.830530,
+                    lng: 29.299939
+                },
+                travelMode: google.maps.TravelMode.DRIVING
+              }, function(response, status) {
+                if (status === google.maps.DirectionsStatus.OK) {
+                  directionsDisplay.setDirections(response);
+                } else {
+                  window.alert('Directions request failed due to ' + status);
+                }
+              });
+
+               directionsDisplay.setMap(map);
+              // To add the marker to the map, call setMap();
+
+              LoadingService.hide();
+
+
+
+        }, function(error) {
+          console.log('Map Error')
+        });
+
+
+
+    }
+
+
 
   }])
   .controller('OpenFilterModalInstanceCtrl', ['$scope', '$uibModalInstance', 'filters', 'moment', 'LocalStorageService', '$filter', '$rootScope', 'PackageFilterService', 'PopupService', '$uibModal', function($scope, $uibModalInstance, filters, moment, LocalStorageService, $filter, $rootScope, PackageFilterService, PopupService, $uibModal) {

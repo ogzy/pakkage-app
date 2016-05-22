@@ -109,6 +109,14 @@ angular.module('Pakkage.routes', [])
             templateUrl: 'pages/app-changePassword.html'
           }
         }
+      })
+      .state('app.testmap', {
+        url: '/testmap',
+        views: {
+          'menuContent': {
+            templateUrl: 'pages/test-map.html'
+          }
+        }
       });
 
     $urlRouterProvider.otherwise('/tab/login/undefined/undefined');

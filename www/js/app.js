@@ -1,10 +1,10 @@
-angular.module('Pakkage', ['ionic', 'ngCordova', 'Pakkage.LoginController', 'Pakkage.RegisterController', 'Pakkage.MainController', 'Pakkage.PackageController', 'Pakkage.ProfileController', 'Pakkage.HubsController', 'Pakkage.BackendServices', 'Pakkage.ErrorcodeServices', 'Pakkage.UIServices', 'Pakkage.FormControlServices', 'Pakkage.SocialLoginService', 'Pakkage.ScanQrCodeService','Pakkage.TestService', 'Pakkage.ChangePassword', 'Pakkage.routes', 'Pakkage.directives', 'ui.bootstrap', 'LocalStorageModule', 'ngOpenFB', 'angucomplete-alt', 'angularMoment'])
+angular.module('Pakkage', ['ionic', 'ngCordova', 'Pakkage.LoginController', 'Pakkage.RegisterController', 'Pakkage.MainController', 'Pakkage.PackageController', 'Pakkage.ProfileController', 'Pakkage.HubsController', 'Pakkage.MapController', 'Pakkage.BackendServices', 'Pakkage.ErrorcodeServices', 'Pakkage.UIServices', 'Pakkage.FormControlServices', 'Pakkage.SocialLoginService', 'Pakkage.ScanQrCodeService','Pakkage.TestService','Pakkage.MapService', 'Pakkage.ChangePassword', 'Pakkage.routes', 'Pakkage.directives', 'ui.bootstrap', 'LocalStorageModule', 'ngOpenFB', 'angucomplete-alt', 'angularMoment'])
   .config(
     function(localStorageServiceProvider) {
       localStorageServiceProvider.setPrefix('pakkage').setStorageType('localStorage');
     }
   )
-  .run(function($ionicPlatform, $templateCache, $rootScope, LocalStorageService, ProfileService, $cordovaNetwork, PopupService, LoadingService, $location, StateService, $interval, $state) {
+  .run(function($ionicPlatform, $templateCache, $rootScope, LocalStorageService, ProfileService, $cordovaNetwork, PopupService, LoadingService, $location, StateService, $interval, $state,$cordovaGeolocation) {
     $ionicPlatform.ready(function() {
 
       if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
@@ -153,6 +153,13 @@ angular.module('Pakkage', ['ionic', 'ngCordova', 'Pakkage.LoginController', 'Pak
           }
         })
     });
+
+
+
+
+    navigator.geolocation.getCurrentPosition(function(positionSuccess){
+
+    },function(err){ console.log('error : ' + JSON.stringify(err))});
 
     if (LocalStorageService.get('isAuthenticated') == true) {
       console.log('Pakkage Log : is authen:' + LocalStorageService.get('isAuthenticated'));
