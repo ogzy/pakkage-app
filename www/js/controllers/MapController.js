@@ -1,16 +1,46 @@
 angular.module('Pakkage.MapController', [])
   .controller('MapCtrl', ['$scope', '$state', 'LoadingService', function($scope, $state, LoadingService) {
+    // Getting the map selector in DOM
+        var div = document.getElementById("map_canvas");
 
-      // Define a div tag with id="map_canvas"
-      var mapDiv = document.getElementById("map_canvas");
+        // Invoking Map using Google Map SDK v2 by dubcanada
+        var map = plugin.google.maps.Map.getMap(div,{
+            'camera': {
+                'latLng': setPosition(-19.9178713, -43.9603117),
+                'zoom': 10
+            }
+        });
 
-      // Initialize the map plugin
-      var map = plugin.google.maps.Map.getMap(mapDiv);
+        // Capturing event when Map load are ready.
+        map.addEventListener(plugin.google.maps.event.MAP_READY, function(){
 
-      // You have to wait the MAP_READY event.
-      map.on(plugin.google.maps.event.MAP_READY, onMapInit);
-    
+            // Defining markers for demo
+            var markers = [{
+                position: setPosition(-19.9178713, -43.9603117),
+                title: "Marker 1"
+            }, {
+                position: setPosition(-19.8363826, -43.9787167),
+                title: "Marker 2"
+            }];
 
-    function onMapInit(map) {
-    }
+            // Bind markers
+            for (var i = 0; i < markers.length; i++) {
+                map.addMarker({
+                    'marker': markers[i],
+                    'position': markers[i].position
+                }, function(marker) {
+
+                    // Defining event for each marker
+                    marker.on("click", function() {
+                        alert(marker.get('marker').title);
+                    });
+
+                });
+            }
+        });
+
+        // Function that return a LatLng Object to Map
+        function setPosition(lat, lng) {
+            return new plugin.google.maps.LatLng(lat, lng);
+        }
   }])

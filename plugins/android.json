@@ -12,10 +12,6 @@
             "FABRIC_API_SECRET": "4e57a8baae4e709047520a14f8e72cb31e912d26062cabb8c99096d197af6208",
             "PACKAGE_NAME": "net.pakkage.beta"
         },
-        "cordova-plugin-armsoft-googlemaps": {
-            "API_KEY_FOR_ANDROID": "AIzaSyBUOfYHdo-J_r7v6mxgSXOCDundW6MeYNk",
-            "PACKAGE_NAME": "net.pakkage.beta"
-        },
         "cordova-plugin-console": {
             "PACKAGE_NAME": "net.pakkage.beta"
         },
@@ -32,6 +28,10 @@
             "PACKAGE_NAME": "net.pakkage.beta"
         },
         "cordova-plugin-geolocation": {
+            "PACKAGE_NAME": "net.pakkage.beta"
+        },
+        "cordova-plugin-googlemaps": {
+            "API_KEY_FOR_ANDROID": "AIzaSyCecj5CxENC3MDY5Mb8okU-h2AiKV38A14",
             "PACKAGE_NAME": "net.pakkage.beta"
         },
         "cordova-plugin-inappbrowser": {
@@ -56,9 +56,5 @@
             "PACKAGE_NAME": "net.pakkage.beta"
         }
     },
-    "dependent_plugins": {
-        "cordova-google-play-services": {
-            "PACKAGE_NAME": "net.pakkage.beta"
-        }
-    }
+    "dependent_plugins": {}
 }
