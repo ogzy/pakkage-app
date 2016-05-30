@@ -117,7 +117,7 @@
     "cordova-plugin-googlemaps": {
         "source": {
             "type": "git",
-            "url": "https://github.com/wf9a5m75/phonegap-googlemaps-plugin.git",
+            "url": "https://github.com/phonegap-googlemaps-plugin/cordova-plugin-googlemaps",
             "subdir": "."
         },
         "is_top_level": true,
