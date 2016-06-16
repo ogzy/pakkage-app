@@ -29,31 +29,6 @@
         },
         "cordova-plugin-geolocation": {
             "PACKAGE_NAME": "net.pakkage.beta"
-        },
-        "cordova-plugin-googlemaps": {
-            "API_KEY_FOR_ANDROID": "AIzaSyCecj5CxENC3MDY5Mb8okU-h2AiKV38A14",
-            "PACKAGE_NAME": "net.pakkage.beta"
-        },
-        "cordova-plugin-inappbrowser": {
-            "PACKAGE_NAME": "net.pakkage.beta"
-        },
-        "cordova-plugin-network-information": {
-            "PACKAGE_NAME": "net.pakkage.beta"
-        },
-        "cordova-plugin-splashscreen": {
-            "PACKAGE_NAME": "net.pakkage.beta"
-        },
-        "cordova-plugin-statusbar": {
-            "PACKAGE_NAME": "net.pakkage.beta"
-        },
-        "cordova-plugin-whitelist": {
-            "PACKAGE_NAME": "net.pakkage.beta"
-        },
-        "ionic-plugin-keyboard": {
-            "PACKAGE_NAME": "net.pakkage.beta"
-        },
-        "org.apache.cordova.camera": {
-            "PACKAGE_NAME": "net.pakkage.beta"
         }
     },
     "dependent_plugins": {}
