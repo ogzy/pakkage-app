@@ -115,7 +115,7 @@ myApp.config(function (localStorageServiceProvider) {
 });
 ```
 
-For local testing (when you are testing on 46.101.115.69) set the domain to an empty string ''. Setting the domain to '46.101.115.69' will not work on all browsers (eg. Chrome) since some browsers only allow you to set domain cookies for registry controlled domains, i.e. something ending in .com or so, but not IPs **or intranet hostnames** like localhost. </br>
+For local testing (when you are testing on 192.99.176.14) set the domain to an empty string ''. Setting the domain to '192.99.176.14' will not work on all browsers (eg. Chrome) since some browsers only allow you to set domain cookies for registry controlled domains, i.e. something ending in .com or so, but not IPs **or intranet hostnames** like localhost. </br>
 
 ###setNotify
 Send signals for each of the following actions:<br/>

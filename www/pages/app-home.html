@@ -15,7 +15,7 @@
         Draft
       </div>
       <a class="item item-thumbnail-left transItem" ng-click="editPackage(package._id,'edit')" ng-repeat="package in packages | filter:{ status: 0 }">
-        <img ng-src="http://46.101.115.69:9096/uploads/packageImages/thumbnail/{{package.packageImage}}">
+        <img ng-src="http://192.99.176.14:9096/uploads/packageImages/thumbnail/{{package.packageImage}}">
         <h2>{{package.receiver[0].name}}</h2>
         <p>{{package.receiver[0].address[0].address1 + ' ' + package.receiver[0].address[0].city + ' ' + package.receiver[0].address[0].state + ' ' + package.receiver[0].address[0].zipCode}}</p>
         <p ng-show="package.receiver[0].email != ''">Email : {{package.receiver[0].email}}</p>
@@ -26,7 +26,7 @@
         Ready to Send
       </div>
       <a class="item item-thumbnail-left transItem" ng-click="editPackage(package._id,'edit')" ng-repeat="package in packages | filter:{ status: 1 }">
-        <img ng-src="http://46.101.115.69:9096/uploads/packageImages/thumbnail/{{package.packageImage}}">
+        <img ng-src="http://192.99.176.14:9096/uploads/packageImages/thumbnail/{{package.packageImage}}">
         <h2>{{package.receiver[0].name}}</h2>
         <p>{{package.receiver[0].address[0].address1 + ' ' + package.receiver[0].address[0].city + ' ' + package.receiver[0].address[0].state + ' ' + package.receiver[0].address[0].zipCode}}</p>
         <p ng-show="package.receiver[0].email != ''">Email : {{package.receiver[0].email}}</p>
@@ -36,7 +36,7 @@
         To be Accepted by Org. Hub
       </div>
       <a class="item item-thumbnail-left transItem" ng-click="editPackage(package._id,'readonly')" ng-repeat="package in packages | filter:{ status: 2 }">
-        <img ng-src="http://46.101.115.69:9096/uploads/packageImages/thumbnail/{{package.packageImage}}">
+        <img ng-src="http://192.99.176.14:9096/uploads/packageImages/thumbnail/{{package.packageImage}}">
 
         <h2>{{package.receiver[0].name}}</h2>
         <p>{{package.receiver[0].address[0].address1 + ' ' + package.receiver[0].address[0].city + ' ' + package.receiver[0].address[0].state + ' ' + package.receiver[0].address[0].zipCode}}</p>
@@ -45,7 +45,7 @@
         At Org. Hub
       </div>
       <a class="item item-thumbnail-left transItem" ng-click="editPackage(package._id,'readonly')" ng-repeat="package in packages | filter:{ status: 3 }">
-        <img ng-src="http://46.101.115.69:9096/uploads/packageImages/thumbnail/{{package.packageImage}}">
+        <img ng-src="http://192.99.176.14:9096/uploads/packageImages/thumbnail/{{package.packageImage}}">
 
         <h2>{{package.receiver[0].name}}</h2>
         <p>{{package.receiver[0].address[0].address1 + ' ' + package.receiver[0].address[0].city + ' ' + package.receiver[0].address[0].state + ' ' + package.receiver[0].address[0].zipCode}}</p>
@@ -54,7 +54,7 @@
         Picked up by Driver
       </div>
       <a class="item item-thumbnail-left transItem" ng-click="editPackage(package._id,'readonly')" ng-repeat="package in packages | filter:{ status: 4 }">
-        <img ng-src="http://46.101.115.69:9096/uploads/packageImages/thumbnail/{{package.packageImage}}">
+        <img ng-src="http://192.99.176.14:9096/uploads/packageImages/thumbnail/{{package.packageImage}}">
 
         <h2>{{package.receiver[0].name}}</h2>
         <p>{{package.receiver[0].address[0].address1 + ' ' + package.receiver[0].address[0].city + ' ' + package.receiver[0].address[0].state + ' ' + package.receiver[0].address[0].zipCode}}</p>
@@ -81,7 +81,7 @@
           Pending to Accept
         </div>
         <a class="item item-thumbnail-left transItem" ng-click="editPackage(package._id,'readonly')" ng-repeat="package in toMePackages | filter:{ status: 2 }">
-          <img ng-src="http://46.101.115.69:9096/uploads/packageImages/thumbnail/{{package.packageImage}}">
+          <img ng-src="http://192.99.176.14:9096/uploads/packageImages/thumbnail/{{package.packageImage}}">
           <h2>{{package.receiver[0].name}}</h2>
           <p>{{package.receiver[0].address[0].address1 + ' ' + package.receiver[0].address[0].city + ' ' + package.receiver[0].address[0].state + ' ' + package.receiver[0].address[0].zipCode}}</p>
         </a>
@@ -89,7 +89,7 @@
           Accepted
         </div>
         <a class="item item-thumbnail-left transItem" ng-click="editPackage(package._id,'readonly')" ng-repeat="package in toMePackages | filter:{ status: 3 }">
-          <img ng-src="http://46.101.115.69:9096/uploads/packageImages/thumbnail/{{package.packageImage}}">
+          <img ng-src="http://192.99.176.14:9096/uploads/packageImages/thumbnail/{{package.packageImage}}">
           <h2>{{package.receiver[0].name}}</h2>
           <p>{{package.receiver[0].address[0].address1 + ' ' + package.receiver[0].address[0].city + ' ' + package.receiver[0].address[0].state + ' ' + package.receiver[0].address[0].zipCode}}</p>
         </a>
@@ -97,7 +97,7 @@
           Picked up by Driver
         </div>
         <a class="item item-thumbnail-left transItem" ng-click="editPackage(package._id,'readonly')" ng-repeat="package in toMePackages | filter:{ status: 4 }">
-          <img ng-src="http://46.101.115.69:9096/uploads/packageImages/thumbnail/{{package.packageImage}}">
+          <img ng-src="http://192.99.176.14:9096/uploads/packageImages/thumbnail/{{package.packageImage}}">
           <h2>{{package.receiver[0].name}}</h2>
           <p>{{package.receiver[0].address[0].address1 + ' ' + package.receiver[0].address[0].city + ' ' + package.receiver[0].address[0].state + ' ' + package.receiver[0].address[0].zipCode}}</p>
         </a>
@@ -111,7 +111,7 @@
           Draft
         </div>
         <a class="item item-thumbnail-left transItem" ng-click="editPackage(package._id,'edit')" ng-repeat="package in packages | filter:{ status: 0 }">
-          <img ng-src="http://46.101.115.69:9096/uploads/packageImages/thumbnail/{{package.packageImage}}">
+          <img ng-src="http://192.99.176.14:9096/uploads/packageImages/thumbnail/{{package.packageImage}}">
           <h2>{{package.receiver[0].name}}</h2>
           <p>{{package.receiver[0].address[0].address1 + ' ' + package.receiver[0].address[0].city + ' ' + package.receiver[0].address[0].state + ' ' + package.receiver[0].address[0].zipCode}}</p>
           <p ng-show="package.receiver[0].email != ''">Email : {{package.receiver[0].email}}</p>
@@ -122,7 +122,7 @@
           Ready to Send
         </div>
         <a class="item item-thumbnail-left transItem" ng-click="editPackage(package._id,'edit')" ng-repeat="package in packages | filter:{ status: 1 }">
-          <img ng-src="http://46.101.115.69:9096/uploads/packageImages/thumbnail/{{package.packageImage}}">
+          <img ng-src="http://192.99.176.14:9096/uploads/packageImages/thumbnail/{{package.packageImage}}">
           <h2>{{package.receiver[0].name}}</h2>
           <p>{{package.receiver[0].address[0].address1 + ' ' + package.receiver[0].address[0].city + ' ' + package.receiver[0].address[0].state + ' ' + package.receiver[0].address[0].zipCode}}</p>
           <p ng-show="package.receiver[0].email != ''">Email : {{package.receiver[0].email}}</p>
@@ -132,7 +132,7 @@
           To be Accepted by Org. Hub
         </div>
         <a class="item item-thumbnail-left transItem" ng-click="editPackage(package._id,'readonly')" ng-repeat="package in packages | filter:{ status: 2 }">
-          <img ng-src="http://46.101.115.69:9096/uploads/packageImages/thumbnail/{{package.packageImage}}">
+          <img ng-src="http://192.99.176.14:9096/uploads/packageImages/thumbnail/{{package.packageImage}}">
 
           <h2>{{package.receiver[0].name}}</h2>
           <p>{{package.receiver[0].address[0].address1 + ' ' + package.receiver[0].address[0].city + ' ' + package.receiver[0].address[0].state + ' ' + package.receiver[0].address[0].zipCode}}</p>
@@ -141,7 +141,7 @@
           At Org. Hub
         </div>
         <a class="item item-thumbnail-left transItem" ng-click="editPackage(package._id,'readonly')" ng-repeat="package in packages | filter:{ status: 2 }">
-          <img ng-src="http://46.101.115.69:9096/uploads/packageImages/thumbnail/{{package.packageImage}}">
+          <img ng-src="http://192.99.176.14:9096/uploads/packageImages/thumbnail/{{package.packageImage}}">
 
           <h2>{{package.receiver[0].name}}</h2>
           <p>{{package.receiver[0].address[0].address1 + ' ' + package.receiver[0].address[0].city + ' ' + package.receiver[0].address[0].state + ' ' + package.receiver[0].address[0].zipCode}}</p>

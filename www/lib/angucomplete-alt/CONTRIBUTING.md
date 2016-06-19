@@ -23,5 +23,5 @@ cd example
 python -m SimpleHTTPServer
 ```
 
-Open your browser and access http://46.101.115.69:8000
+Open your browser and access http://192.99.176.14:8000
 

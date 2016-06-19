@@ -528,7 +528,7 @@ angular.module('Pakkage.PackageController', [])
           if (package.data.package.drivers != undefined)
             $scope.newPackage.drivers = package.data.package.drivers;
 
-          $scope.packagePicture = 'http://46.101.115.69:9096/uploads/packageImages/thumbnail/' + package.data.package.packageImage;
+          $scope.packagePicture = 'http://192.99.176.14:9096/uploads/packageImages/thumbnail/' + package.data.package.packageImage;
           saltPackagePicture = package.data.package.packageImage;
           //console.log('PakkageBeta : package statuus : ' + $scope.newPackage.status);
           switch ($scope.newPackage.status) {

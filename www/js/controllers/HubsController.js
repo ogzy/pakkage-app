@@ -137,7 +137,7 @@ angular.module('Pakkage.HubsController', [])
   $scope.showProfilePicture = function() {
     var alertPopup = $ionicPopup.alert({
       title: 'Hub Picture',
-      template: '<img style="width:100%" src="http://46.101.115.69:9096/uploads/images/thumbnail/' + $scope.hub.profilePicture + '" />'
+      template: '<img style="width:100%" src="http://192.99.176.14:9096/uploads/images/thumbnail/' + $scope.hub.profilePicture + '" />'
     });
   }
 
