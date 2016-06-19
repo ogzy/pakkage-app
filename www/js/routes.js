@@ -79,7 +79,7 @@ angular.module('Pakkage.routes', [])
         }
       })
       .state('app.editPackage', {
-        url: '/editPackage/:packageId',
+        url: '/editPackage/:packageId/:mode',
         views: {
           'menuContent': {
             templateUrl: 'pages/app-editPackage.html'
@@ -87,7 +87,7 @@ angular.module('Pakkage.routes', [])
         }
       })
       .state('app.availableHubs', {
-        url: '/availableHubs',
+        url: '/availableHubs/:packageId',
         views: {
           'menuContent': {
             templateUrl: 'pages/app-availableHubs.html'
@@ -95,7 +95,7 @@ angular.module('Pakkage.routes', [])
         }
       })
       .state('app.hubDetail', {
-        url: '/hubDetail/:hubId',
+        url: '/hubDetail/:hubId/:packageId/:mode',
         views: {
           'menuContent': {
             templateUrl: 'pages/app-hubDetail.html'
@@ -110,11 +110,11 @@ angular.module('Pakkage.routes', [])
           }
         }
       })
-      .state('app.qrScanner', {
-        url: '/qrScanner',
+      .state('app.testMap', {
+        url: '/testMap',
         views: {
           'menuContent': {
-            templateUrl: 'pages/test-qrScanner.html'
+            templateUrl: 'pages/test-map.html'
           }
         }
       });

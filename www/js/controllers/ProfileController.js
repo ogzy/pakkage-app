@@ -1,10 +1,5 @@
 angular.module('Pakkage.ProfileController', [])
   .controller('ProfileCtrl', ['$scope', 'LocalStorageService', '$state', 'ProfileService', 'LoadingService', 'RegisterService', '$cordovaCamera', '$ionicActionSheet', '$cordovaFile', '$cordovaFileTransfer', 'PopupService', '$rootScope','PhoneControlService','$filter', 'RegisterService','$uibModal','$ionicPopup','LogService', function ($scope, LocalStorageService, $state, ProfileService, LoadingService, RegisterService, $cordovaCamera, $ionicActionSheet, $cordovaFile, $cordovaFileTransfer, PopupService,  $rootScope,PhoneControlService,$filter,RegisterService,$uibModal,$ionicPopup,LogService) {
-
-    if (LocalStorageService.get('isAuthenticated') != true) {
-      $state.go("tab.login");
-    }
-
     var saltProfilePicture = '',staticUsername = '',saltLicensePicture = '';
 
     $scope.scopeSaltLicensePicture = '';
@@ -64,7 +59,7 @@ angular.module('Pakkage.ProfileController', [])
             if (profile.data.user.address[0] != null) {
               $scope.newUser.address1 = profile.data.user.address[0].address1;
               $scope.newUser.address2 = profile.data.user.address[0].address2;
-              $scope.initialCity = profile.data.user.address[0].city.title;
+              $scope.initialCity = profile.data.user.address[0].city.title || '';
               $scope.newUser.state = profile.data.user.address[0].state;
               $scope.newUser.zipcode = profile.data.user.address[0].zipCode;
             }
@@ -124,6 +119,9 @@ angular.module('Pakkage.ProfileController', [])
             $scope.newUser.vehicleYear = profile.data.user.vehicleYear;
             if(profile.data.user.openTime != undefined)
             {
+              if(profile.data.user.openTime == '00:00 AM;11:59 PM')
+                  $scope.work724 = {checked: true};
+
               $scope.newUser.opentimeSplit = profile.data.user.openTime.split(';')[0];
               $scope.newUser.closeTime = profile.data.user.openTime.split(';')[1];
             }
@@ -233,9 +231,11 @@ angular.module('Pakkage.ProfileController', [])
         $scope.newUser.vehicleYear = $rootScope.cachedUser.vehicleYear;
         if($rootScope.cachedUser.openTime != undefined)
         {
-
+          if($rootScope.cachedUser.openTime == '00:00 AM;11:59 PM')
+            $scope.work724 = {checked: true};
           $scope.newUser.opentimeSplit = $rootScope.cachedUser.openTime.split(';')[0];
           $scope.newUser.closeTime = $rootScope.cachedUser.openTime.split(';')[1];
+
           LogService.visibleLog('$scope.newUser.opentimeSplit : ' + JSON.stringify($scope.newUser.opentimeSplit));
         }
         $scope.newUser.businessStore = $rootScope.cachedUser.businessStore;
@@ -403,8 +403,6 @@ angular.module('Pakkage.ProfileController', [])
       LoadingService.show();
 
       var fullFilled = false;
-      LogService.visibleLog('City ne olarak gidecek : ' + JSON.stringify($scope.newUser.city));
-      LogService.visibleLog('update button initial city : ' + JSON.stringify($scope.initialCity));
       switch (LocalStorageService.get('userType')) {
         case 'Driver':
         if ($scope.driveToS.length == 0 || $scope.newUser.licenseId == undefined || $scope.newUser.licenseIssueState == undefined || $scope.newUser.vehicle == undefined ||
@@ -431,9 +429,14 @@ angular.module('Pakkage.ProfileController', [])
               fullFilled = true;
           };
           if ($scope.newUser.stateTaxId == undefined || $scope.newUser.contactPerson == undefined || $scope.newUser.workPhone == undefined || $scope.newUser.openTime == undefined
-            || $scope.newUser.closeTime == undefined || $scope.newUser.name == undefined || $scope.newUser.phone == undefined || $scope.newUser.address1 == undefined
-            || $scope.newUser.city == undefined || $scope.newUser.state == undefined || $scope.newUser.zipcode == undefined)
-            fullFilled = false;
+            || $scope.newUser.name == undefined || $scope.newUser.phone == undefined || $scope.newUser.address1 == undefined
+            || ($scope.newUser.city == undefined && $scope.initialCity == undefined) || $scope.newUser.state == undefined || $scope.newUser.zipcode == undefined)
+            {
+              //console.log($scope.newUser.city);
+              //console.log('fullFilled false girdi');
+              fullFilled = false;
+            }
+
           else
             fullFilled = true;
           $scope.newUser.businessStore == undefined ? $scope.newUser.businessStore = false : $scope.newUser.businessStore = $scope.newUser.businessStore;

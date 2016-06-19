@@ -1,7 +1,7 @@
 angular.module('Pakkage.FormControlServices', [])
-  .factory('PhoneControlService', function () {
+  .factory('PhoneControlService', function() {
     return {
-      formatPhone: function (keyEvent, field) {
+      formatPhone: function(keyEvent, field) {
         switch (keyEvent.which) {
           case 48:
           case 49:
@@ -51,18 +51,18 @@ angular.module('Pakkage.FormControlServices', [])
             field = field.substring(0, field.length - 1);
         }
         //alert("\nKey Identifier : " + keyEvent.keyIdentifier + "\n" +"Which : " + keyEvent.which + "\n" + "Key Code : " + keyEvent.keyCode + "\n" + "Char Code : " + keyEvent.charCode + "\n" + "Code : " + keyEvent.code + "\n");
-        //console.log(keyEvent);
+        ////console.log(keyEvent);
         return field;
       }
     }
 
   })
-  .factory('PackageFilterService', function ($filter, $rootScope, LocalStorageService, moment) {
+  .factory('PackageFilterService', function($filter, $rootScope, LocalStorageService, moment) {
     return {
-      homePackagesFilter: function (filters, detailFilters) {
+      homePackagesFilter: function(filters, detailFilters) {
 
         //-- Set main filters for caching
-        console.log(filters.directionFilter);
+        //console.log(filters.directionFilter);
         $rootScope.statusFilter = filters.statusFilter;
         $rootScope.dateFilter = filters.dateFilter;
         $rootScope.directionFilter = filters.directionFilter;
@@ -72,60 +72,62 @@ angular.module('Pakkage.FormControlServices', [])
         $rootScope.toMe = detailFilters.toMe;
         $rootScope.date = detailFilters.date;
 
-        var filteredPackages = {}, packages = LocalStorageService.get('packages');
+        var filteredPackages = {},
+          packages = LocalStorageService.get('packages');
         if (filters.statusFilter) {
-          var draft = detailFilters.status.draft ? 0 : '', readyToSend = detailFilters.status.readyToSend ? 1 : '';
-          filteredPackages = $filter('filter')(packages, function (d) {
+          var draft = detailFilters.status.draft ? 0 : '',
+            readyToSend = detailFilters.status.readyToSend ? 1 : '';
+          filteredPackages = $filter('filter')(packages, function(d) {
             return (d.status === draft) || (d.status === readyToSend);
           });
           packages = filteredPackages;
         }
         if (filters.dateFilter) {
-          switch(detailFilters.date){
+          switch (detailFilters.date) {
             case 'today':
-              filteredPackages = $filter('filter')(packages, function (d) {
+              filteredPackages = $filter('filter')(packages, function(d) {
                 return (Date.parse(d.date) >= Date.parse(moment().subtract(1, 'days'))) && (Date.parse(d.date) <= Date.parse(moment().format()));
               });
-                  break;
+              break;
             case 'lastWeek':
-              filteredPackages = $filter('filter')(packages, function (d) {
+              filteredPackages = $filter('filter')(packages, function(d) {
                 return (Date.parse(d.date) >= Date.parse(moment().subtract(7, 'days'))) && (Date.parse(d.date) <= Date.parse(moment().format()));
               });
 
-                  break;
+              break;
             case 'lastMonth':
-              filteredPackages = $filter('filter')(packages, function (d) {
+              filteredPackages = $filter('filter')(packages, function(d) {
                 return (Date.parse(d.date) >= Date.parse(moment().subtract(30, 'days'))) && (Date.parse(d.date) <= Date.parse(moment().format()));
               });
-                  break;
+              break;
             case 'lastYear':
 
-              filteredPackages = $filter('filter')(packages, function (d) {
+              filteredPackages = $filter('filter')(packages, function(d) {
                 return (Date.parse(d.date) >= Date.parse(moment().subtract(365, 'days'))) && (Date.parse(d.date) <= Date.parse(moment().format()));
               });
-                  break;
+              break;
           }
         }
 
         if (filters.directionFilter) {
           if (detailFilters.fromMe) {
-            filteredPackages = $filter('filter')(packages, function (d) {
+            filteredPackages = $filter('filter')(packages, function(d) {
               return d.senderId[0] === LocalStorageService.get('userId');
             });
           }
           if (detailFilters.toMe) {
-            filteredPackages = $filter('filter')(packages, function (d) {
+            filteredPackages = $filter('filter')(packages, function(d) {
               return d.receiver[0].email === LocalStorageService.get('email');
             });
           }
           if (detailFilters.fromMe && detailFilters.toMe) {
-            filteredPackages = $filter('filter')(packages, function (d) {
+            filteredPackages = $filter('filter')(packages, function(d) {
               return (d.senderId[0] === LocalStorageService.get('userId')) || (d.receiver[0].email === LocalStorageService.get('email'));
             });
           }
 
         }
-        console.log(filteredPackages);
+        //console.log(filteredPackages);
         if (!filters.statusFilter && !filters.dateFilter && !filters.directionFilter)
           $rootScope.packages = LocalStorageService.get('packages');
         else
@@ -136,10 +138,38 @@ angular.module('Pakkage.FormControlServices', [])
           $rootScope.packages.push(filteredPackages);
         }*/
 
-        console.log($rootScope.packages);
-        console.log(typeof (filteredPackages));
+        //console.log($rootScope.packages);
+        //console.log(typeof(filteredPackages));
         $rootScope.$emit("callSyncPackagesMethod", {});
         //return filteredPackages;
+      },
+      filterHubPackages: function() {
+        var toMePackages = [],willSplice = [];
+        for (var i = 0; i < $rootScope.packages.length; i++) {
+          var userType = LocalStorageService.get('userType')
+          if(userType == 'Hub')
+          {
+            if ($rootScope.packages[i].hubs != undefined) {
+              if ($rootScope.packages[i].hubs._id === LocalStorageService.get('userId')) {
+                toMePackages.push($rootScope.packages[i]);
+                willSplice.push(i);
+              }
+            }
+          }
+          else if (userType == 'Driver') {
+            if ($rootScope.packages[i].drivers != undefined) {
+              if ($rootScope.packages[i].drivers._id === LocalStorageService.get('userId')) {
+                toMePackages.push($rootScope.packages[i]);
+                willSplice.push(i);
+              }
+            }
+          }
+
+        }
+        for (var i = 0; i < willSplice.length; i++) {
+          $rootScope.packages.splice(0, 1);
+        }
+        return toMePackages;
       }
     }
   });

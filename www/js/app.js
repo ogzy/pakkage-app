@@ -1,11 +1,11 @@
-angular.module('Pakkage', ['ionic', 'ngCordova', 'Pakkage.LoginController', 'Pakkage.RegisterController', 'Pakkage.MainController', 'Pakkage.PackageController', 'Pakkage.ProfileController', 'Pakkage.HubsController', 'Pakkage.BackendServices', 'Pakkage.ErrorcodeServices', 'Pakkage.UIServices', 'Pakkage.FormControlServices', 'Pakkage.SocialLoginService', 'Pakkage.ChangePassword', 'Pakkage.routes', 'Pakkage.directives', 'ui.bootstrap', 'LocalStorageModule', 'ngOpenFB', 'angucomplete-alt', 'angularMoment'])
+angular.module('Pakkage', ['ionic', 'ngCordova','leaflet-directive', 'Pakkage.LoginController', 'Pakkage.RegisterController', 'Pakkage.MainController', 'Pakkage.PackageController', 'Pakkage.ProfileController', 'Pakkage.HubsController', 'Pakkage.MapController', 'Pakkage.BackendServices', 'Pakkage.ErrorcodeServices', 'Pakkage.UIServices', 'Pakkage.FormControlServices', 'Pakkage.SocialLoginService', 'Pakkage.ScanQrCodeService','Pakkage.TestService', 'Pakkage.ChangePassword', 'Pakkage.routes', 'Pakkage.directives', 'ui.bootstrap', 'LocalStorageModule', 'ngOpenFB', 'angucomplete-alt', 'angularMoment'])
   .config(
-    function (localStorageServiceProvider) {
+    function(localStorageServiceProvider) {
       localStorageServiceProvider.setPrefix('pakkage').setStorageType('localStorage');
     }
   )
-  .run(function ($ionicPlatform, $templateCache, $rootScope, LocalStorageService, ProfileService, $cordovaNetwork, PopupService, LoadingService, $location, StateService, $interval, $state) {
-    $ionicPlatform.ready(function () {
+  .run(function($ionicPlatform, $templateCache, $rootScope, LocalStorageService, ProfileService, $cordovaNetwork, PopupService, LoadingService, $location, StateService, $interval, $state) {
+    $ionicPlatform.ready(function() {
 
       if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
         cordova.plugins.Keyboard.hideKeyboardAccessoryBar(false);
@@ -30,13 +30,13 @@ angular.module('Pakkage', ['ionic', 'ngCordova', 'Pakkage.LoginController', 'Pak
 
 
       //-- Global values
-      $rootScope.profileThumbnailURL = 'http://192.99.176.14:9096/uploads/images/thumbnail/';
-      $rootScope.licenseThumbnailURL = 'http://192.99.176.14:9096/uploads/licenseImages/thumbnail/';
+      $rootScope.profileThumbnailURL = 'http://46.101.115.69:9096/uploads/images/thumbnail/';
+      $rootScope.licenseThumbnailURL = 'http://46.101.115.69:9096/uploads/licenseImages/thumbnail/';
+
 
       //-- Global Filter Values
       $rootScope.date = '';
-      $rootScope.status =
-      {
+      $rootScope.status = {
         draft: false,
         readyToSend: false,
         onRoad: false,
@@ -53,22 +53,20 @@ angular.module('Pakkage', ['ionic', 'ngCordova', 'Pakkage.LoginController', 'Pak
       LocalStorageService.save('version', '0.0.1');
       var statePromise = StateService.getAllState('ND');
       statePromise.then(
-        function (states) {
+        function(states) {
           if (states.data.states != null) {
             LocalStorageService.save('cities', states.data.states);
           }
         },
-        function (errorPayload) {
-          console.log('states error : ' + errorPayload);
-        });
+        function(errorPayload) {});
 
 
-      document.addEventListener("backbutton", function () {
+      document.addEventListener("backbutton", function() {
         LoadingService.show();
         //-- If success case will happen to login page will be 1,fail case to login will be 0 and warning will be appear
         if ($location.path().indexOf('/activate') > -1) {
           LoadingService.hide();
-          PopupService.confirm('Warning', 'C101').then(function (buttonIndex) {
+          PopupService.confirm('Warning', 'C101').then(function(buttonIndex) {
 
             if (buttonIndex == 1) {
               navigator.app.exitApp();
@@ -83,27 +81,30 @@ angular.module('Pakkage', ['ionic', 'ngCordova', 'Pakkage.LoginController', 'Pak
         }
       }, false);
 
-      var stop, timer = 1800, resetTimer = 1800;
+      var stop, timer = 1800,
+        resetTimer = 1800;
 
-      $rootScope.startSession = function () {
+      $rootScope.startSession = function() {
         if (angular.isDefined(stop)) return;
-        stop = $interval(function () {
-          //console.log(timer);
+        stop = $interval(function() {
           timer--;
 
           if (timer <= 0)
             $rootScope.sessionFinish();
         }, 1000);
       };
-      $rootScope.resetInterval = function () {
+      $rootScope.resetInterval = function() {
         timer = resetTimer;
       };
-      $rootScope.sessionFinish = function () {
+      $rootScope.sessionFinish = function() {
         $interval.cancel(stop);
         stop = undefined;
-        PopupService.alert('Warning', 'E120').then(function () {
+        PopupService.alert('Warning', 'E120').then(function() {
           LocalStorageService.clear();
-          $state.go("tab.login", {errorCode: 'undefined', statusMessage: 'undefined'});
+          $state.go("tab.login", {
+            errorCode: 'undefined',
+            statusMessage: 'undefined'
+          });
         });
       };
 
@@ -113,32 +114,27 @@ angular.module('Pakkage', ['ionic', 'ngCordova', 'Pakkage.LoginController', 'Pak
       }, false);
 
 
-      $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
-        //console.log('stateChange : ' + toState.url.indexOf('/login'));
-        if (toState.url.indexOf('/register') != 0
-          && toState.url.indexOf('/login') != 0
-          && toState.url.indexOf('/activate') != 0
-          && toState.url.indexOf('/forgotVerify') != 0
-          && toState.url.indexOf('/changePassword') != 0
-          && toState.url.indexOf('/forgotPassword') != 0) {
+      $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+
+        if (toState.url.indexOf('/register') != 0 && toState.url.indexOf('/login') != 0 && toState.url.indexOf('/activate') != 0 && toState.url.indexOf('/forgotVerify') != 0 && toState.url.indexOf('/changePassword') != 0 && toState.url.indexOf('/forgotPassword') != 0) {
           $rootScope.resetInterval();
           $rootScope.startSession();
         }
 
         if (toState.url == '/register') {
           LoadingService.hide();
-          console.log('register acildi');
+
         }
         if (toState.url == '/profile') {
           var profilePromise = ProfileService.getUserProfile(LocalStorageService.get('email'), LocalStorageService.get('token'));
           profilePromise.then(
-            function (profile) {
+            function(profile) {
 
               if (profile.data.errorCode == 0) {
                 $rootScope.cachedUser = profile.data.user;
               }
             },
-            function (error) {
+            function(error) {
 
             }
           );
@@ -150,11 +146,24 @@ angular.module('Pakkage', ['ionic', 'ngCordova', 'Pakkage.LoginController', 'Pak
       });
 
       $rootScope.$on('$stateChangeStart',
-        function(event, toState, toParams, fromState, fromParams){
+        function(event, toState, toParams, fromState, fromParams) {
           if (toState.url == '/register') {
             LoadingService.show();
-            console.log('register basladi');
+
           }
         })
     });
+
+    if (LocalStorageService.get('isAuthenticated') == true) {
+      //console.log('Pakkage Log : is authen:' + LocalStorageService.get('isAuthenticated'));
+      //console.log('Pakkage Log : approven:' + LocalStorageService.get('approve'));
+      //console.log('Pakkage Log : fullFilled:' + LocalStorageService.get('fullFilled'));
+      if(LocalStorageService.get('fullFilled') != true)
+        $state.go("app.profile");
+      else if (LocalStorageService.get('approve') == true)
+        $state.go("app.home");
+      else
+        $state.go("app.profile");
+    }
+
   });

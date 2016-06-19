@@ -7274,6 +7274,7 @@ ion-slides {
   overflow: hidden;
   margin: auto;
   height: 60px; }
+
   .scroll-refresher .ionic-refresher-content {
     position: absolute;
     bottom: 15px;
@@ -7331,6 +7332,77 @@ ion-slides {
     .scroll-refresher.active.refreshing .text-refreshing {
       display: block; }
     .scroll-refresher.active.refreshing.refreshing-tail {
+      -webkit-transform: scale(0, 0);
+      transform: scale(0, 0); }
+
+.scroll-refresher-left-menu {
+  position: absolute;
+  top: -60px;
+  right: 0;
+  left: 0;
+  overflow: hidden;
+  height: 60px;
+  width: 250px !important;
+}
+
+
+.scroll-refresher-left-menu .ionic-refresher-content {
+    position: absolute;
+    bottom: 15px;
+    left: 0;
+    width: 100%;
+    color: #666666;
+    text-align: center;
+    font-size: 30px; }
+.scroll-refresher-left-menu .ionic-refresher-content .text-refreshing,
+.scroll-refresher-left-menu .ionic-refresher-content .text-pulling {
+      font-size: 16px;
+      line-height: 16px; }
+.scroll-refresher-left-menu .ionic-refresher-content.ionic-refresher-with-text {
+      bottom: 10px; }
+.scroll-refresher-left-menu .icon-refreshing,
+.scroll-refresher-left-menu .icon-pulling {
+    width: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d; }
+.scroll-refresher-left-menu .icon-pulling {
+    -webkit-animation-name: refresh-spin-back;
+    animation-name: refresh-spin-back;
+    -webkit-animation-duration: 200ms;
+    animation-duration: 200ms;
+    -webkit-animation-timing-function: linear;
+    animation-timing-function: linear;
+    -webkit-animation-fill-mode: none;
+    animation-fill-mode: none;
+    -webkit-transform: translate3d(0, 0, 0) rotate(0deg);
+    transform: translate3d(0, 0, 0) rotate(0deg); }
+.scroll-refresher-left-menu .icon-refreshing,
+.scroll-refresher-left-menu .text-refreshing {
+    display: none; }
+.scroll-refresher-left-menu .icon-refreshing {
+    -webkit-animation-duration: 1.5s;
+    animation-duration: 1.5s; }
+.scroll-refresher-left-menu.active .icon-pulling:not(.pulling-rotation-disabled) {
+    -webkit-animation-name: refresh-spin;
+    animation-name: refresh-spin;
+    -webkit-transform: translate3d(0, 0, 0) rotate(-180deg);
+    transform: translate3d(0, 0, 0) rotate(-180deg); }
+.scroll-refresher-left-menu.active.refreshing {
+    -webkit-transition: -webkit-transform 0.2s;
+    transition: -webkit-transform 0.2s;
+    -webkit-transition: transform 0.2s;
+    transition: transform 0.2s;
+    -webkit-transform: scale(1, 1);
+    transform: scale(1, 1); }
+.scroll-refresher-left-menu.active.refreshing .icon-pulling,
+.scroll-refresher-left-menu.active.refreshing .text-pulling {
+      display: none; }
+.scroll-refresher-left-menu.active.refreshing .icon-refreshing,
+.scroll-refresher-left-menu.active.refreshing .text-refreshing {
+      display: block; }
+.scroll-refresher-left-menu.active.refreshing.refreshing-tail {
       -webkit-transform: scale(0, 0);
       transform: scale(0, 0); }
 

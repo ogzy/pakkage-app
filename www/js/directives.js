@@ -270,7 +270,7 @@ angular.module('Pakkage.directives', ['angularMoment'])
       link: function (scope, element, attr, control) {
         element.bind("keyup", function (evtObj) {
           var str = control.$viewValue.toString();
-          console.log(str.substr(str.length - 1));
+          //console.log(str.substr(str.length - 1));
         });
       }
     };

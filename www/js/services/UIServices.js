@@ -34,7 +34,7 @@ angular.module('Pakkage.UIServices', [])
 .factory('LogService', function () {
         return {
                 visibleLog: function (input) {
-                    console.log('PakkageLog : ' + input);
+                    //console.log('PakkageLog : ' + input);
                 }
             }
 });
