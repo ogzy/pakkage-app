@@ -110,11 +110,13 @@ angular.module('Pakkage.HubsController', [])
   //LoadingService.show();
   $scope.hub = {};
   $scope.mode = $stateParams.mode;
-
+   console.log("Pakkage-preprod : $stateParams.mode " + $stateParams.mode )
+   //--console.log("Pakkage-preprod : $stateParams.mode " + $stateParams.mode )
   if($stateParams.mode != undefined)
   {
+      console.log("Pakkage-preprod : from db hubs fonksiyonuna girdi : "  );
       ProfileService.getUserById($stateParams.hubId, LocalStorageService.get('token')).then(function(hub){
-        //console.log(hub);
+          console.log("Pakkage-preprod : from db hubs " + JSON.stringify(hub) )
           $scope.hub = hub.data.user;
           $scope.hub.workingDays = '';
           for (var i = 0; i < $scope.hub.daysOfOperations.length; i++) {
@@ -123,9 +125,13 @@ angular.module('Pakkage.HubsController', [])
       });
   }
   else {
-    $scope.hub = $filter('filter')($rootScope.availableHubs, function(hub) {
-      return hub._id == $stateParams.hubId
-    })[0];
+    console.log("Pakkage-preprod : available hubs " + $rootScope.availableHubs )
+    $scope.hub = $filter('filter')($rootScope.availableHubs, function(hub1) {
+      return hub1._id == $stateParams.hubId
+    });
+
+    console.log("Pakkage-preprod : sope.hubs " + $scope.hub);
+
     $scope.hub.workingDays = '';
     for (var i = 0; i < $scope.hub.daysOfOperations.length; i++) {
       $scope.hub.workingDays += $scope.hub.daysOfOperations[i].value + ' ';
