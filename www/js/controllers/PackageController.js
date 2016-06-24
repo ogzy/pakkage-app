@@ -505,8 +505,9 @@ angular.module('Pakkage.PackageController', [])
 
     getPackagePromise.then(
       function(package) {
+        console.log(package);
         if (package.data.errorCode == 0) {
-          //console.log(package.data.package);
+          console.log(package.data.package);
           $scope.newPackage._id =  package.data.package._id;
           $scope.newPackage.comment = package.data.package.comment;
           $scope.newPackage.name = package.data.package.receiver[0].name;

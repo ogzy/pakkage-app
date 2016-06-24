@@ -55,6 +55,7 @@ angular.module('Pakkage.MainController', [])
 
   }])
   .controller('HomeCtrl', ['$scope', 'LocalStorageService', '$state', 'PackageService', 'PopupService', 'LoadingService', '$uibModal', '$rootScope', 'PackageFilterService', '$interval', '$ionicHistory','ScanQR', function($scope, LocalStorageService, $state, PackageService, PopupService, LoadingService, $uibModal, $rootScope, PackageFilterService, $interval, $ionicHistory,ScanQR) {
+
     LoadingService.show();
     $scope.$on('$ionicView.beforeEnter', function(e, config) {
       config.enableBack = false;
@@ -119,8 +120,8 @@ angular.module('Pakkage.MainController', [])
             PackageFilterService.homePackagesFilter(currentFilters, detailFilters);
           $scope.packages = $rootScope.packages;
           $scope.toMePackages = PackageFilterService.filterHubPackages();
-          //console.log($scope.packages);
-          //console.log($scope.toMePackages);
+          console.log($scope.packages);
+          console.log($scope.toMePackages);
           LoadingService.hide();
         } else {
           LoadingService.hide();
