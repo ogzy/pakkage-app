@@ -1,389 +1,473 @@
 <ion-view cache-view="false">
-    <ion-content padding="true" class="login-background">
-        <div class="container-fluid">
-            <div class="row-fluid login-logo">
-                <img src="img/logo.png" width="70%" />
-            </div>
-            <div class="row">
-                <div class="col-xs-8 col-md-8">
+  <ion-content padding="true" class="login-background">
+    <div class="container-fluid">
+      <div class="row-fluid login-logo">
+        <img src="img/logo.png" width="70%"/>
+      </div>
+      <div class="row">
+        <div class="col-xs-8 col-md-8">
 
-                    <div class="row-fluid login-slogan">
-                        <span class="motto">A Better Way To Ship</span>
+          <div class="row-fluid login-slogan">
+            <span class="motto">A Better Way To Ship</span>
+          </div>
+        </div>
+        <div class="col-xs-4 col-md-4" style="text-align:center;" ng-click="addMedia()">
+          <p ng-show="profilePicture == ''" class="profPicIcon"><i class="step icon ion ion-person"
+                                                                   style="font-size:55px"></i></p>
+          <p ng-show="profilePicture == ''" class="profPicUpload">Upload</p>
+          <img ng-src="{{profilePicture}}" ng-show="profilePicture != ''" class="profPic"/>
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid padZero">
+      <div class="row-fluid">
+        <div class="col-xs-12 col-md-12 padZero">
+          <form class="list" name="RegisterForm">
+            <div class="list">
+              <p ng-model="debug">{{debug}}</p>
+            </div>
+            <div class="list">
+              <div class="item item-divider">
+                Register Yourself AS:
+              </div>
+              <div class="button-bar">
+                <ion-radio ng-repeat="type in usertypelist" ng-value="type.value" ng-model="data.clientSide"
+                           ng-change="serverSideChange(type)" name="server-side" style="width:34%">
+                  {{ type.text }}
+                </ion-radio>
+              </div>
+            </div>
+
+            <div class="list">
+              <div class="item item-divider">
+                Quick Register
+              </div>
+              <!-- Email -->
+              <div class="form-group littleBottom" ng-show="showForAll == true">
+                <div class="input-group quickRegIcons">
+                  <span class="input-group-addon size-21 noBorder"><i class="icon ion ion-android-mail"></i></span>
+                  <input type="text" ng-model="newUser.email" class="form-control justPadding" placeholder="Email">
+                </div>
+              </div>
+              <!-- Username -->
+              <div class="form-group littleBottom" ng-show="showForAll == true">
+                <div class="input-group quickRegIcons">
+                  <span class="input-group-addon size-21 noBorder"><i class="icon ion ion-android-person"></i></span>
+                  <input type="text" ng-model="newUser.username" class="form-control justPadding"
+                         placeholder="Username (Optional)">
+                </div>
+              </div>
+              <!-- Password -->
+              <div class="form-group littleBottom" ng-show="showForAll == true">
+                <div class="input-group quickRegIcons">
+                  <span class="input-group-addon size-21 noBorder"><i class="icon ion ion-android-lock"></i></span>
+                  <input type="password" ng-model="newUser.password" class="form-control justPadding"
+                         placeholder="Password">
+                </div>
+              </div>
+              <!-- Confirm Password -->
+              <div class="form-group littleBottom" ng-show="showForAll == true">
+                <div class="input-group quickRegIcons">
+                  <span class="input-group-addon size-21 noBorder"><i class="icon ion ion-android-lock"></i></span>
+                  <input type="password" ng-model="newUser.confirmPassword" class="form-control justPadding"
+                         placeholder="Confirm Password">
+                </div>
+              </div>
+              <!-- Store Type -->
+              <div class="form-group littleBottom" ng-show="showForHub == true">
+                <div class="input-group quickRegIcons" style="background-color: white">
+                  <span class="input-group-addon size-21 noBorder"><i class="icon ion ion-briefcase"
+                                                                      style="width: 13px;"></i></span>
+                  <div class="toggleDesc"><span>Are you a business entity/commercial retails store?</span></div>
+                  <div class="toggleButton" ios-toggle model="newUser.businessStore"></div>
+                </div>
+              </div>
+              <!-- Located Major Roads -->
+              <div class="form-group littleBottom" ng-show="showForHub == true">
+                <div class="input-group quickRegIcons" style="background-color: white">
+                  <span class="input-group-addon size-21 noBorder"><i class="icon ion ion-location"
+                                                                      style="width: 13px;"></i></span>
+                  <div class="toggleDesc"><span>Are you located by a major Highway/Expressway?</span></div>
+                  <div class="toggleButton" ios-toggle model="newUser.locatedHw"></div>
+                </div>
+              </div>
+            </div>
+            <div class="list">
+              <uib-accordion close-others="oneAtATime">
+                <!-- Personal Information -->
+                <uib-accordion-group is-open="statusPersonal.open" ng-show="showForAll == true && showForHub == false">
+                  <uib-accordion-heading>
+                                        <span>Personal Information <i class="pull-right ion accordionTitles"
+                                                                      ng-class="{'ion-android-remove': statusPersonal.open, 'ion-android-add': !statusPersonal.open}"></i>
+                  </uib-accordion-heading>
+                  <!-- Name -->
+                  <div class="form-group form-groupForProfile" ng-show="showForAll == true">
+                    <input type="text" class="form-control form-controlForProfile" placeholder="Name"
+                           ng-model="newUser.name">
+                  </div>
+                  <!-- Date of Birth -->
+                  <div class="dateList" ng-show="showForDriver == true ||  data.clientSide == 'sender'">
+                    <div class="halfLabel" style="width: 100% !important;">
+                      <span class="input-label dateOfBirthHalf">Date of Birth</span>
                     </div>
-                </div>
-                <div class="col-xs-4 col-md-4" style="text-align:center;" ng-click="addMedia()">
-                    <p ng-show="profilePicture == ''" class="profPicIcon"><i class="step icon ion ion-person" style="font-size:55px"></i></p>
-                    <p ng-show="profilePicture == ''" class="profPicUpload">Upload</p>
-                    <img ng-src="{{profilePicture}}" ng-show="profilePicture != ''" class="profPic" />
-                </div>
-            </div>
-        </div>
-        <div class="container-fluid padZero">
-            <div class="row-fluid">
-                <div class="col-xs-12 col-md-12 padZero">
-                    <form class="list" name="RegisterForm">
-                        <div class="list">
-                            <p ng-model="debug">{{debug}}</p>
-                        </div>
-                        <div class="list">
-                            <div class="item item-divider">
-                                Register Yourself AS:
-                            </div>
-                            <div class="button-bar">
-                                <ion-radio ng-repeat="type in usertypelist" ng-value="type.value" ng-model="data.clientSide" ng-change="serverSideChange(type)" name="server-side" style="width:34%">
-                                    {{ type.text }}
-                                </ion-radio>
-                            </div>
-                        </div>
-
-                        <div class="list">
-                            <div class="item item-divider">
-                                Quick Register
-                            </div>
-                            <!-- Email -->
-                            <div class="form-group littleBottom" ng-show="showForAll == true">
-                                <div class="input-group quickRegIcons">
-                                    <span class="input-group-addon size-21 noBorder"><i class="icon ion ion-android-mail"></i></span>
-                                    <input type="text" ng-model="newUser.email" class="form-control justPadding" placeholder="Email">
-                                </div>
-                            </div>
-                            <!-- Username -->
-                            <div class="form-group littleBottom" ng-show="showForAll == true">
-                                <div class="input-group quickRegIcons">
-                                    <span class="input-group-addon size-21 noBorder"><i class="icon ion ion-android-person"></i></span>
-                                    <input type="text" ng-model="newUser.username" class="form-control justPadding" placeholder="Username (Optional)">
-                                </div>
-                            </div>
-                            <!-- Password -->
-                            <div class="form-group littleBottom" ng-show="showForAll == true">
-                                <div class="input-group quickRegIcons">
-                                    <span class="input-group-addon size-21 noBorder"><i class="icon ion ion-android-lock"></i></span>
-                                    <input type="password" ng-model="newUser.password" class="form-control justPadding" placeholder="Password">
-                                </div>
-                            </div>
-                            <!-- Confirm Password -->
-                            <div class="form-group littleBottom" ng-show="showForAll == true">
-                                <div class="input-group quickRegIcons">
-                                    <span class="input-group-addon size-21 noBorder"><i class="icon ion ion-android-lock"></i></span>
-                                    <input type="password" ng-model="newUser.confirmPassword" class="form-control justPadding" placeholder="Confirm Password">
-                                </div>
-                            </div>
-                            <!-- Store Type -->
-                            <div class="form-group littleBottom" ng-show="showForHub == true">
-                              <div class="input-group quickRegIcons"  style="background-color: white">
-                                <span class="input-group-addon size-21 noBorder"><i class="icon ion ion-briefcase" style="width: 13px;"></i></span>
-                                  <div class="toggleDesc"><span>Are you a business entity/commercial retails store?</span></div>
-                                  <div class="toggleButton" ios-toggle model="newUser.businessStore"  ></div>
-                              </div>
-                            </div>
-                            <!-- Located Major Roads -->
-                            <div class="form-group littleBottom" ng-show="showForHub == true">
-                              <div class="input-group quickRegIcons" style="background-color: white">
-                                <span class="input-group-addon size-21 noBorder"><i class="icon ion ion-location" style="width: 13px;"></i></span>
-                                <div class="toggleDesc"><span>Are you located by a major Highway/Expressway?</span></div>
-                                <div class="toggleButton" ios-toggle model="newUser.locatedHw" ></div>
-                              </div>
-                            </div>
-                        </div>
-                        <div class="list">
-                            <uib-accordion close-others="oneAtATime">
-                                <!-- Personal Information -->
-                                <uib-accordion-group is-open="statusPersonal.open" ng-show="showForAll == true && showForHub == false">
-                                    <uib-accordion-heading>
-                                        <span>Personal Information <i class="pull-right ion accordionTitles" ng-class="{'ion-android-remove': statusPersonal.open, 'ion-android-add': !statusPersonal.open}"></i>
-                                    </uib-accordion-heading>
-                                    <!-- Name -->
-                                    <div class="form-group form-groupForProfile" ng-show="showForAll == true">
-                                        <input type="text" class="form-control form-controlForProfile" placeholder="Name" ng-model="newUser.name">
-                                    </div>
-                                    <!-- Date of Birth -->
-                                    <div class="dateList" ng-show="showForDriver == true ||  data.clientSide == 'sender'">
-                                        <div class="halfLabel" style="width: 100% !important;">
-                                            <span class="input-label dateOfBirthHalf">Date of Birth</span>
-                                        </div>
-                                    </div>
-                                    <!-- Date of Birth -->
-                                    <div class="form-group form-groupForProfile" ng-show="showForDriver == true ||  data.clientSide == 'sender'">
-                                        <div class="input-group" >
+                  </div>
+                  <!-- Date of Birth -->
+                  <div class="form-group form-groupForProfile"
+                       ng-show="showForDriver == true ||  data.clientSide == 'sender'">
+                    <div class="input-group">
                                             <span class="input-group-addon">
                                               <i class="icon ion ion-ios-calendar-outline"></i>
                                             </span>
-                                            <input type="date" class="form-control form-controlForProfile" ng-model="newUser.dateOfBirth" />
-                                        </div>
-                                    </div>
-                                    <!-- Phone -->
-                                    <div class="form-group form-groupForProfile" ng-show="showForAll == true">
-                                        <input type="text" class="form-control form-controlForProfile" placeholder="Phone 123-456-7890" ng-keyup="formatPhone($event,1)"  ng-model="newUser.phone">
-                                    </div>
-                                    <!-- Address 1-->
-                                    <div class="form-group form-groupForProfile" ng-show="showForAll == true">
-                                        <input type="text" class="form-control form-controlForProfile" placeholder="Address 1" ng-model="newUser.address1">
-                                    </div>
-                                    <!-- Address 2-->
-                                    <div class="form-group form-groupForProfile" ng-show="showForAll == true">
-                                        <input type="text" class="form-control form-controlForProfile" placeholder="Address 2" ng-model="newUser.address2">
-                                    </div>
-                                    <div class="form-group form-groupForProfile" ng-show="showForAll == true">
-                                        <div class="treelineCity"><angucomplete-alt id="cityAddress"
-                                          placeholder="City"
-                                          pause="100"
-                                          selected-object="newUser.city"
-                                          local-data="cities"
-                                          search-fields="name"
-                                          title-field="name"
-                                          minlength="1"
-                                          input-class="form-control form-controlForProfile "
-                                          ng-model="newUser.city"/>
-                                        </div>
-                                          <!-- State -->
-                                          <input type="text" class="form-control form-controlForProfile treelineState" placeholder="State" ng-model="newUser.state">
-                                          <!-- Zip Code -->
-                                          <input type="number" class="form-control form-controlForProfile treeline" placeholder="ZIP Code" ng-model="newUser.zipcode">
-                                    </div>
-                                </uib-accordion-group>
-                                <!--- Company Information  -->
-                                <uib-accordion-group is-open="statusCompany.open" ng-show="showForHub == true">
-                                    <uib-accordion-heading>
+                      <input type="date" class="form-control form-controlForProfile" ng-model="newUser.dateOfBirth"/>
+                    </div>
+                  </div>
+                  <!-- Phone -->
+                  <div class="form-group form-groupForProfile" ng-show="showForAll == true">
+                    <input type="text" class="form-control form-controlForProfile" placeholder="Phone 123-456-7890"
+                           ng-keyup="formatPhone($event,1)" ng-model="newUser.phone">
+                  </div>
+                  <!-- Use Current Location -->
+                  <div class="form-group form-groupForProfile" ng-show="showForAll">
+                    <ion-checkbox ng-model="isCurrentLocationSelected"  ng-change="setAddressInformationByCoordinate(isCurrentLocationSelected)"  class="item-checkbox-right">Use Current Location</ion-checkbox>
+                  </div>
+                  <!-- Address 1-->
+                  <div class="form-group form-groupForProfile" ng-show="showForAll == true">
+                    <input type="text" class="form-control form-controlForProfile" placeholder="Address 1"
+                           ng-model="newUser.address1">
+                  </div>
+                  <!-- Address 2-->
+                  <div class="form-group form-groupForProfile" ng-show="showForAll == true">
+                    <input type="text" class="form-control form-controlForProfile" placeholder="Address 2"
+                           ng-model="newUser.address2">
+                  </div>
+                  <div class="form-group form-groupForProfile" ng-show="showForAll == true">
+                    <div class="treelineCity">
+                      <angucomplete-alt id="cityAddress"
+                                        placeholder="City"
+                                        pause="100"
+                                        selected-object="newUser.city"
+                                        local-data="cities"
+                                        search-fields="name"
+                                        title-field="name"
+                                        minlength="1"
+                                        input-class="form-control form-controlForProfile "
+                                        ng-model="newUser.city"
+                                        initial-value="initialCity"/>
+                    </div>
+                    <!-- State -->
+                    <input type="text" class="form-control form-controlForProfile treelineState" placeholder="State"
+                           ng-model="newUser.state">
+                    <!-- Zip Code -->
+                    <input type="number" class="form-control form-controlForProfile treeline" placeholder="ZIP Code"
+                           ng-model="newUser.zipcode">
+                  </div>
+                </uib-accordion-group>
+                <!--- Company Information  -->
+                <uib-accordion-group is-open="statusCompany.open" ng-show="showForHub == true">
+                  <uib-accordion-heading>
 
-                                        <span>Company Information <i class="pull-right ion accordionTitles" ng-class="{'ion-android-remove': statusCompany.open, 'ion-android-add': !statusCompany.open}"></i>
-                                    </uib-accordion-heading>
-                                    <!-- Name -->
-                                    <div class="form-group form-groupForProfile" ng-show="showForAll == true">
-                                        <input type="text" class="form-control form-controlForProfile" placeholder="Company Name" ng-model="newUser.name">
-                                    </div>
-                                    <!-- Date of Birth -->
-                                    <div class="dateList" ng-show="showForDriver == true ||  data.clientSide == 'sender'">
-                                        <div class="halfLabel" style="width: 100% !important;">
-                                            <span class="input-label dateOfBirthHalf">Date of Birth</span>
-                                        </div>
-                                    </div>
-                                    <!-- Date of Birth -->
-                                    <onezone-datepicker datepicker-object="dateofbirth" ng-show="showForDriver == true ||  data.clientSide == 'sender'">
-                                        <button class="button button-block button-outline button-positive show-onezone-datepicker">
-                                            {{dateofbirth.date | date:'yyyy-MM-dd' }}
-                                        </button>
-                                    </onezone-datepicker>
-                                    <!-- Phone -->
-                                    <div class="form-group form-groupForProfile" ng-show="showForAll == true">
-                                        <input type="text" class="form-control form-controlForProfile" placeholder="Phone 123-456-7890" ng-keyup="formatPhone($event,1)" ng-model="newUser.phone">
-                                    </div>
-                                    <div class="form-group form-groupForProfile" ng-show="showForAll == true">
+                   <span>Company Information <i class="pull-right ion accordionTitles" ng-class="{'ion-android-remove': statusCompany.open, 'ion-android-add': !statusCompany.open}"></i>
+                  </uib-accordion-heading>
 
-                                        <input type="text" class="form-control form-controlForProfile" placeholder="Address 1" ng-model="newUser.address1">
-                                    </div>
-                                    <!-- Address 2-->
-                                    <div class="form-group form-groupForProfile" ng-show="showForAll == true">
+                  <!-- Name -->
+                  <div class="form-group form-groupForProfile" ng-show="showForAll == true">
+                    <input type="text" class="form-control form-controlForProfile" placeholder="Company Name"
+                           ng-model="newUser.name">
+                  </div>
+                  <!-- Date of Birth -->
+                  <div class="dateList" ng-show="showForDriver == true ||  data.clientSide == 'sender'">
+                    <div class="halfLabel" style="width: 100% !important;">
+                      <span class="input-label dateOfBirthHalf">Date of Birth</span>
+                    </div>
+                  </div>
+                  <!-- Date of Birth -->
+                  <onezone-datepicker datepicker-object="dateofbirth"
+                                      ng-show="showForDriver == true ||  data.clientSide == 'sender'">
+                    <button class="button button-block button-outline button-positive show-onezone-datepicker">
+                      {{dateofbirth.date | date:'yyyy-MM-dd' }}
+                    </button>
+                  </onezone-datepicker>
+                  <!-- Phone -->
+                  <div class="form-group form-groupForProfile" ng-show="showForAll == true">
+                    <input type="text" class="form-control form-controlForProfile" placeholder="Phone 123-456-7890"
+                           ng-keyup="formatPhone($event,1)" ng-model="newUser.phone">
+                  </div>
+                  <!-- Use Current Location -->
+                  <div class="form-group form-groupForProfile" ng-show="showForAll">
+                    <ion-checkbox ng-model="isCurrentLocationSelected" ng-change="setAddressInformationByCoordinate(isCurrentLocationSelected)"  class="item-checkbox-right">Use Current Location</ion-checkbox>
+                  </div>
+                  <div class="form-group form-groupForProfile" ng-show="showForAll == true">
 
-                                        <input type="text" class="form-control form-controlForProfile" placeholder="Address 2" ng-model="newUser.address2">
-                                    </div>
-                                    <!-- City-->
-                                    <div class="form-group form-groupForProfile" ng-show="showForAll == true">
-                                        <div class="treelineCity">
-                                         <angucomplete-alt id="companyCity"
-                                          placeholder="City"
-                                          pause="100"
-                                          selected-object="newUser.city"
-                                          local-data="cities"
-                                          search-fields="name"
-                                          title-field="name"
-                                          minlength="1"
-                                          input-class="form-control form-controlForProfile "
-                                          ng-model="newUser.city"/></div>
-                                          <!-- State -->
-                                          <input type="text" class="form-control form-controlForProfile treelineState" placeholder="State" ng-model="newUser.state">
-                                          <!-- Zip Code -->
-                                          <input type="number" class="form-control form-controlForProfile treeline" placeholder="ZIP Code" ng-model="newUser.zipcode">
-                                    </div>
-                                </uib-accordion-group>
+                    <input type="text" class="form-control form-controlForProfile" placeholder="Address 1"
+                           ng-model="newUser.address1">
+                  </div>
+                  <!-- Address 2-->
+                  <div class="form-group form-groupForProfile" ng-show="showForAll == true">
 
-                                <!-- License Information -->
-                                <uib-accordion-group is-open="statusLicense.open" ng-show="showForDriver == true" panel-class="accordion-orange">
-                                    <uib-accordion-heading>
-                                        License Information <i class="pull-right ion accordionTitles" ng-class="{'ion-android-remove': statusLicense.open, 'ion-android-add': !statusLicense.open}"></i>
-                                    </uib-accordion-heading>
-                                    <!-- Licence Photo -->
-                                    <div class="form-group form-groupForProfile" ng-show="showForDriver == true">
-                                      <div class="col-xs-12 col-md-12" style="text-align:center;" ng-click="addLicensePhoto()">
-                                        <p ng-show="licenseImage == ''" class="profPicIcon"><i class="step icon ion ion-image" style="font-size:55px;color: black;"></i></p>
-                                        <p ng-show="licenseImage == ''" class="profPicUpload" style="color: black;">Upload License Picture</p>
-                                        <img ng-src="{{licenseImage}}" ng-show="licenseImage != ''" class="licensePic" style="margin-bottom: 10px" />
-                                      </div>
-                                    </div>
-                                    <!-- Licence ID -->
-                                    <div class="form-group form-groupForProfile" ng-show="showForDriver == true">
-                                        <input type="text" class="form-control form-controlForProfile" placeholder="Licence ID" ng-model="newUser.licenseId">
-                                    </div>
-                                    <!-- Licence Expire Date -->
-                                    <div class="dateList" ng-show="showForDriver == true">
-                                        <div class="halfLabel" style="width: 100% !important;">
-                                            <span class="input-label dateOfBirthHalf">License Expiration Date</span>
-                                        </div>
-                                    </div>
-                                    <!-- Licence Expire Date -->
-                                    <div class="form-group form-groupForProfile" ng-show="showForDriver == true ||  data.clientSide == 'sender'">
-                                        <div class="input-group" >
+                    <input type="text" class="form-control form-controlForProfile" placeholder="Address 2"
+                           ng-model="newUser.address2">
+                  </div>
+                  <!-- City-->
+                  <div class="form-group form-groupForProfile" ng-show="showForAll == true">
+                    <div class="treelineCity">
+                      <angucomplete-alt id="companyCity"
+                                        placeholder="City"
+                                        pause="100"
+                                        selected-object="newUser.city"
+                                        local-data="cities"
+                                        search-fields="name"
+                                        title-field="name"
+                                        minlength="1"
+                                        input-class="form-control form-controlForProfile "
+                                        ng-model="newUser.city"
+                                        initial-value="initialCity"/>
+                    </div>
+                    <!-- State -->
+                    <input type="text" class="form-control form-controlForProfile treelineState" placeholder="State"
+                           ng-model="newUser.state">
+                    <!-- Zip Code -->
+                    <input type="number" class="form-control form-controlForProfile treeline" placeholder="ZIP Code"
+                           ng-model="newUser.zipcode">
+                  </div>
+                </uib-accordion-group>
+
+                <!-- License Information -->
+                <uib-accordion-group is-open="statusLicense.open" ng-show="showForDriver == true"
+                                     panel-class="accordion-orange">
+                  <uib-accordion-heading>
+                    License Information <i class="pull-right ion accordionTitles"
+                                           ng-class="{'ion-android-remove': statusLicense.open, 'ion-android-add': !statusLicense.open}"></i>
+                  </uib-accordion-heading>
+                  <!-- Licence Photo -->
+                  <div class="form-group form-groupForProfile" ng-show="showForDriver == true">
+                    <div class="col-xs-12 col-md-12" style="text-align:center;" ng-click="addLicensePhoto()">
+                      <p ng-show="licenseImage == ''" class="profPicIcon"><i class="step icon ion ion-image"
+                                                                             style="font-size:55px;color: black;"></i>
+                      </p>
+                      <p ng-show="licenseImage == ''" class="profPicUpload" style="color: black;">Upload License
+                        Picture</p>
+                      <img ng-src="{{licenseImage}}" ng-show="licenseImage != ''" class="licensePic"
+                           style="margin-bottom: 10px"/>
+                    </div>
+                  </div>
+                  <!-- Licence ID -->
+                  <div class="form-group form-groupForProfile" ng-show="showForDriver == true">
+                    <input type="text" class="form-control form-controlForProfile" placeholder="Licence ID"
+                           ng-model="newUser.licenseId">
+                  </div>
+                  <!-- Licence Expire Date -->
+                  <div class="dateList" ng-show="showForDriver == true">
+                    <div class="halfLabel" style="width: 100% !important;">
+                      <span class="input-label dateOfBirthHalf">License Expiration Date</span>
+                    </div>
+                  </div>
+                  <!-- Licence Expire Date -->
+                  <div class="form-group form-groupForProfile"
+                       ng-show="showForDriver == true ||  data.clientSide == 'sender'">
+                    <div class="input-group">
                                             <span class="input-group-addon">
                                               <i class="icon ion ion-ios-calendar-outline"></i>
                                             </span>
-                                            <input type="date" class="form-control form-controlForProfile" ng-model="newUser.licenseExpireDate" />
-                                        </div>
-                                    </div>
-                                    <!-- Licence Issue State -->
-                                    <div class="form-group form-groupForProfile" ng-show="showForDriver == true">
+                      <input type="date" class="form-control form-controlForProfile"
+                             ng-model="newUser.licenseExpireDate"/>
+                    </div>
+                  </div>
+                  <!-- Licence Issue State -->
+                  <div class="form-group form-groupForProfile" ng-show="showForDriver == true">
 
-                                        <input type="text" class="form-control form-controlForProfile" placeholder="Licence Issue State" ng-model="newUser.licenseIssueState">
-                                    </div>
-                                </uib-accordion-group>
+                    <input type="text" class="form-control form-controlForProfile" placeholder="Licence Issue State"
+                           ng-model="newUser.licenseIssueState">
+                  </div>
+                </uib-accordion-group>
 
-                                <!-- Vehicle Information -->
-                                <uib-accordion-group is-open="statusVehicle.open" ng-show="showForDriver == true">
-                                    <uib-accordion-heading>
-                                        Vehicle Information <i class="pull-right ion accordionTitles" ng-class="{'ion-android-remove': statusVehicle.open, 'ion-android-add': !statusVehicle.open}"></i>
-                                    </uib-accordion-heading>
-                                    <!-- Vehicle -->
-                                    <div class="form-group form-groupForProfile" ng-show="showForDriver == true">
-                                        <input type="text" class="form-control form-controlForProfile" placeholder="Car" ng-model="newUser.vehicle">
-                                    </div>
-                                    <!-- Vehicle Type -->
-                                    <div class="form-group form-groupForProfile" ng-show="showForDriver == true">
-                                        <input type="text" class="form-control form-controlForProfile" placeholder="Car Type" ng-model="newUser.vehicleType">
-                                    </div>
-                                    <!-- Vehicle Insurance Company -->
-                                    <div class="form-group form-groupForProfile" ng-show="showForDriver == true">
-                                        <input type="text" class="form-control form-controlForProfile" placeholder="Vehicle Insurance Company" ng-model="newUser.vehicleInsuranceCompany">
-                                    </div>
-                                    <!-- Car Year -->
-                                    <div class="form-group form-groupForProfile" ng-show="showForDriver == true">
-                                        <input type="number" class="form-control form-controlForProfile" placeholder="Car Year" ng-model="newUser.vehicleYear">
-                                    </div>
-                                </uib-accordion-group>
+                <!-- Vehicle Information -->
+                <uib-accordion-group is-open="statusVehicle.open" ng-show="showForDriver == true">
+                  <uib-accordion-heading>
+                    Vehicle Information <i class="pull-right ion accordionTitles"
+                                           ng-class="{'ion-android-remove': statusVehicle.open, 'ion-android-add': !statusVehicle.open}"></i>
+                  </uib-accordion-heading>
+                  <!-- Vehicle -->
+                  <div class="form-group form-groupForProfile" ng-show="showForDriver == true">
+                    <input type="text" class="form-control form-controlForProfile" placeholder="Car"
+                           ng-model="newUser.vehicle">
+                  </div>
+                  <!-- Vehicle Type -->
+                  <div class="form-group form-groupForProfile" ng-show="showForDriver == true">
+                    <input type="text" class="form-control form-controlForProfile" placeholder="Car Type"
+                           ng-model="newUser.vehicleType">
+                  </div>
+                  <!-- Vehicle Insurance Company -->
+                  <div class="form-group form-groupForProfile" ng-show="showForDriver == true">
+                    <input type="text" class="form-control form-controlForProfile"
+                           placeholder="Vehicle Insurance Company" ng-model="newUser.vehicleInsuranceCompany">
+                  </div>
+                  <!-- Car Year -->
+                  <div class="form-group form-groupForProfile" ng-show="showForDriver == true">
+                    <input type="number" class="form-control form-controlForProfile" placeholder="Car Year"
+                           ng-model="newUser.vehicleYear">
+                  </div>
+                </uib-accordion-group>
 
-                                <!-- Travel Information -->
-                                <uib-accordion-group is-open="statusTravel.open" ng-show="showForDriver == true" panel-class="accordion-orange">
-                                    <uib-accordion-heading>
-                                        Travel Information <i class="pull-right ion accordionTitles" ng-class="{'ion-android-remove': statusTravel.open, 'ion-android-add': !statusTravel.open}"></i>
-                                    </uib-accordion-heading>
-                                    <!-- What Towns Do You Frequently Drive to? -->
-                                    <label class="item item-input" ng-show="showForDriver == true">
-                                        <span class="input-label" style="font-size:14px !important">What Towns Do You Frequently Drive to?</span>
-                                    </label>
-                                    <!-- What Towns Do You Frequently Drive to? -->
-                                    <div ng-show="showForDriver == true" ng-repeat="town in driveToS" class="countableInputsMainNew">
-                                        <div ng-class="{'countableInputsButton': town.id != driveToS.length, 'countableInputsNotShow': town.id == driveToS.length}"  >
-                                            <button ng-click="removeTown()" ng-class="{'countableInputsButtonInline': town.id != driveToS.length, 'countableInputsNotShow': town.id == driveToS.length}" style="color: black"><i ng-class="{'icon ion ion-minus-circled': town.id != driveToS.length, 'countableInputsNotShow': town.id == driveToS.length}"></i></button>
-                                        </div>
+                <!-- Travel Information -->
+                <uib-accordion-group is-open="statusTravel.open" ng-show="showForDriver == true"
+                                     panel-class="accordion-orange">
+                  <uib-accordion-heading>
+                    Travel Information <i class="pull-right ion accordionTitles"
+                                          ng-class="{'ion-android-remove': statusTravel.open, 'ion-android-add': !statusTravel.open}"></i>
+                  </uib-accordion-heading>
+                  <!-- What Towns Do You Frequently Drive to? -->
+                  <label class="item item-input" ng-show="showForDriver == true">
+                    <span class="input-label"
+                          style="font-size:14px !important">What Towns Do You Frequently Drive to?</span>
+                  </label>
+                  <!-- What Towns Do You Frequently Drive to? -->
+                  <div ng-show="showForDriver == true" ng-repeat="town in driveToS" class="countableInputsMainNew">
+                    <div
+                      ng-class="{'countableInputsButton': town.id != driveToS.length, 'countableInputsNotShow': town.id == driveToS.length}">
+                      <button ng-click="removeTown()"
+                              ng-class="{'countableInputsButtonInline': town.id != driveToS.length, 'countableInputsNotShow': town.id == driveToS.length}"
+                              style="color: black"><i
+                        ng-class="{'icon ion ion-minus-circled': town.id != driveToS.length, 'countableInputsNotShow': town.id == driveToS.length}"></i>
+                      </button>
+                    </div>
 
-                                        <div ng-class="{'countableInputsButton': town.id == driveToS.length, 'countableInputsNotShow': town.id != driveToS.length}">
-                                            <button ng-click="addTown()" ng-class="{'countableInputsButtonInline': town.id == driveToS.length, 'countableInputsNotShow': town.id != driveToS.length}" style="color: black"><i ng-class="{'icon ion ion-plus-circled': town.id == driveToS.length, 'countableInputsNotShow': town.id != driveToS.length}"></i></i></button>
-                                        </div>
-                                        <div class="countableInputsInput">
-                                            <angucomplete-alt id="{{town.id}}"
-                                              placeholder="Town {{town.id }}"
-                                              pause="100"
-                                              selected-object="town.value"
-                                              local-data="cities"
-                                              search-fields="name"
-                                              title-field="name"
-                                              minlength="2"
-                                              input-class="form-control form-controlForProfile"
-                                              ng-model="town.value"/>
-                                            <!--<input type="text" class="form-control form-controlForProfile" placeholder="Town {{town.id }}" ng-model="town.value" style="width: 100%;" />-->
-                                        </div>
-                                    </div>
-                                </uib-accordion-group>
-                                <!-- Operation Information -->
-                                <uib-accordion-group is-open="statusOperation.open" ng-show="showForHub == true" panel-class="accordion-orange">
-                                    <uib-accordion-heading>
-                                        Operation Information <i class="pull-right ion accordionTitles" ng-class="{'ion-android-remove': statusOperation.open, 'ion-android-add': !statusOperation.open}"></i>
-                                    </uib-accordion-heading>
-                                    <!-- Contact Person -->
-                                    <div class="form-group form-groupForProfile" ng-show="showForHub == true">
+                    <div
+                      ng-class="{'countableInputsButton': town.id == driveToS.length, 'countableInputsNotShow': town.id != driveToS.length}">
+                      <button ng-click="addTown()"
+                              ng-class="{'countableInputsButtonInline': town.id == driveToS.length, 'countableInputsNotShow': town.id != driveToS.length}"
+                              style="color: black"><i
+                        ng-class="{'icon ion ion-plus-circled': town.id == driveToS.length, 'countableInputsNotShow': town.id != driveToS.length}"></i></i>
+                      </button>
+                    </div>
+                    <div class="countableInputsInput">
+                      <angucomplete-alt id="{{town.id}}"
+                                        placeholder="Town {{town.id }}"
+                                        pause="100"
+                                        selected-object="town.value"
+                                        local-data="cities"
+                                        search-fields="name"
+                                        title-field="name"
+                                        minlength="2"
+                                        input-class="form-control form-controlForProfile"
+                                        ng-model="town.value"/>
+                      <!--<input type="text" class="form-control form-controlForProfile" placeholder="Town {{town.id }}" ng-model="town.value" style="width: 100%;" />-->
+                    </div>
+                  </div>
+                </uib-accordion-group>
+                <!-- Operation Information -->
+                <uib-accordion-group is-open="statusOperation.open" ng-show="showForHub == true"
+                                     panel-class="accordion-orange">
+                  <uib-accordion-heading>
+                    Operation Information <i class="pull-right ion accordionTitles"
+                                             ng-class="{'ion-android-remove': statusOperation.open, 'ion-android-add': !statusOperation.open}"></i>
+                  </uib-accordion-heading>
+                  <!-- Contact Person -->
+                  <div class="form-group form-groupForProfile" ng-show="showForHub == true">
 
-                                        <input type="text" class="form-control form-controlForProfile" placeholder="Contact Person" ng-model="newUser.contactPerson">
-                                    </div>
-                                    <!-- Work Phone -->
-                                    <div class="form-group form-groupForProfile" ng-show="showForHub == true">
-                                        <input type="text" class="form-control form-controlForProfile" placeholder="Contact Phone 123-456-7890" ng-keyup="formatPhone($event,2)"  ng-model="newUser.workPhone">
-                                    </div>
-                                    <!-- State Tax ID -->
-                                    <div class="form-group form-groupForProfile" ng-show="showForHub == true">
+                    <input type="text" class="form-control form-controlForProfile" placeholder="Contact Person"
+                           ng-model="newUser.contactPerson">
+                  </div>
+                  <!-- Work Phone -->
+                  <div class="form-group form-groupForProfile" ng-show="showForHub == true">
+                    <input type="text" class="form-control form-controlForProfile"
+                           placeholder="Contact Phone 123-456-7890" ng-keyup="formatPhone($event,2)"
+                           ng-model="newUser.workPhone">
+                  </div>
+                  <!-- State Tax ID -->
+                  <div class="form-group form-groupForProfile" ng-show="showForHub == true">
 
-                                        <input type="text" class="form-control form-controlForProfile" placeholder="State Tax ID" ng-model="newUser.stateTaxId">
-                                    </div>
-                                    <!-- Open Time -->
-                                    <div class="item item-input registerDaysOf" ng-show="showForHub == true" style="display: block !important;">
-                                        <div class="openTimeTitle">
-                                            <div class="registerToggleLabel"><span class="divInputLabel operationTitles">Operation Hours:</span></div>
-                                            <div class="registerToggleLabel" style="margin-top: -5px;">
-                                                <ion-toggle  ng-change="work724func()" ng-model="work724.checked" ng-show="showForHub == true" toggle-class="toggle-calm" class="registerToggle"><span style="font-weight:bold">Work 24/7 : </span></ion-toggle>
-                                            </div>
-                                        </div>
-                                        <div class="openTimebuttonsTitle">
-                                            <div class="openTimebuttons">
-                                                <button ng-click="openOpenTimeModal()" class="button button-outline button-positive openTimebuttonsMTop">
-                                                  <span ng-show="newUser.openTime == undefined">Start</span>
-                                                  <span ng-show="newUser.openTime != undefined">{{newUser.openTime}}</span>
-                                                </button>
-                                            </div>
-                                            <div class="openTimebuttons">
-                                                <button ng-click="openCloseTimeModal()" class="button button-outline button-positive openTimebuttonsMTop">
-                                                  <span ng-show="newUser.closeTime == undefined">End</span>
-                                                  <span ng-show="newUser.closeTime != undefined">{{newUser.closeTime}}</span>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group form-groupForProfile" ng-show="showForHub == true">
-                                        <div class="form-group form-groupForProfile" >
-                                            <script type="text/ng-template" id="openTimeModalContent.html">
-                                                <div class="modal-header">
-                                                    <h3 class="modal-title">Select Open Time : </h3>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <ui-timepicker ng-model="opentimepicker"></ui-timepicker>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button class="btn btn-primary customColor" type="button" ng-click="ok(opentimepicker)">OK</button>
-                                                    <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
-                                                </div>
-                                            </script>
-                                            <script type="text/ng-template" id="closeTimeModalContent.html">
-                                                <div class="modal-header">
-                                                    <h3 class="modal-title">Select Close Time : </h3>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <ui-timepicker ng-model="closetimepicker"></ui-timepicker>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button class="btn btn-primary customColor" type="button" ng-click="ok(closetimepicker)">OK</button>
-                                                    <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
-                                                </div>
-                                            </script>
-                                        </div>
-                                        <div class="clearfix"></div>
-                                    </div>
-                                    <!-- Days Of Operation -->
-
-                                    <label class="item item-input registerDaysOf" ng-show="showForHub == true">
-                                        <div class="registerToggleLabel"><span class="input-label operationTitles">Days Of Operation:</span></div>
-                                        <div class="registerToggleLabel"><ion-toggle  ng-change="exceptWeekendfunc()" ng-model="exceptWeekend.checked" ng-show="showForHub == true" toggle-class="toggle-calm" class="registerToggle">Except Weekend</ion-toggle></div>
-                                    </label>
-                                    <label class="registerDaysOfLabel">
-                                        <ion-list>
-                                            <div ng-repeat="day in daysOperation">
-                                                <ion-checkbox ng-model="day.selected" class="checkbox-balanced">{{day.value}}</ion-checkbox>
-                                            </div>
-
-                                        </ion-list>
-                                    </label>
-                                </uib-accordion-group>
-                            </uib-accordion>
+                    <input type="text" class="form-control form-controlForProfile" placeholder="State Tax ID"
+                           ng-model="newUser.stateTaxId">
+                  </div>
+                  <!-- Open Time -->
+                  <div class="item item-input registerDaysOf" ng-show="showForHub == true"
+                       style="display: block !important;">
+                    <div class="openTimeTitle">
+                      <div class="registerToggleLabel"><span
+                        class="divInputLabel operationTitles">Operation Hours:</span></div>
+                      <div class="registerToggleLabel" style="margin-top: -5px;">
+                        <ion-toggle ng-change="work724func()" ng-model="work724.checked" ng-show="showForHub == true"
+                                    toggle-class="toggle-calm" class="registerToggle"><span style="font-weight:bold">Work 24/7 : </span>
+                        </ion-toggle>
+                      </div>
+                    </div>
+                    <div class="openTimebuttonsTitle">
+                      <div class="openTimebuttons">
+                        <button ng-click="openOpenTimeModal()"
+                                class="button button-outline button-positive openTimebuttonsMTop">
+                          <span ng-show="newUser.openTime == undefined">Start</span>
+                          <span ng-show="newUser.openTime != undefined">{{newUser.openTime}}</span>
+                        </button>
+                      </div>
+                      <div class="openTimebuttons">
+                        <button ng-click="openCloseTimeModal()"
+                                class="button button-outline button-positive openTimebuttonsMTop">
+                          <span ng-show="newUser.closeTime == undefined">End</span>
+                          <span ng-show="newUser.closeTime != undefined">{{newUser.closeTime}}</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group form-groupForProfile" ng-show="showForHub == true">
+                    <div class="form-group form-groupForProfile">
+                      <script type="text/ng-template" id="openTimeModalContent.html">
+                        <div class="modal-header">
+                          <h3 class="modal-title">Select Open Time : </h3>
                         </div>
-                        <div class="spacer formSpacer"></div>
-                        <button class="button button-energized button-block regButton" ng-click="registerUser()"><i class="ion-android-checkbox"></i><span class="marLeft10">Register</span></button>
-                    </form>
-                </div>
+                        <div class="modal-body">
+                          <ui-timepicker ng-model="opentimepicker"></ui-timepicker>
+                        </div>
+                        <div class="modal-footer">
+                          <button class="btn btn-primary customColor" type="button" ng-click="ok(opentimepicker)">OK
+                          </button>
+                          <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+                        </div>
+                      </script>
+                      <script type="text/ng-template" id="closeTimeModalContent.html">
+                        <div class="modal-header">
+                          <h3 class="modal-title">Select Close Time : </h3>
+                        </div>
+                        <div class="modal-body">
+                          <ui-timepicker ng-model="closetimepicker"></ui-timepicker>
+                        </div>
+                        <div class="modal-footer">
+                          <button class="btn btn-primary customColor" type="button" ng-click="ok(closetimepicker)">OK
+                          </button>
+                          <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+                        </div>
+                      </script>
+                    </div>
+                    <div class="clearfix"></div>
+                  </div>
+                  <!-- Days Of Operation -->
+
+                  <label class="item item-input registerDaysOf" ng-show="showForHub == true">
+                    <div class="registerToggleLabel"><span class="input-label operationTitles">Days Of Operation:</span>
+                    </div>
+                    <div class="registerToggleLabel">
+                      <ion-toggle ng-change="exceptWeekendfunc()" ng-model="exceptWeekend.checked"
+                                  ng-show="showForHub == true" toggle-class="toggle-calm" class="registerToggle">Except
+                        Weekend
+                      </ion-toggle>
+                    </div>
+                  </label>
+                  <label class="registerDaysOfLabel">
+                    <ion-list>
+                      <div ng-repeat="day in daysOperation">
+                        <ion-checkbox ng-model="day.selected" class="checkbox-balanced">{{day.value}}</ion-checkbox>
+                      </div>
+
+                    </ion-list>
+                  </label>
+                </uib-accordion-group>
+              </uib-accordion>
             </div>
+            <div class="spacer formSpacer"></div>
+            <button class="button button-energized button-block regButton" ng-click="registerUser()"><i
+              class="ion-android-checkbox"></i><span class="marLeft10">Register</span></button>
+          </form>
         </div>
-    </ion-content>
+      </div>
+    </div>
+  </ion-content>
 </ion-view>

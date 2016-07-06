@@ -4,7 +4,7 @@ angular.module('Pakkage', ['ionic', 'ngCordova','Pakkage.LoginController', 'Pakk
       localStorageServiceProvider.setPrefix('pakkage').setStorageType('localStorage');
     }
   )
-  .run(function($ionicPlatform, $templateCache, $rootScope, LocalStorageService, ProfileService, $cordovaNetwork, PopupService, LoadingService, $location, StateService, $interval, $state) {
+  .run(function($ionicPlatform, $templateCache,$cordovaGeolocation, $rootScope, LocalStorageService, ProfileService, $cordovaNetwork, PopupService, LoadingService, $location, StateService, $interval, $state) {
     $ionicPlatform.ready(function() {
 
       if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
@@ -14,6 +14,7 @@ angular.module('Pakkage', ['ionic', 'ngCordova','Pakkage.LoginController', 'Pakk
       if (window.StatusBar) {
         StatusBar.styleDefault();
       }
+
 
       /*var type = $cordovaNetwork.getNetwork();
 
@@ -32,6 +33,9 @@ angular.module('Pakkage', ['ionic', 'ngCordova','Pakkage.LoginController', 'Pakk
       //-- Global values
       $rootScope.profileThumbnailURL = 'http://46.101.115.69:9096/uploads/images/thumbnail/';
       $rootScope.licenseThumbnailURL = 'http://46.101.115.69:9096/uploads/licenseImages/thumbnail/';
+
+      $rootScope.googleGeocodingApiUrl = 'https://maps.googleapis.com/maps/api/geocode/json?';
+      $rootScope.googleGeocodingApiKey = 'AIzaSyAMYVIf66G_rnjf7TBhVmDYq8CzTMhjOjA';
 
 
       //-- Global Filter Values

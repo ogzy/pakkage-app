@@ -151,6 +151,9 @@ angular.module('Pakkage.ErrorcodeServices', [])
           case "E120":
             returnMessage = 'Your session is ended.Please login again';
             break;
+          case "E121":
+            returnMessage = 'Your current location is not find.';
+            break;
           case "S100":
             returnMessage = 'Please check your inbox for code';
             break;

@@ -110,11 +110,28 @@ angular.module('Pakkage.routes', [])
           }
         }
       })
+      .state('app.senderMapView', {
+        url: '/senderHubMapView',
+        views: {
+          'menuContent': {
+            templateUrl: 'pages/app-senderMapView.html'
+          }
+        }
+      })
+      .state('app.nearPackage', {
+        url: '/nearPackage/:packageId',
+        views: {
+          'menuContent': {
+            templateUrl: 'pages/app-senderMapView.html'
+          }
+        }
+      })
       .state('app.testMap', {
         url: '/testMap',
         views: {
           'menuContent': {
-            templateUrl: 'pages/test-map.html'
+            templateUrl: 'pages/test-map.html',
+            controller: 'MapCtrl'
           }
         }
       });

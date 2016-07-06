@@ -1,9 +1,11 @@
 <ion-view view-title="Test Map" ng-controller="MapCtrl">
-  <ion-content class="home-with-background">
-    <div class="container-fluid padZero">
-      <div class="row-fluid" style="margin-top: 20px;margin-left: 15px;margin-right: 15px;">
-        <div id="map_canvas"></div>
-      </div>
-    </div>
+  <ion-content>
+    <div id="map" data-tap-disabled="true" style="height: 100%;width:100%"></div>
   </ion-content>
+  <ion-footer-bar class="bar-dark">
+    <a ng-click="centerOnMe()" class="button button-icon icon ion-navigate">Find Me</a>
+  </ion-footer-bar>
 </ion-view>
+
+
+
