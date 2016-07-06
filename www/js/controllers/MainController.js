@@ -1,3 +1,5 @@
+'use strict'
+
 angular.module('Pakkage.MainController', [])
   .controller('TabsCtrl', ['$scope', '$state', 'LoadingService', function ($scope, $state, LoadingService) {
     $scope.loadRegister = function () {
@@ -211,12 +213,11 @@ angular.module('Pakkage.MainController', [])
 
     var map;
     var polylines = [];
+    var markers = [];
     $scope.currentLocationLat = 0;
     $scope.currentLocationLng = 0;
     $scope.driverHubModel = {};
     $scope.driverHubs = [];
-    $scope.driverHubPackagesArray=[];
-    $scope.driverSelectedHubPackageListModel={};
 
     // Driver Map Operations
     if (LocalStorageService.get('userType') == 'Driver') {
@@ -251,7 +252,6 @@ angular.module('Pakkage.MainController', [])
             var hubPromise = HubService.getHubsByCurrentLocation(LocalStorageService.get('token'), LocalStorageService.get('email'), lat, lng);
 
             hubPromise.then(
-
               function (response) {
 
                 console.log(response);
@@ -291,45 +291,73 @@ angular.module('Pakkage.MainController', [])
 
                       latlngbounds.extend(marker.position);
 
-                      //(function (marker, data) {
-                      google.maps.event.addListener(marker, "click", function (e) {
+                      markers.push(marker);
+
+
+                      var addListener = function (i) {
+                        google.maps.event.addListener(markers[i], 'click', function(){
+
+                          document.getElementById("driverMapHubDetail").style.display = 'block';
+
+                          var markerIndex = markers[i].title;
+                          console.log('MARKER INDEX : '+markerIndex);
+                          var selectedHub = $scope.driverHubs[markerIndex];
+
+                          $scope.driverHubModel.Id = selectedHub._id;
+                          $scope.driverHubModel.profilePicture = selectedHub.profilePicture;
+                          $scope.driverHubModel.hubName = selectedHub.name;
+                          console.log('MARKER NAME : '+selectedHub.name);
+                          $scope.driverHubModel.hubLoc = selectedHub.address[0].city + ", " + selectedHub.address[0].state;
+                          $scope.driverHubModel.hubPhone = selectedHub.workPhone;
+                          $scope.driverHubModel.hubEmail = selectedHub.email;
+
+                          if (response.data.packages.length > 0) {
+                            LocalStorageService.save('packages', response.data.packages);
+                            console.log("PACKAGES : " + LocalStorageService.get('packages'));
+                          }
+
+                          if (polylines.length > 0) {
+                            $scope.removeRoute();
+                          }
+
+                          $scope.drawRoute(markers[i]);
+
+                        });
+                      }
+                      addListener(i);
+
+                      /*google.maps.event.addListener(marker, "click", function (e) {
 
                         document.getElementById("driverMapHubDetail").style.display = 'block';
 
                         var markerIndex = marker.title;
-                        var selectedHub = response.data.hubs[markerIndex];
+                        console.log('MARKER INDEX : '+markerIndex);
+                        var selectedHub = $scope.driverHubs[markerIndex];
 
                         $scope.driverHubModel.Id = selectedHub._id;
                         $scope.driverHubModel.profilePicture = selectedHub.profilePicture;
                         $scope.driverHubModel.hubName = selectedHub.name;
+                        console.log('MARKER NAME : '+selectedHub.name);
                         $scope.driverHubModel.hubLoc = selectedHub.address[0].city + ", " + selectedHub.address[0].state;
                         $scope.driverHubModel.hubPhone = selectedHub.workPhone;
                         $scope.driverHubModel.hubEmail = selectedHub.email;
 
-
-                       /* if($scope.driverHubPackagesArray.length > 0)
-                        {
-                          for(var i=0;i<$scope.driverHubPackagesArray.length;i++)
-                          {
-                            if($scope.driverHubPackagesArray[i].hubs._id==$scope.driverHubModel.Id){
-
-                              $scope.driverSelectedHubPackageListModel.push($scope.driverHubPackagesArray[i]);
-
-                            }
-                          }
-                        }*/
+                        if (response.data.packages.length > 0) {
+                          LocalStorageService.save('packages', response.data.packages);
+                          console.log("PACKAGES : " + LocalStorageService.get('packages'));
+                        }
 
                         if (polylines.length > 0) {
                           $scope.removeRoute();
                         }
+
                         $scope.drawRoute(marker);
 
-                      });
-                      // })(marker, data);
+                      });*/
+
                     }
                   }
-                  if($scope.driverHubs.length > 0)
-                  {
+                  if ($scope.driverHubs.length > 0) {
                     map.setCenter(latlngbounds.getCenter());
                     map.fitBounds(latlngbounds);
                   }
@@ -355,8 +383,6 @@ angular.module('Pakkage.MainController', [])
 
       $scope.drawRoute = function (marker) {
 
-        console.log('draw route');
-
         //Initialize the Path Array
         var path = new google.maps.MVCArray();
         //Initialize the Direction Service
@@ -367,7 +393,7 @@ angular.module('Pakkage.MainController', [])
             map: map,
             strokeColor: '#4986E7',
             strokeOpacity: 1.0,
-            strokeWeight: 3
+            strokeWeight: 5
           }
         );
 
@@ -375,7 +401,6 @@ angular.module('Pakkage.MainController', [])
 
         var src = marker.getPosition();
         var des = new google.maps.LatLng($scope.currentLocationLat, $scope.currentLocationLng);
-        ;
         path.push(src);
         poly.setPath(path);
 
@@ -405,18 +430,12 @@ angular.module('Pakkage.MainController', [])
         var fitBounds = new google.maps.LatLngBounds(src, end);
         map.fitBounds(fitBounds);
       }
+    }
 
-      $scope.navigateHubPackageList = function()
-      {
-        $state.go("app.nearPAckage",{
-          packageId  : 123
-        });
-        $stateParams.packageId
-        $scope.packages =  $filter('filter')(LocalStorageService.get('packages'),function(err,packages){
-            return package.hubs.id = $stateParams.hubId
-        });
-      }
+    $scope.navigateHubPackageList = function () {
+      console.log('SELECTED HUB ID :' + $scope.driverHubModel.Id);
 
+      $state.go("app.packagesListByHub", {selectedHubId: $scope.driverHubModel.Id});
     }
 
     $scope.openSenderHubViewMap = function () {
@@ -425,69 +444,85 @@ angular.module('Pakkage.MainController', [])
     }
 
   }])
-  .controller('OpenFilterModalInstanceCtrl',
-    ['$scope', '$uibModalInstance', 'filters', 'moment',
+  .controller('OpenFilterModalInstanceCtrl', ['$scope', '$uibModalInstance', 'filters', 'moment',
+    'LocalStorageService', '$filter', '$rootScope', 'PackageFilterService',
+    'PopupService', '$uibModal',
+    function ($scope, $uibModalInstance, filters, moment, LocalStorageService, $filter,
+              $rootScope, PackageFilterService, PopupService, $uibModal) {
+      $scope.date = $rootScope.date;
+      $scope.ok = function () {
+        var currentFilters = {
+            statusFilter: $scope.statusFilter,
+            dateFilter: $scope.dateFilter,
+            directionFilter: $scope.directionFilter
+          },
+          detailFilters = {
+            status: $scope.status,
+            fromMe: $scope.fromMe,
+            toMe: $scope.toMe,
+            date: $scope.radioDate
+          };
+        PackageFilterService.homePackagesFilter(currentFilters, detailFilters);
+        $uibModalInstance.close();
+        document.getElementById('driverMap').style.display = 'none';
+        document.getElementById('driverMapHubDetail').style.display = 'none';
+      };
+      $scope.statusFilterClicked = function () {
+        if (!$scope.status.draft && !$scope.status.readyToSend && !$scope.status.onRoad && !$scope.status.driverPicked)
+          $scope.statusFilter = false;
+        else
+          $scope.statusFilter = true;
+      };
+      $scope.statusCheckboxClicked = function () {
+        if (!$scope.statusFilter) {
+          $scope.status.draft = false;
+          $scope.status.readyToSend = false;
+          $scope.status.onRoad = false;
+          $scope.status.driverPicked = false;
+        }
+      };
+
+      $scope.dateFilterClicked = function () {
+        $scope.dateFilter = true;
+      };
+
+      $scope.directionFilterClicked = function () {
+        if (!$scope.fromMe && !$scope.toMe)
+          $scope.directionFilter = false;
+        else
+          $scope.directionFilter = true;
+      };
+
+      $scope.directionCheckboxClicked = function () {
+        if (!$scope.directionFilter) {
+          $scope.fromMe = false;
+          $scope.toMe = false;
+        } else {
+          $scope.fromMe = true;
+          $scope.toMe = true;
+        }
+      };
+
+
+      $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+      };
+    }])
+  .controller('PackagesListByHubCntrl',
+    ['$scope', 'moment',
       'LocalStorageService', '$filter', '$rootScope', 'PackageFilterService',
-      'PopupService', '$uibModal',
-      function ($scope, $uibModalInstance, filters, moment, LocalStorageService, $filter,
-                $rootScope, PackageFilterService, PopupService, $uibModal) {
-        $scope.date = $rootScope.date;
-        $scope.ok = function () {
-          var currentFilters = {
-              statusFilter: $scope.statusFilter,
-              dateFilter: $scope.dateFilter,
-              directionFilter: $scope.directionFilter
-            },
-            detailFilters = {
-              status: $scope.status,
-              fromMe: $scope.fromMe,
-              toMe: $scope.toMe,
-              date: $scope.radioDate
-            };
-          PackageFilterService.homePackagesFilter(currentFilters, detailFilters);
-          $uibModalInstance.close();
-          document.getElementById('driverMap').style.display = 'none';
-          document.getElementById('driverMapHubDetail').style.display = 'none';
-        };
-        $scope.statusFilterClicked = function () {
-          if (!$scope.status.draft && !$scope.status.readyToSend && !$scope.status.onRoad && !$scope.status.driverPicked)
-            $scope.statusFilter = false;
-          else
-            $scope.statusFilter = true;
-        };
-        $scope.statusCheckboxClicked = function () {
-          if (!$scope.statusFilter) {
-            $scope.status.draft = false;
-            $scope.status.readyToSend = false;
-            $scope.status.onRoad = false;
-            $scope.status.driverPicked = false;
-          }
-        };
+      'PopupService', '$stateParams',
+      function ($scope, moment, LocalStorageService, $filter,
+                $rootScope, PackageFilterService, PopupService, $stateParams) {
 
-        $scope.dateFilterClicked = function () {
-          $scope.dateFilter = true;
-        };
+        var selectedHub = $stateParams.selectedHubId;
+        //$scope.packageList = $filter('filter')(LocalStorageService.get('packages'), function (err, packages) {
+        // return packages.hubs._id = $stateParams.selectedHubId
+        //});
 
-        $scope.directionFilterClicked = function () {
-          if (!$scope.fromMe && !$scope.toMe)
-            $scope.directionFilter = false;
-          else
-            $scope.directionFilter = true;
-        };
+        $scope.myPackages = PackageFilterService.filterPackagesByHubId(selectedHub);
 
-        $scope.directionCheckboxClicked = function () {
-          if (!$scope.directionFilter) {
-            $scope.fromMe = false;
-            $scope.toMe = false;
-          } else {
-            $scope.fromMe = true;
-            $scope.toMe = true;
-          }
-        };
+        console.log('CONTROLLER PACKAGES :' + $scope.myPackages);
 
 
-        $scope.cancel = function () {
-          $uibModalInstance.dismiss('cancel');
-        };
       }])
-

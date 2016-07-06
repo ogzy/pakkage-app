@@ -118,11 +118,12 @@ angular.module('Pakkage.routes', [])
           }
         }
       })
-      .state('app.nearPackage', {
-        url: '/nearPackage/:packageId',
+      .state('app.packagesListByHub', {
+        url: '/packagesListByHub/:selectedHubId',
         views: {
           'menuContent': {
-            templateUrl: 'pages/app-senderMapView.html'
+            templateUrl: 'pages/app-packagesListByHub.html',
+            controller:'PackagesListByHubCntrl'
           }
         }
       })
