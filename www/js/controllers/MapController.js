@@ -13,6 +13,7 @@ angular.module('Pakkage.MapController', [])
       '$ionicHistory',
       '$cordovaGeolocation',
       'HubService',
+      'RegisterService',
       function ($scope,
                 LocalStorageService,
                 $state,
@@ -23,18 +24,19 @@ angular.module('Pakkage.MapController', [])
                 $interval,
                 $ionicHistory,
                 $cordovaGeolocation,
-                HubService) {
+                HubService,
+                RegisterService) {
 
 
         var map;
         var polylines = [];
+        var markers = [];
         $scope.currentLocationLat = 0;
         $scope.currentLocationLng = 0;
         $scope.driverHubModel = {};
-        $scope.hubs=[];
+        $scope.hubs = [];
 
         var mapOptions = {
-          center: new google.maps.LatLng(40.763246, 29.384718),
           zoom: 10,
           mapTypeId: google.maps.MapTypeId.ROADMAP,
           zoomControl: false,
@@ -55,12 +57,8 @@ angular.module('Pakkage.MapController', [])
 
               console.log('konum bulunduuuuuuuuu');
 
-              var lat = position.coords.latitude;
-              var lng = position.coords.longitude;
-
-              $scope.currentLocationLat = lat;
-              $scope.currentLocationLng = lng;
-
+              $scope.currentLocationLat = position.coords.latitude;
+              $scope.currentLocationLng = position.coords.longitude;
 
               var currentLocation = new google.maps.LatLng($scope.currentLocationLat, $scope.currentLocationLng);
               var currentMarker = new google.maps.Marker({
@@ -76,77 +74,102 @@ angular.module('Pakkage.MapController', [])
 
               latlngbounds.extend(currentMarker.position);
 
-              //sender'ın bulundugu sehir'deki hubları gösterecek
-              var senderCity='Clevland';
+              var geoApiPromise = RegisterService.getCurrentLocationByCoordinate($scope.currentLocationLat, $scope.currentLocationLng);
+
+              geoApiPromise.then(
+                function (response) {
+
+                  if (response.status == 200) {
+
+                    //Address Result Format : 434-474 4th Ave N, Cleveland, ND 58424, USA
+
+                    //var senderCity = response.data.results[0].address_components[2].short_name;
+                    var senderCity = 'Bismarck';
+
+                    var hubsPromise = HubService.getAvailableHubsBySenderLocation(senderCity);
+                    hubsPromise.then(
+                      function (response) {
+
+                        if (response.data.errorCode == 0) {
+
+                          $scope.driverHubs = response.data.hubs;
+
+                          for (var i = 0; i < response.data.hubs.length; i++) {
+
+                            var paramHub = response.data.hubs[i];
+
+                            if (paramHub.location.coordinates.length > 0) {
+
+                              var myLatlng = new google.maps.LatLng(paramHub.location.coordinates[1], paramHub.location.coordinates[0]);
+                              lat_lng.push(myLatlng);
+
+                              var marker = new google.maps.Marker({
+                                position: myLatlng,
+                                map: map,
+                                title: i.toString(),
+                                icon: "http://www.harita.boun.edu.tr/css/img/lojman.png"
+                              });
+
+                              latlngbounds.extend(marker.position);
+
+                              markers.push(marker);
+
+                              var addListener = function (i) {
+                                google.maps.event.addListener(markers[i], 'click', function () {
+
+                                  document.getElementById("driverMapHubDetail").style.display = 'block';
+
+                                  var markerIndex = i;
+                                  console.log('MARKER INDEX : ' + markerIndex);
+                                  var selectedHub = $scope.driverHubs[markerIndex];
+
+                                  $scope.driverHubModel.Id = selectedHub._id;
+                                  $scope.driverHubModel.profilePicture = selectedHub.profilePicture;
+                                  $scope.driverHubModel.hubName = selectedHub.name;
+                                  console.log('MARKER NAME : ' + selectedHub.name);
+                                  $scope.driverHubModel.hubLoc = selectedHub.address[0].city + ", " + selectedHub.address[0].state;
+                                  $scope.driverHubModel.hubPhone = selectedHub.workPhone;
+                                  $scope.driverHubModel.hubEmail = selectedHub.email;
 
 
-              var hubsPromise = HubService.getAvailableHubsBySenderLocation(senderCity);
-              hubsPromise.then(
-                function(hubs) {
+                                  if (polylines.length > 0) {
+                                    $scope.removeRoute();
+                                  }
 
-                  if (hubs.data.errorCode == 0) {
+                                  $scope.drawRoute(markers[i]);
 
-                    $scope.hubs = hubs.data.hubs;
+                                });
+                              }
+                              addListener(i);
 
-                    for (var i = 0; i < $scope.hubs.length; i++) {
-
-                      var paramHub = $scope.hubs[i];
-
-                      if (paramHub.location != undefined) {
-
-                        var myLatlng = new google.maps.LatLng(paramHub.location.coordinates[1], paramHub.currentLocation.geometry.coordinates[0]);
-                        lat_lng.push(myLatlng);
-                        var marker = new google.maps.Marker({
-                          position: myLatlng,
-                          map: map,
-                          title: i.toString(),
-                          icon: "http://www.harita.boun.edu.tr/css/img/lojman.png"
-                        });
-
-                        latlngbounds.extend(marker.position);
-
-                        //(function (marker, data) {
-                        google.maps.event.addListener(marker, "click", function (e) {
-
-                          document.getElementById("driverMapHubDetail").style.display = 'block';
-
-                          //Burada gerekli bilgileri dolduracağız
-                          var markerIndex = marker.title;
-                          var selectedHub = $scope.hubs[markerIndex];
-
-
-                          $scope.driverHubModel.hubImage = selectedHub.profilePicture;
-                          $scope.driverHubModel.hubName = selectedHub.name;
-                          $scope.driverHubModel.hubLoc = selectedHub.address[0].city + ", " + selectedHub.address[0].state;
-                          $scope.driverHubModel.hubPhone = selectedHub.workPhone;
-                          $scope.driverHubModel.hubEmail = selectedHub.email;
-
-                          if (polylines.length > 0) {
-                            $scope.removeRoute();
+                            }
                           }
-                          $scope.drawRoute(marker);
+                          if ($scope.driverHubs.length > 0) {
+                            map.setCenter(latlngbounds.getCenter());
+                            map.fitBounds(latlngbounds);
+                          }
+                          else {
+                            map.setZoom(17);
+                            map.panTo(currentMarker.position);
+                            PopupService.alert('Error', 'E122')
+                          }
 
-                        });
-                        // })(marker, data);
-                      }
-                    }
+                          console.log(markers);
 
-                    if($scope.hubs.length > 0)
-                    {
-                      map.setCenter(latlngbounds.getCenter());
-                      map.fitBounds(latlngbounds);
-                    }
-                    else {
-                      map.setZoom(17);
-                      map.panTo(currentMarker.position);
-                    }
+                          LoadingService.hide();
+                        }
+                      },
+                      function (errorPayload) {
 
+                      });
 
                     LoadingService.hide();
-
                   }
                 },
-                function(errorPayload) {
+                function (errorPayload) {
+
+                  LoadingService.hide();
+
                 });
             },
             function (err) {
@@ -154,10 +177,7 @@ angular.module('Pakkage.MapController', [])
               PopupService.alert('Error', 'E121');
             });
 
-
         $scope.drawRoute = function (marker) {
-
-          console.log('draw route');
 
           //Initialize the Path Array
           var path = new google.maps.MVCArray();
@@ -169,15 +189,14 @@ angular.module('Pakkage.MapController', [])
               map: map,
               strokeColor: '#4986E7',
               strokeOpacity: 1.0,
-              strokeWeight: 3
+              strokeWeight: 5
             }
           );
 
           polylines.push(poly);
 
-          var src = marker.getPosition();
-          var des = new google.maps.LatLng($scope.currentLocationLat, $scope.currentLocationLng);
-          ;
+          var src = new google.maps.LatLng($scope.currentLocationLat, $scope.currentLocationLng);
+          var des = marker.getPosition();
           path.push(src);
           poly.setPath(path);
 
@@ -204,12 +223,11 @@ angular.module('Pakkage.MapController', [])
         }
 
         $scope.fitRoute = function (src, end) {
+          console.log(src);
+          console.log(end);
           var fitBounds = new google.maps.LatLngBounds(src, end);
           map.fitBounds(fitBounds);
         }
-
-
-
 
 
       }])

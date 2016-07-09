@@ -154,6 +154,9 @@ angular.module('Pakkage.ErrorcodeServices', [])
           case "E121":
             returnMessage = 'Your current location is not find.';
             break;
+          case "E122":
+            returnMessage = 'Avaible hubs is not found by your current city';
+            break;
           case "S100":
             returnMessage = 'Please check your inbox for code';
             break;

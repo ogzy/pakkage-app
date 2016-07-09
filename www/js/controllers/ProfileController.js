@@ -244,9 +244,8 @@ angular.module('Pakkage.ProfileController', [])
         LoadingService.hide();
 
 
-        if (LocalStorageService.get('userType') == 'Hub' && $scope.newUser.currentLocation!=undefined)
-        {
-          var myLatlng = new google.maps.LatLng($scope.newUser.currentLocation.geometry.coordinates[0], $scope.newUser.currentLocation.geometry.coordinates[1]);
+        if (LocalStorageService.get('userType') == 'Hub' && $scope.newUser.location != undefined) {
+          var myLatlng = new google.maps.LatLng($scope.newUser.location.coordinates[1], $scope.newUser.location.coordinates[0]);
 
           var mapOptions = {
             center: myLatlng,
@@ -265,9 +264,6 @@ angular.module('Pakkage.ProfileController', [])
         else {
           document.getElementById("profileMap").style.display = 'none';
         }
-
-
-
 
       }
 

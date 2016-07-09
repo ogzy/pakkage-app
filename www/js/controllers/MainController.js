@@ -299,7 +299,7 @@ angular.module('Pakkage.MainController', [])
 
                           document.getElementById("driverMapHubDetail").style.display = 'block';
 
-                          var markerIndex = markers[i].title;
+                          var markerIndex = i;
                           console.log('MARKER INDEX : '+markerIndex);
                           var selectedHub = $scope.driverHubs[markerIndex];
 
@@ -325,36 +325,6 @@ angular.module('Pakkage.MainController', [])
                         });
                       }
                       addListener(i);
-
-                      /*google.maps.event.addListener(marker, "click", function (e) {
-
-                        document.getElementById("driverMapHubDetail").style.display = 'block';
-
-                        var markerIndex = marker.title;
-                        console.log('MARKER INDEX : '+markerIndex);
-                        var selectedHub = $scope.driverHubs[markerIndex];
-
-                        $scope.driverHubModel.Id = selectedHub._id;
-                        $scope.driverHubModel.profilePicture = selectedHub.profilePicture;
-                        $scope.driverHubModel.hubName = selectedHub.name;
-                        console.log('MARKER NAME : '+selectedHub.name);
-                        $scope.driverHubModel.hubLoc = selectedHub.address[0].city + ", " + selectedHub.address[0].state;
-                        $scope.driverHubModel.hubPhone = selectedHub.workPhone;
-                        $scope.driverHubModel.hubEmail = selectedHub.email;
-
-                        if (response.data.packages.length > 0) {
-                          LocalStorageService.save('packages', response.data.packages);
-                          console.log("PACKAGES : " + LocalStorageService.get('packages'));
-                        }
-
-                        if (polylines.length > 0) {
-                          $scope.removeRoute();
-                        }
-
-                        $scope.drawRoute(marker);
-
-                      });*/
-
                     }
                   }
                   if ($scope.driverHubs.length > 0) {

@@ -20,12 +20,14 @@ var registerServiceURL = hostPath + '/register',
   getStateURL = hostPath + '/getState',
   getAllStateURL = hostPath + '/getAllState',
   getAvailableHubsURL = hostPath + '/api/getAvailableHubs',
+  getAvailableHubsWithCoordinatesURL = hostPath + '/api/getAvailableHubsWithCoordinates',
   changeUserPasswordURL = hostPath + '/api/changeUserPassword',
   scanQrCodeURL = hostPath + '/api/scanQrCode',
   scanQrCodeFromHubPageURL = hostPath + '/api/scanQrCodeFromHubPage',
   scanPakkageForHubAndDriverURL = hostPath + '/api/scanPakkageForHubAndDriver',
   getPackageByQrCodeIdURL = hostPath + '/api/getPackageByQrCodeId',
   getUserByIdURL = hostPath + '/api/getUserById',
+  updateUserCurrentLocationURL=hostPath+ '/api/updateUserCurrentLocation',
   getAvailableHubsByDriverCurrentLocationURL = hostPath + '/api/getHubsByDriverCurrentLocation',
   googleGeocodingApiUrl = 'https://maps.googleapis.com/maps/api/geocode/json?',
   googleGeocodingApiKey = 'AIzaSyCCfYkorenMmME5xnyrap72br25T99R5RU'
@@ -274,7 +276,24 @@ angular.module('Pakkage.BackendServices', [])
           url: getUserByIdURL + '/' + LocalStorageService.get('email') + '/' + id + '/' + LocalStorageService.get('version') + '?token=' + token
         };
         return $http(req);
-      }
+      },
+      updateUserCurrentLocation: function (user, currentLocation, token) {
+
+        var req = {
+          method: 'POST',
+          url: updateUserCurrentLocationURL,
+          headers: {
+            'x-access-token': token,
+            'Content-Type': 'application/json; charset=utf-8'
+          },
+          data: {
+            user: user,
+            token: token,
+            version: LocalStorageService.get('version')
+          }
+        };
+        return $http(req);
+      },
     }
   })
   .factory('PackageService', function ($http, $cordovaFileTransfer, LocalStorageService) {
@@ -450,7 +469,7 @@ angular.module('Pakkage.BackendServices', [])
       getAvailableHubsBySenderLocation: function (city) {
         var req = {
           method: 'GET',
-          url: getAvailableHubsURL + '/' + city+ '/' + LocalStorageService.get('email') + '/' + LocalStorageService.get('version') + '?token=' + LocalStorageService.get('token')
+          url: getAvailableHubsWithCoordinatesURL + '/' + city+ '/' + LocalStorageService.get('email') + '/' + LocalStorageService.get('version') + '?token=' + LocalStorageService.get('token')
         };
         return $http(req);
       },

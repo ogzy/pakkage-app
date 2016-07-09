@@ -1,5 +1,5 @@
 angular.module('Pakkage.RegisterController', [])
-  .controller('RegisterCtrl', ['$scope', '$state', '$cordovaCamera', '$ionicActionSheet', '$cordovaFile', 'LoadingService', '$http', 'PopupService', 'RegisterService', '$cordovaFileTransfer', 'ErrorCodeService', '$interval', 'LocalStorageService', '$uibModal', 'moment', 'PhoneControlService', '$filter','$cordovaGeolocation', function ($scope, $state, $cordovaCamera, $ionicActionSheet, $cordovaFile, LoadingService, $http, PopupService, RegisterService, $cordovaFileTransfer, ErrorCodeService, $interval, LocalStorageService, $uibModal, moment, PhoneControlService, $filter,$cordovaGeolocation) {
+  .controller('RegisterCtrl', ['$scope', '$state', '$cordovaCamera', '$ionicActionSheet', '$cordovaFile', 'LoadingService', '$http', 'PopupService', 'RegisterService', '$cordovaFileTransfer', 'ErrorCodeService', '$interval', 'LocalStorageService', '$uibModal', 'moment', 'PhoneControlService', '$filter', '$cordovaGeolocation', function ($scope, $state, $cordovaCamera, $ionicActionSheet, $cordovaFile, LoadingService, $http, PopupService, RegisterService, $cordovaFileTransfer, ErrorCodeService, $interval, LocalStorageService, $uibModal, moment, PhoneControlService, $filter, $cordovaGeolocation) {
     /*var loadingSecond = 1;
      LoadingService.show();
      $interval(function () {
@@ -25,9 +25,9 @@ angular.module('Pakkage.RegisterController', [])
     $scope.licenseImage = '';
     $scope.licenseImageName = '';
     $scope.licenseImageType = 0;
-    $scope.isCurrentLocationSelected=false;
-    $scope.currentLocationLat=0;
-    $scope.currentLocationLng=0;
+    $scope.isCurrentLocationSelected = false;
+    $scope.currentLocationLat = 0;
+    $scope.currentLocationLng = 0;
 
     $scope.usertypelist = [{
       text: "Sender",
@@ -88,25 +88,26 @@ angular.module('Pakkage.RegisterController', [])
 
     $scope.setAddressInformationByCoordinate = function (isChecked) {
 
-      if(isChecked)
-      {
-        $scope.isCurrentLocationSelected=true;
+      if (isChecked) {
+        $scope.isCurrentLocationSelected = true;
         LoadingService.show();
         var posOptions = {timeout: 10000, enableHighAccuracy: true};
         $cordovaGeolocation
           .getCurrentPosition(posOptions)
           .then(function (position) {
 
-            //var lat  = position.coords.latitude;
-            //var lng = position.coords.longitude;
-            var lat  = 46.891038;
-            var lng = -99.119517;
 
+            // Test için kullanılabilir, Bismarck,ND'de bir konum.
+            //var lat = 46.891038;
+            //var lng = -99.119517;
+
+            var lat  = position.coords.latitude;
+            var lng = position.coords.longitude;
 
             $scope.currentLocationLat = lat;
             $scope.currentLocationLng = lng;
 
-            var geoApiPromise = RegisterService.getCurrentLocationByCoordinate(lat,lng);
+            var geoApiPromise = RegisterService.getCurrentLocationByCoordinate(lat, lng);
 
             geoApiPromise.then(
               function (response) {
@@ -115,23 +116,31 @@ angular.module('Pakkage.RegisterController', [])
                   //Address Result Format : 434-474 4th Ave N, Cleveland, ND 58424, USA
 
                   $scope.newUser.address1 =
-                    response.data.results[0].address_components[0].short_name+
-                    " "+response.data.results[0].address_components[1].short_name;
+                    response.data.results[0].address_components[0].short_name +
+                    " " + response.data.results[0].address_components[1].short_name;
 
                   $scope.newUser.address2 =
-                    response.data.results[0].address_components[2].short_name+
-                    ", "+response.data.results[0].address_components[4].short_name+
-                    " "+response.data.results[0].address_components[6].short_name+
-                    ", "+response.data.results[0].address_components[5].short_name;
+                    response.data.results[0].address_components[2].short_name +
+                    ", " + response.data.results[0].address_components[4].short_name +
+                    " " + response.data.results[0].address_components[6].short_name +
+                    ", " + response.data.results[0].address_components[5].short_name;
 
-                  //city ve zip autocomplate oldugu icin set edilmiyor
-                  //if(response.data.results[0].address_components[4].short_name == LocalStorageService.get('cities'))
                   $scope.initialCity = response.data.results[0].address_components[2].short_name;
-                  $scope.newUser.zipcode =parseInt(response.data.results[0].address_components[6].short_name);
-                  $scope.newUser.state=response.data.results[0].address_components[4].short_name;
+                  $scope.newUser.zipcode = parseInt(response.data.results[0].address_components[6].short_name);
+                  $scope.newUser.state = response.data.results[0].address_components[4].short_name;
+
+                  //Buradan city set edildiginde sunucuya nedense gitmiyor, kontrol edilecek !!!!!!!
+                  for (var i = 0; i <$scope.cities.length ; i++) {
+
+                    if(response.data.results[0].address_components[2].short_name==$scope.cities[i].name)
+                    {
+                      $scope.newUser.city = $scope.cities[i];
+                      console.log('CITY ->>>>>>>'+$scope.newUser.city);
+                    }
+                  }
 
                   var resultLocation = {
-                    "location": [$scope.currentLocationLng,$scope.currentLocationLat]
+                    "location": [$scope.currentLocationLng, $scope.currentLocationLat]
                   }
                   $scope.newUser.currentLocation = resultLocation;
 
@@ -144,15 +153,14 @@ angular.module('Pakkage.RegisterController', [])
 
               });
 
-          }, function(err) {
-            $scope.isCurrentLocationSelected=false;
+          }, function (err) {
+            $scope.isCurrentLocationSelected = false;
             LoadingService.hide();
             PopupService.alert('Error', 'E121');
           });
       }
-      else
-      {
-        $scope.isCurrentLocationSelected=false;
+      else {
+        $scope.isCurrentLocationSelected = false;
       }
 
 
@@ -558,6 +566,7 @@ angular.module('Pakkage.RegisterController', [])
               LoadingService.show();
 
               if ($scope.imageName == '' && $scope.licenseImageName == '') {
+
                 var registerPromise = RegisterService.registerUser($scope.data.clientSide, $scope.newUser, 'noPicture.jpg', fullFilled, openTime);
 
                 registerPromise.then(
@@ -631,6 +640,7 @@ angular.module('Pakkage.RegisterController', [])
                     json = JSON.parse(json);
                     if (json.status == 'OK') {
 
+
                       var registerPromise = RegisterService.registerUser($scope.data.clientSide, $scope.newUser, 'noPicture.jpg', fullFilled, openTime, json.imageName);
                       registerPromise.then(
                         function (process) {
@@ -683,6 +693,7 @@ angular.module('Pakkage.RegisterController', [])
                           json = JSON.parse(json);
                           if (json.status == 'OK') {
 
+
                             var registerPromise = RegisterService.registerUser($scope.data.clientSide, $scope.newUser, jsonProfile.imageName, fullFilled, openTime, json.imageName);
                             registerPromise.then(
                               function (process) {
@@ -731,8 +742,9 @@ angular.module('Pakkage.RegisterController', [])
             if ($scope.newUser.address1 != undefined || $scope.newUser.city != undefined || $scope.newUser.state != undefined) {
 
               //Eger gps konumu sec isaretlendi ise,
-              if($scope.isCurrentLocationSelected)
-              {
+              if ($scope.isCurrentLocationSelected) {
+
+
                 var registerPromise = RegisterService.registerUser($scope.data.clientSide, $scope.newUser, 'noPicture.jpg', fullFilled, openTime);
                 registerPromise.then(
                   function (process) {
@@ -742,7 +754,6 @@ angular.module('Pakkage.RegisterController', [])
                       $state.go('activate', {
                         email: $scope.newUser.email
                       });
-
 
                     } else {
                       PopupService.alert('Error', process.data.errorCode);
@@ -754,8 +765,7 @@ angular.module('Pakkage.RegisterController', [])
                     PopupService.alert('Error', 999);
                   });
 
-              }else
-              {
+              } else {
                 var geoApiPromise = RegisterService.getCurrentLocationByAddress($scope.newUser.address1, $scope.newUser.address2, $scope.newUser.city, $scope.newUser.state);
 
                 geoApiPromise.then(
@@ -769,6 +779,7 @@ angular.module('Pakkage.RegisterController', [])
                       }
 
                       $scope.newUser.currentLocation = resultLocation;
+
                       var registerPromise = RegisterService.registerUser($scope.data.clientSide, $scope.newUser, 'noPicture.jpg', fullFilled, openTime);
                       registerPromise.then(
                         function (process) {
@@ -779,26 +790,23 @@ angular.module('Pakkage.RegisterController', [])
                               email: $scope.newUser.email
                             });
 
-
                           } else {
                             PopupService.alert('Error', process.data.errorCode);
                           }
                         },
                         function (errorPayload) {
+
                           LoadingService.hide();
-
                           PopupService.alert('Error', 999);
+
                         });
-
-                      console.log('lokasyon olusturuldu');
-                      console.log(resultLocation);
-
                     } else {
                       LoadingService.hide();
                       PopupService.alert('Error', response.data.errorCode);
                     }
                   },
                   function (errorPayload) {
+
 
                     var registerPromise = RegisterService.registerUser($scope.data.clientSide, $scope.newUser, 'noPicture.jpg', fullFilled, openTime);
                     registerPromise.then(
@@ -825,6 +833,7 @@ angular.module('Pakkage.RegisterController', [])
             }
           }
           else {
+
             var registerPromise = RegisterService.registerUser($scope.data.clientSide, $scope.newUser, 'noPicture.jpg', fullFilled, openTime);
             registerPromise.then(
               function (process) {
@@ -863,8 +872,7 @@ angular.module('Pakkage.RegisterController', [])
                 if ($scope.data.clientSide == 'hub') {
                   if ($scope.newUser.address1 != undefined || $scope.newUser.city != undefined || $scope.newUser.state != undefined) {
 
-                    if($scope.isCurrentLocationSelected)
-                    {
+                    if ($scope.isCurrentLocationSelected) {
 
                       var registerPromise = RegisterService.registerUser($scope.data.clientSide, $scope.newUser, json.imageName, fullFilled, openTime);
                       registerPromise.then(
@@ -887,7 +895,7 @@ angular.module('Pakkage.RegisterController', [])
                           PopupService.alert('Error', 999);
                         });
 
-                    }else{
+                    } else {
 
                       var geoApiPromise = RegisterService.getCurrentLocationByAddress($scope.newUser.address1, $scope.newUser.address2, $scope.newUser.city, $scope.newUser.state);
 
@@ -904,6 +912,7 @@ angular.module('Pakkage.RegisterController', [])
                             }
 
                             $scope.newUser.currentLocation = resultLocation;
+
                             var registerPromise = RegisterService.registerUser($scope.data.clientSide, $scope.newUser, json.imageName, fullFilled, openTime);
                             registerPromise.then(
                               function (process) {
@@ -932,6 +941,7 @@ angular.module('Pakkage.RegisterController', [])
                         },
                         function (errorPayload) {
 
+
                           var registerPromise = RegisterService.registerUser($scope.data.clientSide, $scope.newUser, json.imageName, fullFilled, openTime);
                           registerPromise.then(
                             function (process) {
@@ -958,11 +968,10 @@ angular.module('Pakkage.RegisterController', [])
                     }
 
 
-
-
                   }
                 }
                 else {
+
                   var registerPromise = RegisterService.registerUser($scope.data.clientSide, $scope.newUser, json.imageName, fullFilled, openTime);
                   registerPromise.then(
                     function (process) {
@@ -1007,6 +1016,7 @@ angular.module('Pakkage.RegisterController', [])
               var json = JSON.stringify(eval("(" + upload.response + ")"));
               json = JSON.parse(json);
               if (json.status == 'OK') {
+
 
                 var registerPromise = RegisterService.registerUser($scope.data.clientSide, $scope.newUser, 'noPicture.jpg', fullFilled, openTime, json.imageName);
                 registerPromise.then(
