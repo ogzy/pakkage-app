@@ -1,16 +1,16 @@
 'use strict'
 
 angular.module('Pakkage.MainController', [])
-  .controller('TabsCtrl', ['$scope', '$state', 'LoadingService', function ($scope, $state, LoadingService) {
-    $scope.loadRegister = function () {
+  .controller('TabsCtrl', ['$scope', '$state', 'LoadingService', function($scope, $state, LoadingService) {
+    $scope.loadRegister = function() {
       LoadingService.show();
       $state.go('tab.register');
     };
   }])
-  .controller('MainCtrl', ['$scope', 'LocalStorageService', '$state', function ($scope, LocalStorageService, $state) {
+  .controller('MainCtrl', ['$scope', 'LocalStorageService', '$state', function($scope, LocalStorageService, $state) {
 
   }])
-  .controller('MenuCtrl', ['$scope', 'LocalStorageService', '$state', 'PopupService', 'ProfileService', function ($scope, LocalStorageService, $state, PopupService, ProfileService) {
+  .controller('MenuCtrl', ['$scope', 'LocalStorageService', '$state', 'PopupService', 'ProfileService', function($scope, LocalStorageService, $state, PopupService, ProfileService) {
 
     $scope.fullFilled = LocalStorageService.get('fullFilled');
     $scope.approve = LocalStorageService.get('approve');
@@ -20,20 +20,20 @@ angular.module('Pakkage.MainController', [])
     //console.log('PakkageBeta: MainController fullFilled : ' + $scope.fullFilled);
     //console.log('PakkageBeta: MainController userType : ' + $scope.userType);
 
-    $scope.logout = function () {
+    $scope.logout = function() {
       LocalStorageService.clear();
       $state.go("tab.login");
     };
 
-    $scope.navigateCreatePackage = function () {
+    $scope.navigateCreatePackage = function() {
       if ($scope.fullFilled)
         $state.go('app.createPackage');
       else
         PopupService.alert('Warning', 'E119');
     };
 
-    $scope.refreshMenu = function () {
-      ProfileService.getUserProfile(LocalStorageService.get('email'), LocalStorageService.get('token')).then(function (user) {
+    $scope.refreshMenu = function() {
+      ProfileService.getUserProfile(LocalStorageService.get('email'), LocalStorageService.get('token')).then(function(user) {
           ////console.log(JSON.stringify(login));
 
           if (user.data.errorCode == 0) {
@@ -49,16 +49,16 @@ angular.module('Pakkage.MainController', [])
             PopupService.alert('Error', login.data.errorCode);
           }
         },
-        function (error) {
+        function(error) {
           $scope.$broadcast('scroll.refreshComplete');
           PopupService.alert('Technical Error', 999);
         });
     };
 
   }])
-  .controller('HomeCtrl', ['$scope', 'LocalStorageService', '$state', 'PackageService', 'PopupService', 'LoadingService', '$uibModal', '$rootScope', 'PackageFilterService', '$interval', '$ionicHistory', 'ScanQR', '$cordovaGeolocation', 'HubService', function ($scope, LocalStorageService, $state, PackageService, PopupService, LoadingService, $uibModal, $rootScope, PackageFilterService, $interval, $ionicHistory, ScanQR, $cordovaGeolocation, HubService) {
+  .controller('HomeCtrl', ['$scope', 'LocalStorageService', '$state', 'PackageService', 'PopupService', 'LoadingService', '$uibModal', '$rootScope', 'PackageFilterService', '$interval', '$ionicHistory', 'ScanQR', '$cordovaGeolocation', 'HubService', function($scope, LocalStorageService, $state, PackageService, PopupService, LoadingService, $uibModal, $rootScope, PackageFilterService, $interval, $ionicHistory, ScanQR, $cordovaGeolocation, HubService) {
     LoadingService.show();
-    $scope.$on('$ionicView.beforeEnter', function (e, config) {
+    $scope.$on('$ionicView.beforeEnter', function(e, config) {
       config.enableBack = false;
     });
     $scope.packages = [];
@@ -82,12 +82,12 @@ angular.module('Pakkage.MainController', [])
         date: $scope.date
       };
 
-    $scope.refreshPackages = function () {
+    $scope.refreshPackages = function() {
       //console.log('$rootScope.directionFilter : ' + $rootScope.directionFilter);
       LoadingService.show();
       var getPackagesPromise = PackageService.getPackages(LocalStorageService.get('userId'), LocalStorageService.get('email'), LocalStorageService.get('token'));
       getPackagesPromise.then(
-        function (pck) {
+        function(pck) {
 
           if (pck.data.errorCode == 0) {
             LocalStorageService.save('packages', pck.data.packages);
@@ -103,7 +103,7 @@ angular.module('Pakkage.MainController', [])
           }
           $scope.$broadcast('scroll.refreshComplete');
         },
-        function (errorPayload) {
+        function(errorPayload) {
           LoadingService.hide();
           $scope.$broadcast('scroll.refreshComplete');
           PopupService.alert('Error', 999);
@@ -113,7 +113,7 @@ angular.module('Pakkage.MainController', [])
     var getPackagesPromise = PackageService.getPackages(LocalStorageService.get('userId'), LocalStorageService.get('email'),
       LocalStorageService.get('token'));
     getPackagesPromise.then(
-      function (pck) {
+      function(pck) {
         if (pck.data.errorCode == 0) {
           LocalStorageService.save('packages', pck.data.packages);
           if (!currentFilters.statusFilter)
@@ -130,13 +130,13 @@ angular.module('Pakkage.MainController', [])
           PopupService.alert('Error', pck.data.errorCode);
         }
       },
-      function (errorPayload) {
+      function(errorPayload) {
         LoadingService.hide();
         PopupService.alert('Error', 999);
       });
 
 
-    $scope.editPackage = function (packkageId, mode) {
+    $scope.editPackage = function(packkageId, mode) {
 
       $state.go('app.editPackage', {
         packageId: packkageId,
@@ -144,11 +144,11 @@ angular.module('Pakkage.MainController', [])
       });
     };
 
-    $rootScope.$on("callSyncPackagesMethod", function () {
+    $rootScope.$on("callSyncPackagesMethod", function() {
       $scope.syncPackages();
     });
 
-    $scope.syncPackages = function () {
+    $scope.syncPackages = function() {
 
       if ($rootScope.packages) {
         $scope.packages = $rootScope.packages;
@@ -156,38 +156,37 @@ angular.module('Pakkage.MainController', [])
 
     };
 
-    $scope.openFilterModal = function () {
+    $scope.openFilterModal = function() {
       var modalInstance = $uibModal.open({
         animation: true,
         templateUrl: 'openFilterModalContent.html',
         controller: 'OpenFilterModalInstanceCtrl',
         size: 'sm',
         resolve: {
-          filters: function () {
+          filters: function() {
             return $scope.filters;
           }
         }
       });
       $rootScope.filterModalInstance = modalInstance;
 
-      modalInstance.result.then(function (selectedItem) {
-      }, function () {
+      modalInstance.result.then(function(selectedItem) {}, function() {
         //$log.info('Modal dismissed at: ' + new Date());
       });
 
     };
 
-    $scope.scanQRFromHomePage = function () {
-      document.addEventListener("deviceready", function () {
+    $scope.scanQRFromHomePage = function() {
+      document.addEventListener("deviceready", function() {
         cloudSky.zBar.scan(ScanQR.scanMessages({
             text_title: 'Package Scanner',
             text_instructions: 'Search package with this QRCode',
             drawSight: true
           }),
-          function (success) {
+          function(success) {
             LoadingService.show();
             PackageService.getPackageByQrCodeId(success, LocalStorageService.get('email'), LocalStorageService.get('token')).then(
-              function (response) {
+              function(response) {
                 if (response.data.errorCode == 0) {
                   LoadingService.hide();
                   $state.go('app.editPackage', {
@@ -200,13 +199,12 @@ angular.module('Pakkage.MainController', [])
                 }
 
               },
-              function (error) {
+              function(error) {
                 LoadingService.hide();
                 PopupService.alert('Error', 999);
               });
           },
-          function (error) {
-          });
+          function(error) {});
       }, false);
 
     };
@@ -236,10 +234,13 @@ angular.module('Pakkage.MainController', [])
 
       LoadingService.show();
 
-      var posOptions = {timeout: 10000, enableHighAccuracy: false};
+      var posOptions = {
+        timeout: 10000,
+        enableHighAccuracy: false
+      };
       $cordovaGeolocation
         .getCurrentPosition(posOptions)
-        .then(function (position) {
+        .then(function(position) {
 
             console.log('konum bulunduuuuuuuuu');
 
@@ -252,7 +253,7 @@ angular.module('Pakkage.MainController', [])
             var hubPromise = HubService.getHubsByCurrentLocation(LocalStorageService.get('token'), LocalStorageService.get('email'), lat, lng);
 
             hubPromise.then(
-              function (response) {
+              function(response) {
 
                 console.log(response);
 
@@ -273,99 +274,102 @@ angular.module('Pakkage.MainController', [])
                   var latlngbounds = new google.maps.LatLngBounds();
 
                   latlngbounds.extend(currentMarker.position);
+                  if (response.data.hubs != null) {
+                    for (var i = 0; i < response.data.hubs.length; i++) {
 
-                  for (var i = 0; i < response.data.hubs.length; i++) {
+                      var paramHub = response.data.hubs[i];
 
-                    var paramHub = response.data.hubs[i];
+                      if (paramHub.location != undefined) {
 
-                    if (paramHub.location != undefined) {
-
-                      var myLatlng = new google.maps.LatLng(paramHub.location.coordinates[1], paramHub.location.coordinates[0]);
-                      lat_lng.push(myLatlng);
-                      var marker = new google.maps.Marker({
-                        position: myLatlng,
-                        map: map,
-                        title: i.toString(),
-                        icon: "http://www.harita.boun.edu.tr/css/img/lojman.png"
-                      });
-
-                      latlngbounds.extend(marker.position);
-
-                      markers.push(marker);
-
-
-                      var addListener = function (i) {
-                        google.maps.event.addListener(markers[i], 'click', function(){
-
-                          document.getElementById("driverMapHubDetail").style.display = 'block';
-
-                          var markerIndex = i;
-                          console.log('MARKER INDEX : '+markerIndex);
-                          var selectedHub = $scope.driverHubs[markerIndex];
-
-                          $scope.driverHubModel.Id = selectedHub._id;
-                          $scope.driverHubModel.profilePicture = selectedHub.profilePicture;
-                          $scope.driverHubModel.hubName = selectedHub.name;
-                          console.log('MARKER NAME : '+selectedHub.name);
-                          $scope.driverHubModel.hubLoc = selectedHub.address[0].city + ", " + selectedHub.address[0].state;
-                          $scope.driverHubModel.hubPhone = selectedHub.workPhone;
-                          $scope.driverHubModel.hubEmail = selectedHub.email;
-
-                          if (response.data.packages.length > 0) {
-                            LocalStorageService.save('packages', response.data.packages);
-                            console.log("PACKAGES : " + LocalStorageService.get('packages'));
-                          }
-
-                          if (polylines.length > 0) {
-                            $scope.removeRoute();
-                          }
-
-                          $scope.drawRoute(markers[i]);
-
+                        var myLatlng = new google.maps.LatLng(paramHub.location.coordinates[1], paramHub.location.coordinates[0]);
+                        lat_lng.push(myLatlng);
+                        var marker = new google.maps.Marker({
+                          position: myLatlng,
+                          map: map,
+                          title: i.toString(),
+                          icon: "http://www.harita.boun.edu.tr/css/img/lojman.png"
                         });
+
+                        latlngbounds.extend(marker.position);
+
+                        markers.push(marker);
+
+
+                        var addListener = function(i) {
+                          google.maps.event.addListener(markers[i], 'click', function() {
+
+                            document.getElementById("driverMapHubDetail").style.display = 'block';
+
+                            var markerIndex = i;
+                            console.log('MARKER INDEX : ' + markerIndex);
+                            var selectedHub = $scope.driverHubs[markerIndex];
+
+                            $scope.driverHubModel.Id = selectedHub._id;
+                            $scope.driverHubModel.profilePicture = selectedHub.profilePicture;
+                            $scope.driverHubModel.hubName = selectedHub.name;
+                            console.log('MARKER NAME : ' + selectedHub.name);
+                            $scope.driverHubModel.hubLoc = selectedHub.address[0].city + ", " + selectedHub.address[0].state;
+                            $scope.driverHubModel.hubPhone = selectedHub.workPhone;
+                            $scope.driverHubModel.hubEmail = selectedHub.email;
+
+                            if (response.data.packages.length > 0) {
+                              LocalStorageService.save('packages', response.data.packages);
+                              console.log("PACKAGES : " + LocalStorageService.get('packages'));
+                            }
+
+                            if (polylines.length > 0) {
+                              $scope.removeRoute();
+                            }
+
+                            $scope.drawRoute(markers[i]);
+
+                          });
+                        }
+                        addListener(i);
                       }
-                      addListener(i);
                     }
-                  }
-                  if ($scope.driverHubs.length > 0) {
-                    map.setCenter(latlngbounds.getCenter());
-                    map.fitBounds(latlngbounds);
-                  }
-                  else {
+                    if ($scope.driverHubs.length > 0) {
+                      map.setCenter(latlngbounds.getCenter());
+                      map.fitBounds(latlngbounds);
+                    } else {
+                      map.setZoom(17);
+                      map.panTo(currentMarker.position);
+                    }
+                  } else {
                     map.setZoom(17);
                     map.panTo(currentMarker.position);
                   }
 
+
+
                   LoadingService.hide();
                 }
               },
-              function (errorPayload) {
+              function(errorPayload) {
 
                 LoadingService.hide();
 
               });
 
           },
-          function (err) {
+          function(err) {
             LoadingService.hide();
             PopupService.alert('Error', 'E121');
           });
 
-      $scope.drawRoute = function (marker) {
+      $scope.drawRoute = function(marker) {
 
         //Initialize the Path Array
         var path = new google.maps.MVCArray();
         //Initialize the Direction Service
         var service = new google.maps.DirectionsService();
         //Set the Path Stroke Color
-        var poly = new google.maps.Polyline(
-          {
-            map: map,
-            strokeColor: '#4986E7',
-            strokeOpacity: 1.0,
-            strokeWeight: 5
-          }
-        );
+        var poly = new google.maps.Polyline({
+          map: map,
+          strokeColor: '#4986E7',
+          strokeOpacity: 1.0,
+          strokeWeight: 5
+        });
 
         polylines.push(poly);
 
@@ -378,7 +382,7 @@ angular.module('Pakkage.MainController', [])
           origin: src,
           destination: des,
           travelMode: google.maps.DirectionsTravelMode.DRIVING
-        }, function (result, status) {
+        }, function(result, status) {
           if (status == google.maps.DirectionsStatus.OK) {
             for (var i = 0, len = result.routes[0].overview_path.length; i < len; i++) {
               path.push(result.routes[0].overview_path[i]);
@@ -389,26 +393,28 @@ angular.module('Pakkage.MainController', [])
         $scope.fitRoute(src, des);
       }
 
-      $scope.removeRoute = function () {
+      $scope.removeRoute = function() {
         for (var i = 0; i < polylines.length; i++) {
           polylines[i].setMap(null);
         }
         polylines = [];
       }
 
-      $scope.fitRoute = function (src, end) {
+      $scope.fitRoute = function(src, end) {
         var fitBounds = new google.maps.LatLngBounds(src, end);
         map.fitBounds(fitBounds);
       }
     }
 
-    $scope.navigateHubPackageList = function () {
+    $scope.navigateHubPackageList = function() {
       console.log('SELECTED HUB ID :' + $scope.driverHubModel.Id);
 
-      $state.go("app.packagesListByHub", {selectedHubId: $scope.driverHubModel.Id});
+      $state.go("app.packagesListByHub", {
+        selectedHubId: $scope.driverHubModel.Id
+      });
     }
 
-    $scope.openSenderHubViewMap = function () {
+    $scope.openSenderHubViewMap = function() {
 
       $state.go('app.senderMapView');
     }
@@ -417,10 +423,10 @@ angular.module('Pakkage.MainController', [])
   .controller('OpenFilterModalInstanceCtrl', ['$scope', '$uibModalInstance', 'filters', 'moment',
     'LocalStorageService', '$filter', '$rootScope', 'PackageFilterService',
     'PopupService', '$uibModal',
-    function ($scope, $uibModalInstance, filters, moment, LocalStorageService, $filter,
-              $rootScope, PackageFilterService, PopupService, $uibModal) {
+    function($scope, $uibModalInstance, filters, moment, LocalStorageService, $filter,
+      $rootScope, PackageFilterService, PopupService, $uibModal) {
       $scope.date = $rootScope.date;
-      $scope.ok = function () {
+      $scope.ok = function() {
         var currentFilters = {
             statusFilter: $scope.statusFilter,
             dateFilter: $scope.dateFilter,
@@ -437,13 +443,13 @@ angular.module('Pakkage.MainController', [])
         document.getElementById('driverMap').style.display = 'none';
         document.getElementById('driverMapHubDetail').style.display = 'none';
       };
-      $scope.statusFilterClicked = function () {
+      $scope.statusFilterClicked = function() {
         if (!$scope.status.draft && !$scope.status.readyToSend && !$scope.status.onRoad && !$scope.status.driverPicked)
           $scope.statusFilter = false;
         else
           $scope.statusFilter = true;
       };
-      $scope.statusCheckboxClicked = function () {
+      $scope.statusCheckboxClicked = function() {
         if (!$scope.statusFilter) {
           $scope.status.draft = false;
           $scope.status.readyToSend = false;
@@ -452,18 +458,18 @@ angular.module('Pakkage.MainController', [])
         }
       };
 
-      $scope.dateFilterClicked = function () {
+      $scope.dateFilterClicked = function() {
         $scope.dateFilter = true;
       };
 
-      $scope.directionFilterClicked = function () {
+      $scope.directionFilterClicked = function() {
         if (!$scope.fromMe && !$scope.toMe)
           $scope.directionFilter = false;
         else
           $scope.directionFilter = true;
       };
 
-      $scope.directionCheckboxClicked = function () {
+      $scope.directionCheckboxClicked = function() {
         if (!$scope.directionFilter) {
           $scope.fromMe = false;
           $scope.toMe = false;
@@ -474,25 +480,26 @@ angular.module('Pakkage.MainController', [])
       };
 
 
-      $scope.cancel = function () {
+      $scope.cancel = function() {
         $uibModalInstance.dismiss('cancel');
       };
-    }])
-  .controller('PackagesListByHubCntrl',
-    ['$scope', 'moment',
-      'LocalStorageService', '$filter', '$rootScope', 'PackageFilterService',
-      'PopupService', '$stateParams',
-      function ($scope, moment, LocalStorageService, $filter,
-                $rootScope, PackageFilterService, PopupService, $stateParams) {
+    }
+  ])
+  .controller('PackagesListByHubCntrl', ['$scope', 'moment',
+    'LocalStorageService', '$filter', '$rootScope', 'PackageFilterService',
+    'PopupService', '$stateParams',
+    function($scope, moment, LocalStorageService, $filter,
+      $rootScope, PackageFilterService, PopupService, $stateParams) {
 
-        var selectedHub = $stateParams.selectedHubId;
-        //$scope.packageList = $filter('filter')(LocalStorageService.get('packages'), function (err, packages) {
-        // return packages.hubs._id = $stateParams.selectedHubId
-        //});
+      var selectedHub = $stateParams.selectedHubId;
+      //$scope.packageList = $filter('filter')(LocalStorageService.get('packages'), function (err, packages) {
+      // return packages.hubs._id = $stateParams.selectedHubId
+      //});
 
-        $scope.myPackages = PackageFilterService.filterPackagesByHubId(selectedHub);
+      $scope.myPackages = PackageFilterService.filterPackagesByHubId(selectedHub);
 
-        console.log('CONTROLLER PACKAGES :' + $scope.myPackages);
+      console.log('CONTROLLER PACKAGES :' + $scope.myPackages);
 
 
-      }])
+    }
+  ]);
