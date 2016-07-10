@@ -170,6 +170,24 @@ angular.module('Pakkage.FormControlServices', [])
           $rootScope.packages.splice(0, 1);
         }
         return toMePackages;
+      },
+
+      filterPackagesByHubId: function(hubId) {
+        var resultPackages = [];
+
+        var cachePackages = LocalStorageService.get('packages');
+
+        for (var i = 0; i < cachePackages.length; i++) {
+
+            if (cachePackages[i].hubs != undefined) {
+
+              if(cachePackages[i].hubs._id==hubId)
+                resultPackages.push(cachePackages[i]);
+            }
+        }
+        return resultPackages;
       }
+
+
     }
   });

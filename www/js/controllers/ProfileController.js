@@ -1,6 +1,6 @@
 angular.module('Pakkage.ProfileController', [])
-  .controller('ProfileCtrl', ['$scope', 'LocalStorageService', '$state', 'ProfileService', 'LoadingService', 'RegisterService', '$cordovaCamera', '$ionicActionSheet', '$cordovaFile', '$cordovaFileTransfer', 'PopupService', '$rootScope','PhoneControlService','$filter', 'RegisterService','$uibModal','$ionicPopup','LogService', function ($scope, LocalStorageService, $state, ProfileService, LoadingService, RegisterService, $cordovaCamera, $ionicActionSheet, $cordovaFile, $cordovaFileTransfer, PopupService,  $rootScope,PhoneControlService,$filter,RegisterService,$uibModal,$ionicPopup,LogService) {
-    var saltProfilePicture = '',staticUsername = '',saltLicensePicture = '';
+  .controller('ProfileCtrl', ['$scope', 'LocalStorageService', '$state', 'ProfileService', 'LoadingService', 'RegisterService', '$cordovaCamera', '$ionicActionSheet', '$cordovaFile', '$cordovaFileTransfer', 'PopupService', '$rootScope', 'PhoneControlService', '$filter', 'RegisterService', '$uibModal', '$ionicPopup', 'LogService', function ($scope, LocalStorageService, $state, ProfileService, LoadingService, RegisterService, $cordovaCamera, $ionicActionSheet, $cordovaFile, $cordovaFileTransfer, PopupService, $rootScope, PhoneControlService, $filter, RegisterService, $uibModal, $ionicPopup, LogService) {
+    var saltProfilePicture = '', staticUsername = '', saltLicensePicture = '';
 
     $scope.scopeSaltLicensePicture = '';
     $scope.showForAll = true;
@@ -30,7 +30,7 @@ angular.module('Pakkage.ProfileController', [])
 
     $scope.cities = LocalStorageService.get('cities')[0].cities;
 
-    $scope.refreshProfile = function(){
+    $scope.refreshProfile = function () {
       LoadingService.show();
 
       var profilePromise = ProfileService.getUserProfile(LocalStorageService.get('email'), LocalStorageService.get('token'));
@@ -46,8 +46,7 @@ angular.module('Pakkage.ProfileController', [])
 
             $scope.profilePicture = $rootScope.profileThumbnailURL + profile.data.user.profilePicture;
             saltProfilePicture = profile.data.user.profilePicture;
-            if(profile.data.user.type[0].name == 'Driver')
-            {
+            if (profile.data.user.type[0].name == 'Driver') {
               $scope.licenseImage = $rootScope.licenseThumbnailURL + profile.data.user.licensePicture;
               saltLicensePicture = profile.data.user.licensePicture;
               $scope.scopeSaltLicensePicture = profile.data.user.licensePicture;
@@ -91,12 +90,14 @@ angular.module('Pakkage.ProfileController', [])
               if (profile.data.user.daysOfOperations[i].value == "Sunday")
                 $scope.daysOperation[6].selected = true;
 
-            };
+            }
+            ;
             if (profile.data.user.freqCities != undefined || profile.data.user.freqCities != null) {
 
               for (var i = 0; i < profile.data.user.freqCities.length; i++) {
                 $scope.driveToS[i].value = profile.data.user.freqCities[i].value;
-              };
+              }
+              ;
             }
             if (profile.data.user.licenseID != null || profile.data.user.licenseID != undefined)
               $scope.newUser.licenseId = parseInt(profile.data.user.licenseID);
@@ -117,10 +118,9 @@ angular.module('Pakkage.ProfileController', [])
               $scope.showForSender = true;
             }
             $scope.newUser.vehicleYear = profile.data.user.vehicleYear;
-            if(profile.data.user.openTime != undefined)
-            {
-              if(profile.data.user.openTime == '00:00 AM;11:59 PM')
-                  $scope.work724 = {checked: true};
+            if (profile.data.user.openTime != undefined) {
+              if (profile.data.user.openTime == '00:00 AM;11:59 PM')
+                $scope.work724 = {checked: true};
 
               $scope.newUser.opentimeSplit = profile.data.user.openTime.split(';')[0];
               $scope.newUser.closeTime = profile.data.user.openTime.split(';')[1];
@@ -131,12 +131,12 @@ angular.module('Pakkage.ProfileController', [])
             LoadingService.hide();
           } else {
             LoadingService.hide();
-            PopupService.alert('Error',profile.data.errorCode);
+            PopupService.alert('Error', profile.data.errorCode);
           }
         },
         function (error) {
           LoadingService.hide();
-          PopupService.alert('Technical Error',999);
+          PopupService.alert('Technical Error', 999);
 
         }
       );
@@ -145,15 +145,13 @@ angular.module('Pakkage.ProfileController', [])
     $rootScope.$watch('cachedUser', function (newValue, oldValue) {
       LoadingService.show();
 
-      if(newValue != undefined)
-      {
+      if (newValue != undefined) {
         $scope.newUser = $rootScope.cachedUser;
         $scope.driveToS = [];
         $scope.profilePicture = $rootScope.profileThumbnailURL + $rootScope.cachedUser.profilePicture;
         saltProfilePicture = $rootScope.cachedUser.profilePicture;
 
-        if($rootScope.cachedUser.type[0].name == 'Driver')
-        {
+        if ($rootScope.cachedUser.type[0].name == 'Driver') {
           $scope.licenseImage = $rootScope.licenseThumbnailURL + $rootScope.cachedUser.licensePicture;
           saltLicensePicture = $rootScope.cachedUser.licensePicture;
           $scope.scopeSaltLicensePicture = $rootScope.cachedUser.licensePicture;
@@ -195,19 +193,23 @@ angular.module('Pakkage.ProfileController', [])
           if ($rootScope.cachedUser.daysOfOperations[i].value == "Sunday")
             $scope.daysOperation[6].selected = true;
 
-        };
+        }
+        ;
         LogService.visibleLog(JSON.stringify($rootScope.cachedUser.freqCities));
         if ($rootScope.cachedUser.freqCities != undefined || $rootScope.cachedUser.freqCities != null) {
           for (var i = 0; i < $rootScope.cachedUser.freqCities.length; i++) {
-              //$scope.driveToS[i + 1] = { id: $rootScope.cachedUser.freqCities[i].key,initialDriveTo : $rootScope.cachedUser.freqCities[i].value };
-              $scope.driveToS.push({ id: $rootScope.cachedUser.freqCities[i].key,initialDriveTo : $rootScope.cachedUser.freqCities[i].value });
-              LogService.visibleLog('Drive to' + JSON.stringify($scope.driveToS[i+1]));
-          };
+            //$scope.driveToS[i + 1] = { id: $rootScope.cachedUser.freqCities[i].key,initialDriveTo : $rootScope.cachedUser.freqCities[i].value };
+            $scope.driveToS.push({
+              id: $rootScope.cachedUser.freqCities[i].key,
+              initialDriveTo: $rootScope.cachedUser.freqCities[i].value
+            });
+            LogService.visibleLog('Drive to' + JSON.stringify($scope.driveToS[i + 1]));
+          }
+          ;
         }
-        if($rootScope.cachedUser.freqCities.length == 0)
-        {
-            LogService.visibleLog('Drive to gelmedi boş eklendi');
-            $scope.driveToS.push({ id: 1,value : '' });
+        if ($rootScope.cachedUser.freqCities.length == 0) {
+          LogService.visibleLog('Drive to gelmedi boş eklendi');
+          $scope.driveToS.push({id: 1, value: ''});
         }
         if ($rootScope.cachedUser.licenseID != null || $rootScope.cachedUser.licenseID != undefined)
           $scope.newUser.licenseId = parseInt($rootScope.cachedUser.licenseID);
@@ -229,9 +231,8 @@ angular.module('Pakkage.ProfileController', [])
           $scope.showForSender = true;
         }
         $scope.newUser.vehicleYear = $rootScope.cachedUser.vehicleYear;
-        if($rootScope.cachedUser.openTime != undefined)
-        {
-          if($rootScope.cachedUser.openTime == '00:00 AM;11:59 PM')
+        if ($rootScope.cachedUser.openTime != undefined) {
+          if ($rootScope.cachedUser.openTime == '00:00 AM;11:59 PM')
             $scope.work724 = {checked: true};
           $scope.newUser.opentimeSplit = $rootScope.cachedUser.openTime.split(';')[0];
           $scope.newUser.closeTime = $rootScope.cachedUser.openTime.split(';')[1];
@@ -241,15 +242,39 @@ angular.module('Pakkage.ProfileController', [])
         $scope.newUser.businessStore = $rootScope.cachedUser.businessStore;
         $scope.newUser.locatedHw = $rootScope.cachedUser.locatedHw;
         LoadingService.hide();
+
+
+        if (LocalStorageService.get('userType') == 'Hub' && $scope.newUser.location != undefined) {
+          var myLatlng = new google.maps.LatLng($scope.newUser.location.coordinates[1], $scope.newUser.location.coordinates[0]);
+
+          var mapOptions = {
+            center: myLatlng,
+            zoom: 16,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+          };
+          var map = new google.maps.Map(document.getElementById("profileMap"),
+            mapOptions);
+
+          var marker = new google.maps.Marker({
+            position: myLatlng,
+            map: map,
+            title: ''
+          });
+        }
+        else {
+          document.getElementById("profileMap").style.display = 'none';
+        }
+
       }
 
     });
 
-    $scope.$watch('newUser.city',function(newValue, oldValue){
+    $scope.$watch('newUser.city', function (newValue, oldValue) {
 
-      if(newValue != undefined && newValue != $scope.initialCity)
-      {
-        $scope.newUser.state = $filter('filter')(LocalStorageService.get('cities'), function (d) { return d.id === newValue.originalObject.id; })[0].code;
+      if (newValue != undefined && newValue != $scope.initialCity) {
+        $scope.newUser.state = $filter('filter')(LocalStorageService.get('cities'), function (d) {
+          return d.id === newValue.originalObject.id;
+        })[0].code;
       }
     });
 
@@ -257,13 +282,13 @@ angular.module('Pakkage.ProfileController', [])
 
     $scope.removeTown = function () {
       if ($scope.driveToS.length > 1)
-          $scope.driveToS.splice($scope.driveToS.length - 1, 1);
+        $scope.driveToS.splice($scope.driveToS.length - 1, 1);
     };
 
     $scope.addTown = function () {
       $scope.driveToS.push({
         id: $scope.driveToS.length + 1,
-        value : ''
+        value: ''
       });
     };
 
@@ -333,14 +358,13 @@ angular.module('Pakkage.ProfileController', [])
 
     };
 
-    $scope.$watch('work724.checked',function(newVal,oldVal){
+    $scope.$watch('work724.checked', function (newVal, oldVal) {
       if ($scope.work724.checked) {
         $scope.newUser.opentimeSplit = '00:00 AM';
         $scope.newUser.closeTime = '11:59 PM';
       }
       else {
-        if($rootScope.cachedUser)
-        {
+        if ($rootScope.cachedUser) {
           $scope.newUser.opentimeSplit = $rootScope.cachedUser.openTime.split(';')[0];
           $scope.newUser.closeTime = $rootScope.cachedUser.openTime.split(';')[1];
         }
@@ -388,14 +412,12 @@ angular.module('Pakkage.ProfileController', [])
       });
     };
 
-    $scope.formatPhone = function(keyEvent,field){
-      if(field == 1)
-      {
-        $scope.newUser.phone = PhoneControlService.formatPhone(keyEvent,$scope.newUser.phone);
+    $scope.formatPhone = function (keyEvent, field) {
+      if (field == 1) {
+        $scope.newUser.phone = PhoneControlService.formatPhone(keyEvent, $scope.newUser.phone);
       }
-      if(field == 2)
-      {
-        $scope.newUser.workPhone = PhoneControlService.formatPhone(keyEvent,$scope.newUser.workPhone);
+      if (field == 2) {
+        $scope.newUser.workPhone = PhoneControlService.formatPhone(keyEvent, $scope.newUser.workPhone);
       }
     };
 
@@ -405,20 +427,19 @@ angular.module('Pakkage.ProfileController', [])
       var fullFilled = false;
       switch (LocalStorageService.get('userType')) {
         case 'Driver':
-        if ($scope.driveToS.length == 0 || $scope.newUser.licenseId == undefined || $scope.newUser.licenseIssueState == undefined || $scope.newUser.vehicle == undefined ||
-          $scope.newUser.vehicleType == undefined || $scope.newUser.vehicleInsuranceCompany == undefined || $scope.newUser.vehicleYear == undefined ||
-          $scope.newUser.name == undefined || $scope.newUser.phone == undefined || $scope.newUser.address1 == undefined || $scope.newUser.city == undefined ||
-          $scope.newUser.state == undefined || $scope.newUser.zipcode == undefined)
-          fullFilled = false;
-        else
-          fullFilled = true;
+          if ($scope.driveToS.length == 0 || $scope.newUser.licenseId == undefined || $scope.newUser.licenseIssueState == undefined || $scope.newUser.vehicle == undefined ||
+            $scope.newUser.vehicleType == undefined || $scope.newUser.vehicleInsuranceCompany == undefined || $scope.newUser.vehicleYear == undefined ||
+            $scope.newUser.name == undefined || $scope.newUser.phone == undefined || $scope.newUser.address1 == undefined || $scope.newUser.city == undefined ||
+            $scope.newUser.state == undefined || $scope.newUser.zipcode == undefined)
+            fullFilled = false;
+          else
+            fullFilled = true;
           $scope.newUser.freqCities = [];
-          for(var i = 0;i < $scope.driveToS.length;i++)
-          {
-            if($scope.driveToS[i].initialDriveTo != undefined)
-              $scope.newUser.freqCities.push({key : i + 1,value : $scope.driveToS[i].initialDriveTo});
+          for (var i = 0; i < $scope.driveToS.length; i++) {
+            if ($scope.driveToS[i].initialDriveTo != undefined)
+              $scope.newUser.freqCities.push({key: i + 1, value: $scope.driveToS[i].initialDriveTo});
             else
-              $scope.newUser.freqCities.push({key : i + 1,value : $scope.driveToS[i].value.title});
+              $scope.newUser.freqCities.push({key: i + 1, value: $scope.driveToS[i].value.title});
             LogService.visibleLog('For içindeki drivetovalue : ' + JSON.stringify($scope.driveToS[i]));
           }
           LogService.visibleLog('Freq city ne : ' + JSON.stringify($scope.newUser.freqCities));
@@ -427,15 +448,15 @@ angular.module('Pakkage.ProfileController', [])
           for (var i = 0; i < $scope.daysOperation.length; i++) {
             if ($scope.daysOperation[i].selected)
               fullFilled = true;
-          };
+          }
+          ;
           if ($scope.newUser.stateTaxId == undefined || $scope.newUser.contactPerson == undefined || $scope.newUser.workPhone == undefined || $scope.newUser.openTime == undefined
             || $scope.newUser.name == undefined || $scope.newUser.phone == undefined || $scope.newUser.address1 == undefined
-            || ($scope.newUser.city == undefined && $scope.initialCity == undefined) || $scope.newUser.state == undefined || $scope.newUser.zipcode == undefined)
-            {
-              //console.log($scope.newUser.city);
-              //console.log('fullFilled false girdi');
-              fullFilled = false;
-            }
+            || ($scope.newUser.city == undefined && $scope.initialCity == undefined) || $scope.newUser.state == undefined || $scope.newUser.zipcode == undefined) {
+            //console.log($scope.newUser.city);
+            //console.log('fullFilled false girdi');
+            fullFilled = false;
+          }
 
           else
             fullFilled = true;
@@ -446,11 +467,10 @@ angular.module('Pakkage.ProfileController', [])
         case 'Sender':
           LogService.visibleLog(JSON.stringify('fullfilled casei sender için'));
           if ($scope.newUser.name == undefined || $scope.newUser.phone == undefined || $scope.newUser.address1 == undefined || $scope.newUser.city == undefined
-            || $scope.newUser.state == undefined || $scope.newUser.zipcode == undefined)
-          {
+            || $scope.newUser.state == undefined || $scope.newUser.zipcode == undefined) {
             fullFilled = false;
           }
-          else{
+          else {
             fullFilled = true;
           }
           break;
@@ -460,9 +480,9 @@ angular.module('Pakkage.ProfileController', [])
 
       $scope.newUser.userType = LocalStorageService.get('userType');
       $scope.newUser.fullFilled = fullFilled;
-      LocalStorageService.save('fullFilled',fullFilled);
-      if($scope.licenseImageName == undefined)
-          $scope.licenseImageName = '';
+      LocalStorageService.save('fullFilled', fullFilled);
+      if ($scope.licenseImageName == undefined)
+        $scope.licenseImageName = '';
       LogService.visibleLog(JSON.stringify('$scope.imageName : ' + $scope.imageName + ' | $scope.licenseImageName : ' + $scope.licenseImageName));
 
       if ($scope.newUser.opentimeSplit != undefined) {
@@ -470,49 +490,41 @@ angular.module('Pakkage.ProfileController', [])
           $scope.newUser.openTime = $scope.newUser.opentimeSplit + ';' + $scope.newUser.closeTime;
       }
 
-      if($scope.newUser.city == undefined)
-        $scope.newUser.city = { title : $scope.initialCity };
+      if ($scope.newUser.city == undefined)
+        $scope.newUser.city = {title: $scope.initialCity};
       LogService.visibleLog(JSON.stringify('initial city ne : ' + $scope.initialCity));
       LogService.visibleLog('$scope.newUser.city : ' + JSON.stringify($scope.newUser.city));
-      if ($scope.newUser.username != staticUsername)
-      {
+      if ($scope.newUser.username != staticUsername) {
 
         var usernameCheckPromise = ProfileService.checkUsername($scope.newUser.username);
 
         usernameCheckPromise.then(
           function (process) {
 
-            if (process.data.errorCode == 0)
-            {
+            if (process.data.errorCode == 0) {
               //-- Decide which part of form filled.If Quick register filled just use this part or other part filled,use that
-              if ((/(^\d{5}$)|(^\d{5}-\d{4}$)/.test($scope.newUser.zipcode) != true && $scope.newUser.zipcode != undefined ) && ($scope.newUser.zipcode != ''))
-              {
+              if ((/(^\d{5}$)|(^\d{5}-\d{4}$)/.test($scope.newUser.zipcode) != true && $scope.newUser.zipcode != undefined ) && ($scope.newUser.zipcode != '')) {
                 LoadingService.hide();
                 PopupService.alert('Error', 'E106');
               }
-              else if ((/(^\d{3}-\d{3}-\d{4}$)|(^\d{3}-\d{4}$)/.test($scope.newUser.phone) != true && $scope.newUser.phone != undefined ) && ($scope.newUser.phone != ''))
-              {
+              else if ((/(^\d{3}-\d{3}-\d{4}$)|(^\d{3}-\d{4}$)/.test($scope.newUser.phone) != true && $scope.newUser.phone != undefined ) && ($scope.newUser.phone != '')) {
                 LoadingService.hide();
                 PopupService.alert('Oopps !', 'E105');
               }
-              else if ((/(^\d{3}-\d{3}-\d{4}$)|(^\d{3}-\d{4}$)/.test($scope.newUser.workPhone) != true && $scope.newUser.workPhone != undefined ) && ($scope.newUser.workPhone != ''))
-              {
+              else if ((/(^\d{3}-\d{3}-\d{4}$)|(^\d{3}-\d{4}$)/.test($scope.newUser.workPhone) != true && $scope.newUser.workPhone != undefined ) && ($scope.newUser.workPhone != '')) {
                 LoadingService.hide();
                 PopupService.alert('Oopps !', 'E107');
               }
-              else if ((/^[0-9A-Za-z_.]+$/.test($scope.newUser.username) != true && $scope.newUser.username != undefined && $scope.newUser.username != '') || ( $scope.newUser.username.length < 3  || $scope.newUser.username .length > 20 ))
-              {
+              else if ((/^[0-9A-Za-z_.]+$/.test($scope.newUser.username) != true && $scope.newUser.username != undefined && $scope.newUser.username != '') || ( $scope.newUser.username.length < 3 || $scope.newUser.username.length > 20 )) {
                 LoadingService.hide();
                 PopupService.alert('Error', 'E117');
               }
               //-- If user didn't fill all field, check and decide to requests
               //-- User didn't choose picture so we have accept this issue
-              else if ($scope.newUser.name == undefined || $scope.newUser.dateOfBirth == null || $scope.newUser.phone == undefined || $scope.newUser.address1 == undefined || $scope.newUser.city == undefined || $scope.newUser.state == undefined || $scope.newUser.zipcode == undefined)
-              {
+              else if ($scope.newUser.name == undefined || $scope.newUser.dateOfBirth == null || $scope.newUser.phone == undefined || $scope.newUser.address1 == undefined || $scope.newUser.city == undefined || $scope.newUser.state == undefined || $scope.newUser.zipcode == undefined) {
 
 
-                if ($scope.imageName != '' && ($scope.licenseImageName == '' || $scope.licenseImageName == saltLicensePicture))
-                {
+                if ($scope.imageName != '' && ($scope.licenseImageName == '' || $scope.licenseImageName == saltLicensePicture)) {
                   if ($scope.imageType == 0)
                     var imagePath = $scope.imageName;
                   else
@@ -525,7 +537,7 @@ angular.module('Pakkage.ProfileController', [])
                       json = JSON.parse(json);
                       if (json.status == 'OK') {
 
-                        var registerPromise = ProfileService.updateProfile($scope.newUser,json.imageName, LocalStorageService.get('token'),saltLicensePicture);
+                        var registerPromise = ProfileService.updateProfile($scope.newUser, json.imageName, LocalStorageService.get('token'), saltLicensePicture);
 
                         registerPromise.then(
                           function (process) {
@@ -535,7 +547,7 @@ angular.module('Pakkage.ProfileController', [])
                               staticUsername = $scope.newUser.username;
 
                               LocalStorageService.save('profilePicture', json.imageName);
-                              if($scope.newUser.city.title)
+                              if ($scope.newUser.city.title)
                                 LocalStorageService.save('userCity', $scope.newUser.city.title);
                               LoadingService.hide();
                               PopupService.alert('Info', 'S103');
@@ -559,9 +571,8 @@ angular.module('Pakkage.ProfileController', [])
                       PopupService.alert('Error', 999);
                     });
                 }
-                else if($scope.imageName == '' && ($scope.licenseImageName == '' || $scope.licenseImageName == saltLicensePicture))
-                {
-                  var registerPromise = ProfileService.updateProfile($scope.newUser,saltProfilePicture, LocalStorageService.get('token'),saltLicensePicture);
+                else if ($scope.imageName == '' && ($scope.licenseImageName == '' || $scope.licenseImageName == saltLicensePicture)) {
+                  var registerPromise = ProfileService.updateProfile($scope.newUser, saltProfilePicture, LocalStorageService.get('token'), saltLicensePicture);
                   registerPromise.then(
                     function (process) {
 
@@ -569,7 +580,7 @@ angular.module('Pakkage.ProfileController', [])
                       if (process.data.errorCode == 0) {
                         staticUsername = $scope.newUser.username;
                         PopupService.alert('Info', 'S103');
-                        if($scope.newUser.city.title)
+                        if ($scope.newUser.city.title)
                           LocalStorageService.save('userCity', $scope.newUser.city.title);
                         LoadingService.hide();
                       } else {
@@ -582,8 +593,7 @@ angular.module('Pakkage.ProfileController', [])
                       PopupService.alert('Error', 999);
                     });
                 }
-                else if ($scope.imageName == '' && ($scope.licenseImageName != '' || $scope.licenseImageName != saltLicensePicture))
-                {
+                else if ($scope.imageName == '' && ($scope.licenseImageName != '' || $scope.licenseImageName != saltLicensePicture)) {
                   if ($scope.licenseImageType == 0)
                     var imagePath = $scope.licenseImageName;
                   else
@@ -596,13 +606,13 @@ angular.module('Pakkage.ProfileController', [])
                       json = JSON.parse(json);
                       if (json.status == 'OK') {
 
-                        var registerPromise = ProfileService.updateProfile($scope.newUser,saltProfilePicture, LocalStorageService.get('token'),json.imageName);
+                        var registerPromise = ProfileService.updateProfile($scope.newUser, saltProfilePicture, LocalStorageService.get('token'), json.imageName);
                         registerPromise.then(
                           function (process) {
 
                             saltLicensePicture = json.imageName;
                             staticUsername = $scope.newUser.username;
-                            if($scope.newUser.city.title)
+                            if ($scope.newUser.city.title)
                               LocalStorageService.save('userCity', $scope.newUser.city.title);
                             LoadingService.hide();
                             PopupService.alert('Info', 'S103');
@@ -622,8 +632,7 @@ angular.module('Pakkage.ProfileController', [])
                     });
                 }
                 //-- Both of them (profile and license images) are not empty.Upload first profile picture then upload license picture
-                else
-                {
+                else {
                   if ($scope.licenseImageType == 0)
                     var licenseImagePath = $scope.licenseImageName;
                   else
@@ -649,7 +658,7 @@ angular.module('Pakkage.ProfileController', [])
                             json = JSON.parse(json);
                             if (json.status == 'OK') {
                               saltLicensePicture = json.imageName;
-                              var registerPromise = ProfileService.updateProfile($scope.newUser,jsonProfile.imageName, LocalStorageService.get('token'),json.imageName);
+                              var registerPromise = ProfileService.updateProfile($scope.newUser, jsonProfile.imageName, LocalStorageService.get('token'), json.imageName);
                               registerPromise.then(
                                 function (process) {
 
@@ -657,7 +666,7 @@ angular.module('Pakkage.ProfileController', [])
                                     staticUsername = $scope.newUser.username;
                                     saltLicensePicture = $rootScope.licenseThumbnailURL + json.imageName;
                                     saltProfilePicture = $rootScope.profileThumbnailURL + jsonProfile.imageName;
-                                    if($scope.newUser.city.title)
+                                    if ($scope.newUser.city.title)
                                       LocalStorageService.save('userCity', $scope.newUser.city.title);
                                     LoadingService.hide();
                                     PopupService.alert('Successful', "S103");
@@ -692,8 +701,7 @@ angular.module('Pakkage.ProfileController', [])
                 }
 
               }
-              else
-              {
+              else {
 
                 switch ($scope.newUser.userType) {
                   case 'Hub':
@@ -703,8 +711,7 @@ angular.module('Pakkage.ProfileController', [])
                     break;
                 }
 
-                if ($scope.imageName != '' && ($scope.licenseImageName == '' || $scope.licenseImageName == saltLicensePicture))
-                {
+                if ($scope.imageName != '' && ($scope.licenseImageName == '' || $scope.licenseImageName == saltLicensePicture)) {
                   if ($scope.imageType == 0)
                     var imagePath = $scope.imageName;
                   else
@@ -717,7 +724,7 @@ angular.module('Pakkage.ProfileController', [])
                       json = JSON.parse(json);
                       if (json.status == 'OK') {
 
-                        var registerPromise = ProfileService.updateProfile($scope.newUser,json.imageName, LocalStorageService.get('token'),saltLicensePicture);
+                        var registerPromise = ProfileService.updateProfile($scope.newUser, json.imageName, LocalStorageService.get('token'), saltLicensePicture);
 
                         registerPromise.then(
                           function (process) {
@@ -727,7 +734,7 @@ angular.module('Pakkage.ProfileController', [])
                               staticUsername = $scope.newUser.username;
 
                               LocalStorageService.save('profilePicture', json.imageName);
-                              if($scope.newUser.city.title)
+                              if ($scope.newUser.city.title)
                                 LocalStorageService.save('userCity', $scope.newUser.city.title);
                               LoadingService.hide();
                               PopupService.alert('Info', 'S103');
@@ -751,9 +758,8 @@ angular.module('Pakkage.ProfileController', [])
                       PopupService.alert('Error', 999);
                     });
                 }
-                else if($scope.imageName == '' && ($scope.licenseImageName == '' || $scope.licenseImageName == saltLicensePicture))
-                {
-                  var registerPromise = ProfileService.updateProfile($scope.newUser,saltProfilePicture, LocalStorageService.get('token'),saltLicensePicture);
+                else if ($scope.imageName == '' && ($scope.licenseImageName == '' || $scope.licenseImageName == saltLicensePicture)) {
+                  var registerPromise = ProfileService.updateProfile($scope.newUser, saltProfilePicture, LocalStorageService.get('token'), saltLicensePicture);
                   registerPromise.then(
                     function (process) {
 
@@ -761,7 +767,7 @@ angular.module('Pakkage.ProfileController', [])
                       if (process.data.errorCode == 0) {
                         staticUsername = $scope.newUser.username;
                         PopupService.alert('Info', 'S103');
-                        if($scope.newUser.city.title)
+                        if ($scope.newUser.city.title)
                           LocalStorageService.save('userCity', $scope.newUser.city.title);
                         LoadingService.hide();
                       } else {
@@ -774,8 +780,7 @@ angular.module('Pakkage.ProfileController', [])
                       PopupService.alert('Error', 999);
                     });
                 }
-                else if ($scope.imageName == '' && ($scope.licenseImageName != '' || $scope.licenseImageName != saltLicensePicture))
-                {
+                else if ($scope.imageName == '' && ($scope.licenseImageName != '' || $scope.licenseImageName != saltLicensePicture)) {
                   if ($scope.licenseImageType == 0)
                     var imagePath = $scope.licenseImageName;
                   else
@@ -788,13 +793,13 @@ angular.module('Pakkage.ProfileController', [])
                       json = JSON.parse(json);
                       if (json.status == 'OK') {
 
-                        var registerPromise = ProfileService.updateProfile($scope.newUser,saltProfilePicture, LocalStorageService.get('token'),json.imageName);
+                        var registerPromise = ProfileService.updateProfile($scope.newUser, saltProfilePicture, LocalStorageService.get('token'), json.imageName);
                         registerPromise.then(
                           function (process) {
 
                             saltLicensePicture = json.imageName;
                             staticUsername = $scope.newUser.username;
-                            if($scope.newUser.city.title)
+                            if ($scope.newUser.city.title)
                               LocalStorageService.save('userCity', $scope.newUser.city.title);
                             LoadingService.hide();
                             PopupService.alert('Info', 'S103');
@@ -814,8 +819,7 @@ angular.module('Pakkage.ProfileController', [])
                     });
                 }
                 //-- Both of them (profile and license images) are not empty.Upload first profile picture then upload license picture
-                else
-                {
+                else {
                   if ($scope.licenseImageType == 0)
                     var licenseImagePath = $scope.licenseImageName;
                   else
@@ -841,7 +845,7 @@ angular.module('Pakkage.ProfileController', [])
                             json = JSON.parse(json);
                             if (json.status == 'OK') {
                               saltLicensePicture = json.imageName;
-                              var registerPromise = ProfileService.updateProfile($scope.newUser,jsonProfile.imageName, LocalStorageService.get('token'),json.imageName);
+                              var registerPromise = ProfileService.updateProfile($scope.newUser, jsonProfile.imageName, LocalStorageService.get('token'), json.imageName);
                               registerPromise.then(
                                 function (process) {
 
@@ -849,7 +853,7 @@ angular.module('Pakkage.ProfileController', [])
                                     staticUsername = $scope.newUser.username;
                                     saltLicensePicture = $rootScope.licenseThumbnailURL + json.imageName;
                                     saltProfilePicture = $rootScope.profileThumbnailURL + jsonProfile.imageName;
-                                    if($scope.newUser.city.title)
+                                    if ($scope.newUser.city.title)
                                       LocalStorageService.save('userCity', $scope.newUser.city.title);
                                     LoadingService.hide();
                                     PopupService.alert('Successful', "S103");
@@ -885,15 +889,13 @@ angular.module('Pakkage.ProfileController', [])
               }
 
             }
-            else if (process.data.errorCode == 118)
-            {
+            else if (process.data.errorCode == 118) {
               LoadingService.hide();
               $scope.usernameVerified = false;
               PopupService.alert('Error', 'E108');
 
             }
-            else if (process.data.errorCode == 109)
-            {
+            else if (process.data.errorCode == 109) {
               LoadingService.hide();
               $scope.usernameVerified = false;
               PopupService.alert('Error', 109);
@@ -905,34 +907,28 @@ angular.module('Pakkage.ProfileController', [])
             PopupService.alert('Error', 999);
           });
       }
-      else
-      {
+      else {
         //-- Decide which part of form filled.If Quick register filled just use this part or other part filled,use that
-        if ((/(^\d{5}$)|(^\d{5}-\d{4}$)/.test($scope.newUser.zipcode) != true && $scope.newUser.zipcode != undefined ) && ($scope.newUser.zipcode != ''))
-        {
+        if ((/(^\d{5}$)|(^\d{5}-\d{4}$)/.test($scope.newUser.zipcode) != true && $scope.newUser.zipcode != undefined ) && ($scope.newUser.zipcode != '')) {
           LoadingService.hide();
           PopupService.alert('Oopps !', 'E106');
         }
-        else if ((/(^\d{3}-\d{3}-\d{4}$)|(^\d{3}-\d{4}$)/.test($scope.newUser.phone) != true && $scope.newUser.phone != undefined ) && ($scope.newUser.phone != ''))
-        {
+        else if ((/(^\d{3}-\d{3}-\d{4}$)|(^\d{3}-\d{4}$)/.test($scope.newUser.phone) != true && $scope.newUser.phone != undefined ) && ($scope.newUser.phone != '')) {
           LoadingService.hide();
           PopupService.alert('Oopps !', 'E105');
         }
-        else if ((/(^\d{3}-\d{3}-\d{4}$)|(^\d{3}-\d{4}$)/.test($scope.newUser.workPhone) != true && $scope.newUser.workPhone != undefined ) && ($scope.newUser.workPhone != ''))
-        {
+        else if ((/(^\d{3}-\d{3}-\d{4}$)|(^\d{3}-\d{4}$)/.test($scope.newUser.workPhone) != true && $scope.newUser.workPhone != undefined ) && ($scope.newUser.workPhone != '')) {
           LoadingService.hide();
           PopupService.alert('Oopps !', 'E107');
         }
-        else if ((/^[0-9A-Za-z_.]+$/.test($scope.newUser.username) != true && $scope.newUser.username != undefined && $scope.newUser.username != '') || ( $scope.newUser.username.length < 3  || $scope.newUser.username .length > 20 )) {
+        else if ((/^[0-9A-Za-z_.]+$/.test($scope.newUser.username) != true && $scope.newUser.username != undefined && $scope.newUser.username != '') || ( $scope.newUser.username.length < 3 || $scope.newUser.username.length > 20 )) {
           LoadingService.hide();
           PopupService.alert('Error', 'E117');
         }
         //-- If user didn't fill all field, check and decide to requests
         //-- User didn't choose picture so we have accept this issue
-        else if ($scope.newUser.name == undefined || $scope.newUser.dateOfBirth == null || $scope.newUser.phone == undefined || $scope.newUser.address1 == undefined || $scope.newUser.city == undefined || $scope.newUser.state == undefined || $scope.newUser.zipcode == undefined)
-        {
-          if ($scope.imageName != '' && ($scope.licenseImageName == '' || $scope.licenseImageName == saltLicensePicture))
-          {
+        else if ($scope.newUser.name == undefined || $scope.newUser.dateOfBirth == null || $scope.newUser.phone == undefined || $scope.newUser.address1 == undefined || $scope.newUser.city == undefined || $scope.newUser.state == undefined || $scope.newUser.zipcode == undefined) {
+          if ($scope.imageName != '' && ($scope.licenseImageName == '' || $scope.licenseImageName == saltLicensePicture)) {
             if ($scope.imageType == 0)
               var imagePath = $scope.imageName;
             else
@@ -945,7 +941,7 @@ angular.module('Pakkage.ProfileController', [])
                 json = JSON.parse(json);
                 if (json.status == 'OK') {
 
-                  var registerPromise = ProfileService.updateProfile($scope.newUser,json.imageName, LocalStorageService.get('token'),saltLicensePicture);
+                  var registerPromise = ProfileService.updateProfile($scope.newUser, json.imageName, LocalStorageService.get('token'), saltLicensePicture);
 
                   registerPromise.then(
                     function (process) {
@@ -955,7 +951,7 @@ angular.module('Pakkage.ProfileController', [])
                         staticUsername = $scope.newUser.username;
 
                         LocalStorageService.save('profilePicture', json.imageName);
-                        if($scope.newUser.city.title)
+                        if ($scope.newUser.city.title)
                           LocalStorageService.save('userCity', $scope.newUser.city.title);
                         LoadingService.hide();
                         PopupService.alert('Info', 'S103');
@@ -979,9 +975,8 @@ angular.module('Pakkage.ProfileController', [])
                 PopupService.alert('Error', 999);
               });
           }
-          else if($scope.imageName == '' && ($scope.licenseImageName == '' || $scope.licenseImageName == saltLicensePicture))
-          {
-            var registerPromise = ProfileService.updateProfile($scope.newUser,saltProfilePicture, LocalStorageService.get('token'),saltLicensePicture);
+          else if ($scope.imageName == '' && ($scope.licenseImageName == '' || $scope.licenseImageName == saltLicensePicture)) {
+            var registerPromise = ProfileService.updateProfile($scope.newUser, saltProfilePicture, LocalStorageService.get('token'), saltLicensePicture);
             registerPromise.then(
               function (process) {
 
@@ -989,7 +984,7 @@ angular.module('Pakkage.ProfileController', [])
                 if (process.data.errorCode == 0) {
                   staticUsername = $scope.newUser.username;
                   PopupService.alert('Info', 'S103');
-                  if($scope.newUser.city.title)
+                  if ($scope.newUser.city.title)
                     LocalStorageService.save('userCity', $scope.newUser.city.title);
                   LoadingService.hide();
                 } else {
@@ -1002,8 +997,7 @@ angular.module('Pakkage.ProfileController', [])
                 PopupService.alert('Error', 999);
               });
           }
-          else if ($scope.imageName == '' && ($scope.licenseImageName != '' || $scope.licenseImageName != saltLicensePicture))
-          {
+          else if ($scope.imageName == '' && ($scope.licenseImageName != '' || $scope.licenseImageName != saltLicensePicture)) {
 
             if ($scope.licenseImageType == 0)
               var imagePath = $scope.licenseImageName;
@@ -1017,13 +1011,13 @@ angular.module('Pakkage.ProfileController', [])
                 json = JSON.parse(json);
                 if (json.status == 'OK') {
 
-                  var registerPromise = ProfileService.updateProfile($scope.newUser,saltProfilePicture, LocalStorageService.get('token'),json.imageName);
+                  var registerPromise = ProfileService.updateProfile($scope.newUser, saltProfilePicture, LocalStorageService.get('token'), json.imageName);
                   registerPromise.then(
                     function (process) {
 
                       saltLicensePicture = json.imageName;
                       staticUsername = $scope.newUser.username;
-                      if($scope.newUser.city.title)
+                      if ($scope.newUser.city.title)
                         LocalStorageService.save('userCity', $scope.newUser.city.title);
                       LoadingService.hide();
                       PopupService.alert('Info', 'S103');
@@ -1043,8 +1037,7 @@ angular.module('Pakkage.ProfileController', [])
               });
           }
           //-- Both of them (profile and license images) are not empty.Upload first profile picture then upload license picture
-          else
-          {
+          else {
             if ($scope.licenseImageType == 0)
               var licenseImagePath = $scope.licenseImageName;
             else
@@ -1070,7 +1063,7 @@ angular.module('Pakkage.ProfileController', [])
                       json = JSON.parse(json);
                       if (json.status == 'OK') {
                         saltLicensePicture = json.imageName;
-                        var registerPromise = ProfileService.updateProfile($scope.newUser,jsonProfile.imageName, LocalStorageService.get('token'),json.imageName);
+                        var registerPromise = ProfileService.updateProfile($scope.newUser, jsonProfile.imageName, LocalStorageService.get('token'), json.imageName);
                         registerPromise.then(
                           function (process) {
 
@@ -1078,7 +1071,7 @@ angular.module('Pakkage.ProfileController', [])
                               staticUsername = $scope.newUser.username;
                               saltLicensePicture = $rootScope.licenseThumbnailURL + json.imageName;
                               saltProfilePicture = $rootScope.profileThumbnailURL + jsonProfile.imageName;
-                              if($scope.newUser.city.title)
+                              if ($scope.newUser.city.title)
                                 LocalStorageService.save('userCity', $scope.newUser.city.title);
                               LoadingService.hide();
                               PopupService.alert('Successful', "S103");
@@ -1113,8 +1106,7 @@ angular.module('Pakkage.ProfileController', [])
           }
 
         }
-        else
-        {
+        else {
           switch ($scope.newUser.userType) {
             case 'Hub':
               $scope.newUser.daysOfOperations = $scope.daysOperation;
@@ -1123,8 +1115,7 @@ angular.module('Pakkage.ProfileController', [])
             default:
               break;
           }
-          if ($scope.imageName != '' && ($scope.licenseImageName == '' || $scope.licenseImageName == saltLicensePicture))
-          {
+          if ($scope.imageName != '' && ($scope.licenseImageName == '' || $scope.licenseImageName == saltLicensePicture)) {
             if ($scope.imageType == 0)
               var imagePath = $scope.imageName;
             else
@@ -1137,7 +1128,7 @@ angular.module('Pakkage.ProfileController', [])
                 json = JSON.parse(json);
                 if (json.status == 'OK') {
 
-                  var registerPromise = ProfileService.updateProfile($scope.newUser,json.imageName, LocalStorageService.get('token'),saltLicensePicture);
+                  var registerPromise = ProfileService.updateProfile($scope.newUser, json.imageName, LocalStorageService.get('token'), saltLicensePicture);
 
                   registerPromise.then(
                     function (process) {
@@ -1147,7 +1138,7 @@ angular.module('Pakkage.ProfileController', [])
                         staticUsername = $scope.newUser.username;
 
                         LocalStorageService.save('profilePicture', json.imageName);
-                        if($scope.newUser.city.title)
+                        if ($scope.newUser.city.title)
                           LocalStorageService.save('userCity', $scope.newUser.city.title);
                         LoadingService.hide();
                         PopupService.alert('Info', 'S103');
@@ -1171,9 +1162,8 @@ angular.module('Pakkage.ProfileController', [])
                 PopupService.alert('Error', 999);
               });
           }
-          else if($scope.imageName == '' && ($scope.licenseImageName == '' || $scope.licenseImageName == saltLicensePicture))
-          {
-            var registerPromise = ProfileService.updateProfile($scope.newUser,saltProfilePicture, LocalStorageService.get('token'),saltLicensePicture);
+          else if ($scope.imageName == '' && ($scope.licenseImageName == '' || $scope.licenseImageName == saltLicensePicture)) {
+            var registerPromise = ProfileService.updateProfile($scope.newUser, saltProfilePicture, LocalStorageService.get('token'), saltLicensePicture);
             registerPromise.then(
               function (process) {
 
@@ -1181,7 +1171,7 @@ angular.module('Pakkage.ProfileController', [])
                 if (process.data.errorCode == 0) {
                   staticUsername = $scope.newUser.username;
                   PopupService.alert('Info', 'S103');
-                  if($scope.newUser.city.title)
+                  if ($scope.newUser.city.title)
                     LocalStorageService.save('userCity', $scope.newUser.city.title);
                   LoadingService.hide();
                 } else {
@@ -1194,8 +1184,7 @@ angular.module('Pakkage.ProfileController', [])
                 PopupService.alert('Error', 999);
               });
           }
-          else if ($scope.imageName == '' && ($scope.licenseImageName != '' || $scope.licenseImageName != saltLicensePicture))
-          {
+          else if ($scope.imageName == '' && ($scope.licenseImageName != '' || $scope.licenseImageName != saltLicensePicture)) {
             if ($scope.licenseImageType == 0)
               var imagePath = $scope.licenseImageName;
             else
@@ -1208,13 +1197,13 @@ angular.module('Pakkage.ProfileController', [])
                 json = JSON.parse(json);
                 if (json.status == 'OK') {
 
-                  var registerPromise = ProfileService.updateProfile($scope.newUser,saltProfilePicture, LocalStorageService.get('token'),json.imageName);
+                  var registerPromise = ProfileService.updateProfile($scope.newUser, saltProfilePicture, LocalStorageService.get('token'), json.imageName);
                   registerPromise.then(
                     function (process) {
 
                       saltLicensePicture = json.imageName;
                       staticUsername = $scope.newUser.username;
-                      if($scope.newUser.city.title)
+                      if ($scope.newUser.city.title)
                         LocalStorageService.save('userCity', $scope.newUser.city.title);
                       LoadingService.hide();
                       PopupService.alert('Info', 'S103');
@@ -1234,8 +1223,7 @@ angular.module('Pakkage.ProfileController', [])
               });
           }
           //-- Both of them (profile and license images) are not empty.Upload first profile picture then upload license picture
-          else
-          {
+          else {
             if ($scope.licenseImageType == 0)
               var licenseImagePath = $scope.licenseImageName;
             else
@@ -1261,7 +1249,7 @@ angular.module('Pakkage.ProfileController', [])
                       json = JSON.parse(json);
                       if (json.status == 'OK') {
                         saltLicensePicture = json.imageName;
-                        var registerPromise = ProfileService.updateProfile($scope.newUser,jsonProfile.imageName, LocalStorageService.get('token'),json.imageName);
+                        var registerPromise = ProfileService.updateProfile($scope.newUser, jsonProfile.imageName, LocalStorageService.get('token'), json.imageName);
                         registerPromise.then(
                           function (process) {
 
@@ -1269,7 +1257,7 @@ angular.module('Pakkage.ProfileController', [])
                               staticUsername = $scope.newUser.username;
                               saltLicensePicture = $rootScope.licenseThumbnailURL + json.imageName;
                               saltProfilePicture = $rootScope.profileThumbnailURL + jsonProfile.imageName;
-                              if($scope.newUser.city.title)
+                              if ($scope.newUser.city.title)
                                 LocalStorageService.save('userCity', $scope.newUser.city.title);
                               LoadingService.hide();
                               PopupService.alert('Successful', "S103");

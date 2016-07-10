@@ -29,7 +29,15 @@
         },
         "cordova-plugin-geolocation": {
             "PACKAGE_NAME": "net.pakkage.beta"
+        },
+        "cordova-plugin-googlemaps": {
+            "API_KEY_FOR_IOS": "AIzaSyCAnL2v1y5zIQPlOcqz4DWIY42kDXVDeQ4",
+            "PACKAGE_NAME": "net.pakkage.beta"
         }
     },
-    "dependent_plugins": {}
+    "dependent_plugins": {
+        "com.googlemaps.ios": {
+            "PACKAGE_NAME": "net.pakkage.beta"
+        }
+    }
 }
