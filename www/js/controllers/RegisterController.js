@@ -98,11 +98,11 @@ angular.module('Pakkage.RegisterController', [])
 
 
             // Test için kullanılabilir, Bismarck,ND'de bir konum.
-            //var lat = 46.891038;
-            //var lng = -99.119517;
+            var lat = 46.891038;
+            var lng = -99.119517;
 
-            var lat  = position.coords.latitude;
-            var lng = position.coords.longitude;
+            //var lat  = position.coords.latitude;
+            //var lng = position.coords.longitude;
 
             $scope.currentLocationLat = lat;
             $scope.currentLocationLng = lng;
@@ -114,7 +114,7 @@ angular.module('Pakkage.RegisterController', [])
                 if (response.status == 200) {
 
                   //Address Result Format : 434-474 4th Ave N, Cleveland, ND 58424, USA
-
+                  console.log(response.data);
                   $scope.newUser.address1 =
                     response.data.results[0].address_components[0].short_name +
                     " " + response.data.results[0].address_components[1].short_name;
@@ -128,16 +128,16 @@ angular.module('Pakkage.RegisterController', [])
                   $scope.initialCity = response.data.results[0].address_components[2].short_name;
                   $scope.newUser.zipcode = parseInt(response.data.results[0].address_components[6].short_name);
                   $scope.newUser.state = response.data.results[0].address_components[4].short_name;
-
+                  $scope.newUser.city = { title : response.data.results[0].address_components[2].short_name } ;
                   //Buradan city set edildiginde sunucuya nedense gitmiyor, kontrol edilecek !!!!!!!
-                  for (var i = 0; i <$scope.cities.length ; i++) {
-
-                    if(response.data.results[0].address_components[2].short_name==$scope.cities[i].name)
-                    {
-                      $scope.newUser.city = $scope.cities[i];
-                      console.log('CITY ->>>>>>>'+$scope.newUser.city);
-                    }
-                  }
+                  // for (var i = 0; i <$scope.cities.length ; i++) {
+                  //
+                  //   if(response.data.results[0].address_components[2].short_name==$scope.cities[i].name)
+                  //   {
+                  //     $scope.newUser.city = $scope.cities[i];
+                  //     console.log('CITY ->>>>>>>'+$scope.newUser.city);
+                  //   }
+                  // }
 
                   var resultLocation = {
                     "location": [$scope.currentLocationLng, $scope.currentLocationLat]

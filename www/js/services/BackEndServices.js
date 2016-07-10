@@ -52,9 +52,16 @@ angular.module('Pakkage.BackendServices', [])
   .factory('RegisterService', function ($http, $cordovaFileTransfer, LocalStorageService) {
     return {
       registerUser: function (userType, newUser, profilePicture, fullFilled, openTime, licensePicture) {
-
-        if (newUser.city != undefined)
-          newUser.city = newUser.city.title;
+        console.log('service citt')
+        console.log(newUser.city )
+        //** Aynı objenin clonu olduğu için city obje olarak gidiyordu
+        var tempCity = "";
+        if (newUser.city.title != undefined)
+          tempCity = newUser.city.title;
+        else if(newUser.city.originalObject != undefined)
+          tempCity = newUser.city.originalObject.title;
+        newUser.city = tempCity;
+        console.log(newUser.city )
         if (licensePicture == undefined)
           newUser.licensePicture = '';
         switch (userType) {
