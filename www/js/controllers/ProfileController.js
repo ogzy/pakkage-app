@@ -417,7 +417,7 @@ angular.module('Pakkage.ProfileController', [])
           {
             if($scope.driveToS[i].initialDriveTo != undefined)
               $scope.newUser.freqCities.push({key : i + 1,value : $scope.driveToS[i].initialDriveTo});
-            else
+            else if($scope.driveToS[i].value  != undefined)
               $scope.newUser.freqCities.push({key : i + 1,value : $scope.driveToS[i].value.title});
             LogService.visibleLog('For içindeki drivetovalue : ' + JSON.stringify($scope.driveToS[i]));
           }
