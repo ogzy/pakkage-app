@@ -1,0 +1,24 @@
+<ion-view view-title="Avaible Packages" ng-controller="PackagesListByHubCntrl">
+  <ion-content>
+    <ion-list>
+     <ion-item collection-repeat="pItem in myPackages" class="item-thumbnail-left">
+
+       <img src="http://46.101.115.69:9096/uploads/packageImages/thumbnail/{{pItem.packageImage}}">
+       <h2>{{pItem.title}}</h2>
+       <p>{{pItem.receiver[0].name}}</p>
+       <p>{{pItem.receiver[0].phone}}</p>
+       <p>{{pItem.receiver[0].address[0].city}}, {{pItem.receiver[0].address[0].state}}</p>
+
+       <p>{{pItem.comment}}</p>
+
+       <ion-reorder-button class="ion-navicon"
+                           >
+       </ion-reorder-button>
+
+     </ion-item>
+    </ion-list>
+  </ion-content>
+
+  </div>
+  </ion-content>
+</ion-view>

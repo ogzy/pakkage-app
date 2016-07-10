@@ -1,7 +1,7 @@
 angular.module('Pakkage.LoginController', [])
-.controller('LoginCtrl', ['$scope', '$state','$stateParams', 'LoginService', 'LocalStorageService','LoadingService','PopupService','$ionicLoading','$q','FacebookService', function ($scope, $state, $stateParams, LoginService, LocalStorageService,LoadingService,PopupService, $ionicLoading,$q,FacebookService) {
+.controller('LoginCtrl', ['$scope', '$state','$stateParams', 'LoginService', 'LocalStorageService','LoadingService','PopupService','$ionicLoading','$q','FacebookService','$cordovaGeolocation','ProfileService', function ($scope, $state, $stateParams, LoginService, LocalStorageService,LoadingService,PopupService, $ionicLoading,$q,FacebookService,$cordovaGeolocation,ProfileService) {
     LoadingService.show();
-    
+
     $scope.statusMessage = undefined;
     if ($stateParams.errorCode == 0) {
         $scope.statusMessage = $stateParams.statusMessage;
@@ -39,6 +39,55 @@ angular.module('Pakkage.LoginController', [])
                         else
                             $state.go("app.home");
                         ////console.log(login.data.token);
+
+
+
+                      // Bu kapatılan alan driver için anlık konum takibi yapar, servis vb. test edildi çalışılıyor
+                      // takip ekranı yapılınca açılması gerekir.
+                      /*if(login.data.user.type[0].name=='Driver')
+                      {
+                        var posOptions = {timeout: 10000, enableHighAccuracy: false};
+                        $cordovaGeolocation
+                          .getCurrentPosition(posOptions)
+                          .then(function (position) {
+
+                            var resultLocation = {"coordinates": [position.coords.longitude,position.coords.latitude]}
+                            var user = {
+                              email:LocalStorageService.get('email'),
+                              currentLocation:resultLocation
+                            }
+
+                            ProfileService.updateUserCurrentLocation(user,resultLocation,LocalStorageService.get('token'));
+
+                            console.log('FIRST LOCATION');
+
+                          });
+
+
+                        var watchOptions = {timeout : 3000,enableHighAccuracy: false};
+
+                        var watch = $cordovaGeolocation.watchPosition(watchOptions);
+                        watch.then(
+                          null,
+                          function(err) {
+                            // error
+                          },
+                          function(position) {
+
+                            var resultLocation = {"coordinates": [position.coords.longitude,position.coords.latitude]}
+                            var user = {
+                              email:LocalStorageService.get('email'),
+                              currentLocation:resultLocation
+                            }
+
+                            ProfileService.updateUserCurrentLocation(user,resultLocation,LocalStorageService.get('token'));
+
+                            console.log('CHANGE LOCATION');
+
+                          });
+
+                        //watch.clearWatch();
+                      }*/
 
                         LoadingService.hide();
                     } else {
