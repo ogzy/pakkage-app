@@ -98,11 +98,11 @@ angular.module('Pakkage.RegisterController', [])
 
 
             // Test için kullanılabilir, Bismarck,ND'de bir konum.
-            var lat = 46.891038;
-            var lng = -99.119517;
+            //var lat = 46.891038;
+            //var lng = -99.119517;
 
-            //var lat  = position.coords.latitude;
-            //var lng = position.coords.longitude;
+            var lat  = position.coords.latitude;
+            var lng = position.coords.longitude;
 
             $scope.currentLocationLat = lat;
             $scope.currentLocationLng = lng;
