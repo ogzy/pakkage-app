@@ -373,8 +373,8 @@ angular.module('Pakkage.MainController', [])
 
         polylines.push(poly);
 
-        var src = marker.getPosition();
-        var des = new google.maps.LatLng($scope.currentLocationLat, $scope.currentLocationLng);
+        var src = new google.maps.LatLng($scope.currentLocationLat, $scope.currentLocationLng);
+        var des = marker.getPosition();
         path.push(src);
         poly.setPath(path);
 
