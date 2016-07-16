@@ -517,33 +517,39 @@ angular.module('Pakkage.RegisterController', [])
       if ($scope.profilePicture == '')
         fullFilled = false;
 
-      if ($scope.newUser.username == undefined)
-        $scope.newUser.username = '';
       var openTime = '';
       if ($scope.newUser.openTime != undefined) {
         if ($scope.newUser.openTime != '7/24' && $scope.newUser.closeTime != undefined)
           openTime = $scope.newUser.openTime + ';' + $scope.newUser.closeTime;
       }
 
-
-      if ($scope.newUser.password == undefined || $scope.newUser.confirmPassword == undefined) {
+      //Check username is not empty
+      if ($scope.newUser.username == undefined || $scope.newUser.username == '') {
+        LoadingService.hide();
+        PopupService.alert('Error', 'E123');
+      } //Check password is not empty
+      else if ($scope.newUser.password == undefined || $scope.newUser.confirmPassword == undefined) {
         LoadingService.hide();
         PopupService.alert('Error', 'E116');
-      }
-      //-- Check email is valid
+      } //Check email is valid
       else if (/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test($scope.newUser.email) != true) {
         LoadingService.hide();
         PopupService.alert('Error', 'E111');
-      } else if ((/^[0-9A-Za-z_.]+$/.test($scope.newUser.username) != true && $scope.newUser.username != undefined && $scope.newUser.username != '') || (($scope.newUser.username.length < 3 || $scope.newUser.username.length > 20) && $scope.newUser.username != '')) {
+      } //Check username is valid
+      else if ((/^[0-9A-Za-z_.]+$/.test($scope.newUser.username) != true && $scope.newUser.username != undefined && $scope.newUser.username != '') || (($scope.newUser.username.length < 3 || $scope.newUser.username.length > 20) && $scope.newUser.username != '')) {
         LoadingService.hide();
         PopupService.alert('Error', 'E117');
-      } else if ((/(^\d{5}$)|(^\d{5}-\d{4}$)/.test($scope.newUser.zipcode) != true && $scope.newUser.zipcode != undefined) && ($scope.newUser.zipcode != '')) {
+      } //Check zipcode is valid
+      //Zipcode için önyüzden html tarafında kontrol konulabilir mi?
+      else if ((/(^\d{5}$)|(^\d{5}-\d{4}$)/.test($scope.newUser.zipcode) != true && $scope.newUser.zipcode != undefined) && ($scope.newUser.zipcode != '')) {
         LoadingService.hide();
         PopupService.alert('Oopps !', 'E106');
-      } else if ((/(^\d{3}-\d{3}-\d{4}$)|(^\d{3}-\d{4}$)/.test($scope.newUser.phone) != true && $scope.newUser.phone != undefined) && ($scope.newUser.phone != '')) {
+      } //Check phone is valid
+      else if ((/(^\d{3}-\d{3}-\d{4}$)|(^\d{3}-\d{4}$)/.test($scope.newUser.phone) != true && $scope.newUser.phone != undefined) && ($scope.newUser.phone != '')) {
         LoadingService.hide();
         PopupService.alert('Oopps !', 'E105');
-      } else if ((/(^\d{3}-\d{3}-\d{4}$)|(^\d{3}-\d{4}$)/.test($scope.newUser.workPhone) != true && $scope.newUser.workPhone != undefined) && ($scope.newUser.workPhone != '')) {
+      } //Check workphone is valid
+      else if ((/(^\d{3}-\d{3}-\d{4}$)|(^\d{3}-\d{4}$)/.test($scope.newUser.workPhone) != true && $scope.newUser.workPhone != undefined) && ($scope.newUser.workPhone != '')) {
         LoadingService.hide();
         PopupService.alert('Oopps !', 'E107');
       }
@@ -565,8 +571,9 @@ angular.module('Pakkage.RegisterController', [])
             if (buttonIndex == 1) {
               LoadingService.show();
 
-              if ($scope.imageName == '' && $scope.licenseImageName == '') {
-
+              if ($scope.imageName == '' && $scope.licenseImageName == '')
+              {
+              //licensePicture parametretsi neden gönderilmiyor?
                 var registerPromise = RegisterService.registerUser($scope.data.clientSide, $scope.newUser, 'noPicture.jpg', fullFilled, openTime);
 
                 registerPromise.then(
@@ -586,10 +593,14 @@ angular.module('Pakkage.RegisterController', [])
                     }
                   },
                   function (errorPayload) {
+                    //Client tarafında kodlama yapılacak.
                     LoadingService.hide();
                     PopupService.alert('Error', 999);
                   });
-              } else if ($scope.imageName != '' && $scope.licenseImageName == '') {
+              }
+
+              else if ($scope.imageName != '' && $scope.licenseImageName == '')
+              {
                 if ($scope.imageType == 0)
                   var imagePath = $scope.imageName;
                 else
@@ -627,7 +638,9 @@ angular.module('Pakkage.RegisterController', [])
                     LoadingService.hide();
                     PopupService.alert('Error', 999);
                   });
-              } else if ($scope.imageName == '' && $scope.licenseImageName != '') {
+              }
+              else if ($scope.imageName == '' && $scope.licenseImageName != '')
+              {
                 if ($scope.licenseImageType == 0)
                   var imagePath = $scope.licenseImageName;
                 else
@@ -668,7 +681,8 @@ angular.module('Pakkage.RegisterController', [])
                   });
               }
               //-- Both of them (profile and license images) are not empty.Upload first profile picture then upload license picture
-              else {
+              else
+              {
                 if ($scope.licenseImageType == 0)
                   var imagePathLicense = $scope.licenseImageName;
                 else
