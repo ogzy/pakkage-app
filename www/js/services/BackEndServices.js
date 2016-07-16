@@ -114,19 +114,38 @@ angular.module('Pakkage.BackendServices', [])
         }
       },
       uploadPicture: function (filePath, email) {
-        var options = {
-          fileName: email.split('@')[0] + '-' + filePath.substr(filePath.lastIndexOf('/') + 1)
-        };
+        //-- If a picture exists upload to server
+        var responseJson= '';
+        if(filePath != undefined)
+        {
+          var options = {
+            fileName: email.split('@')[0] + '-' + filePath.substr(filePath.lastIndexOf('/') + 1)
+          };
 
+          $cordovaFileTransfer.upload(uploadPictureURL, filePath, options).then(function(imageUploadStatus) {
+            return status = JSON.parse(JSON.stringify(eval("(" + imageUploadStatus.response + ")")));
+          });
+        }
+        //-- Picture not exists continue flow
+        else {
+            return $http();
+        }
 
-        return $cordovaFileTransfer.upload(uploadPictureURL, filePath, options);
       },
       uploadLicensePicture: function (filePath, email) {
-        var options = {
-          fileName: 'license-' + email.split('@')[0] + '-' + filePath.substr(filePath.lastIndexOf('/') + 1)
-        };
-
-        return $cordovaFileTransfer.upload(uploadLicensePictureURL, filePath, options);
+        if(!filePath)
+        {
+          var options = {
+            fileName: 'license-' + email.split('@')[0] + '-' + filePath.substr(filePath.lastIndexOf('/') + 1)
+          };
+          $cordovaFileTransfer.upload(uploadLicensePictureURL, filePath, options).then(function(imageUploadStatus) {
+            return status = JSON.parse(JSON.stringify(eval("(" + imageUploadStatus.response + ")")));
+          });
+        }
+        //-- Picture not exists continue flow
+        else {
+            return { errorCode : "0",imageName : undefined};
+        }
       },
       activateUser: function (email, activationCode) {
         var req = {
@@ -142,22 +161,22 @@ angular.module('Pakkage.BackendServices', [])
 
       },
       getCurrentLocationByAddress: function (address1, address2, city, state) {
-        var postUrl = googleGeocodingApiUrl + "address=";
-        var userLocationStr = address1 + ", " + address2 + ", " + city + ", " + state;
-        postUrl = postUrl + userLocationStr + "&key=" + googleGeocodingApiKey;
+          var postUrl = googleGeocodingApiUrl + "address=";
+          var userLocationStr = address1 + ", " + address2 + ", " + city + ", " + state;
+          postUrl = postUrl + userLocationStr + "&key=" + googleGeocodingApiKey;
 
-        console.log(postUrl);
+          console.log(postUrl);
 
-        var req = {
-          method: 'POST',
-          url: postUrl,
-          skipAuthorization: true,
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-          },
-          data: {}
-        };
-        return $http(req);
+          var req = {
+            method: 'POST',
+            url: postUrl,
+            skipAuthorization: true,
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+            },
+            data: {}
+          };
+          return $http(req);
       },
       getCurrentLocationByCoordinate: function (lat, lng) {
         var postUrl = googleGeocodingApiUrl + "latlng=";
