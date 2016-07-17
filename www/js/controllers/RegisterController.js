@@ -111,7 +111,6 @@ angular.module('Pakkage.RegisterController', [])
               $scope.currentLocationLng = lng;
 
               var geoApiPromise = RegisterService.getCurrentLocationByCoordinate(lat, lng);
-
               geoApiPromise.then(
                 function(response) {
                   if (response.status == 200) {
