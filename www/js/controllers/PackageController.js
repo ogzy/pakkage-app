@@ -533,10 +533,10 @@ angular.module('Pakkage.PackageController', [])
           //console.log('PakkageBeta : package statuus : ' + $scope.newPackage.status);
           switch ($scope.newPackage.status) {
             case 2:
-              $scope.friendlyStatus = 'Delivered to Org. Hub';
+              $scope.friendlyStatus = 'To be Accepted by Org. Hub';
               break;
             case 3:
-              $scope.friendlyStatus = 'Picked up by Org. Hub';
+              $scope.friendlyStatus = 'At Org. Hub';
               break;
             case 4:
               $scope.friendlyStatus = 'Picked up by Driver';

@@ -1,5 +1,11 @@
 <ion-view view-title="Home" ng-controller="HomeCtrl" cache-view="false" xmlns="http://www.w3.org/1999/html">
   <ion-nav-buttons side="right">
+
+    <button class="button button-clear button-positive rightNavBarButton" style="margin-right: 10px;"
+            ng-click="showAsListDriverHome()" ng-show="userType == 'Driver'">
+            <i class="icon ion ion-ios-list-outline" ng-show="driverDashboardType == 'map'"></i>
+            <i class="icon ion ion-map" ng-show="driverDashboardType == 'list'"></i>
+    </button>
     <button class="button button-clear button-positive rightNavBarButton" style="margin-right: 10px;"
             ng-click="scanQRFromHomePage()" ng-show="userType != 'Sender'">
       <i class="icon ion ion-qr-scanner"></i>
@@ -82,7 +88,7 @@
       <div class="noPackage">No packages found
         <img src="img/vector-box.jpg" style="opacity: 0.1;"/></div>
     </div>
-    <uib-accordion close-others="oneAtATime" ng-show="userType == 'Hub'">
+    <uib-accordion close-others="oneAtATime" ng-show="userType == 'Hub' || (userType == 'Driver' && driverDashboardType == 'list')">
       <!--<button class="button button-positive avHubsScanButton" ng-click="scanQRFromHomePage()">
         <i class="icon ion ion-qr-scanner"></i>  Scan QR Code
       </button>-->
@@ -185,7 +191,7 @@
     </uib-accordion>
 
 
-    <ion-view view-title="Driver Map" ng-show="userType == 'Driver'">
+    <ion-view view-title="Driver Map" ng-show="userType == 'Driver' && driverDashboardType == 'map'">
       <ion-content>
 
         <div id="driverMap" data-tap-disabled="true"

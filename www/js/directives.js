@@ -224,10 +224,15 @@ angular.module('Pakkage.directives', ['angularMoment'])
           var minutes = moment(scope.datetime).minutes();
 
           var lbTime = "" + hours12 + ":";
-          if (minutes < 10) {
+          /*if (minutes < 10) {
             lbTime += "0";
-          }
-          lbTime += minutes;
+          }*/
+          var calMinutes = Math.ceil(minutes / 10) * 10;
+          if(calMinutes == 60)
+            lbTime += "00";
+          else
+            lbTime += calMinutes;
+          //lbTime += minutes;
 
           labelTime.text(lbTime);
           labelAMPM.text(moment(scope.datetime).format("A"));

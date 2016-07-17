@@ -64,6 +64,7 @@ angular.module('Pakkage.MainController', [])
     $scope.packages = [];
     $rootScope.packages = [];
     $scope.toMePackages = [];
+    $scope.driverDashboardType = 'map';
     $scope.userType = LocalStorageService.get('userType');
     $scope.statusToMe = {
       open: true
@@ -207,6 +208,13 @@ angular.module('Pakkage.MainController', [])
           function(error) {});
       }, false);
 
+    };
+
+    $scope.showAsListDriverHome = function(){
+      if($scope.driverDashboardType == 'map')
+        $scope.driverDashboardType = 'list';
+      else if($scope.driverDashboardType == 'list')
+          $scope.driverDashboardType = 'map';
     };
 
     var map;
