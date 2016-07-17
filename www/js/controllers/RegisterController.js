@@ -561,56 +561,570 @@ angular.module('Pakkage.RegisterController', [])
           LoadingService.hide();
           PopupService.alert('Oopps !', 'E107');
         }
-        else
-        {
-          //-- First check fullFilled flag
-          if (!fullFilled) {
+        //-- If user didn't fill all field, check and decide to requests
+        //-- User didn't choose picture so we have accept this issue
+        else if ($scope.newUser.name == undefined || $scope.newUser.phone == undefined || $scope.newUser.address1 == undefined || $scope.newUser.city == undefined || $scope.newUser.state == undefined || $scope.newUser.zipcode == undefined) {
 
+          if ($scope.newUser.password != $scope.newUser.confirmPassword) {
+            LoadingService.hide();
+            PopupService.alert('Error', 101);
+          } else if ($scope.newUser.password.trim().length < 6 || $scope.newUser.password.trim().length > 20) {
+            LoadingService.hide();
+            PopupService.alert('Error', 'E104');
+          } else {
+            LoadingService.hide();
             PopupService.confirm('Warning', 'C100').then(function(buttonIndex) {
-              //-- If user click OK button do this.If click cancel do nothing
+
+
               if (buttonIndex == 1) {
-                RegisterFlow.registerUser(fullFilled, $scope.data.clientSide, $scope.newUser, $scope.imageName,
-                  $scope.imageType, $scope.licenseImageName, $scope.licenseImageType, openTime).then(function(serviceResult) {
-                    if (serviceResult.errorCode == 0) {
+                LoadingService.show();
+
+                if ($scope.imageName == '' && $scope.licenseImageName == '') {
+                  //licensePicture parametretsi neden gönderilmiyor?
+                  var registerPromise = RegisterService.registerUser($scope.data.clientSide, $scope.newUser, $scope.imageName, $scope.imageType, $scope.licenseImageName, $scope.licenseImageType, openTime);
+
+                  registerPromise.then(
+                    function(response) {
                       LoadingService.hide();
-                      $state.go('activate', {
-                        email: $scope.newUser.email
-                      });
-                    } else {
+
+
+                      if (response.data.errorCode == 0) {
+
+                        $state.go('activate', {
+                          email: $scope.newUser.email
+                        });
+
+                      } else {
+                        LoadingService.hide();
+                        PopupService.alert('Error', response.data.errorCode);
+                      }
+                    },
+                    function(errorPayload) {
+                      //Client tarafında kodlama yapılacak.
                       LoadingService.hide();
-                      PopupService.alert('Error', serviceResult.errorCode);
-                    }
-                  },
-                  function(technicalError) {
-                    //--TODO:Log also this to Fabric
-                    LoadingService.hide();
-                    PopupService.alert('Error', 999);
-                  });
+                      PopupService.alert('Error', 999);
+                    });
+                } else if ($scope.imageName != '' && $scope.licenseImageName == '') {
+                  if ($scope.imageType == 0)
+                    var imagePath = $scope.imageName;
+                  else
+                    var imagePath = cordova.file.dataDirectory + $scope.imageName;
+
+                  var uploadPromise = RegisterService.uploadPicture(imagePath, $scope.newUser.email);
+                  uploadPromise.then(
+                    function(upload) {
+                      var json = JSON.stringify(eval("(" + upload.response + ")"));
+                      json = JSON.parse(json);
+                      if (json.status == 'OK') {
+
+                        var registerPromise = RegisterService.registerUser($scope.data.clientSide, $scope.newUser, json.imageName, fullFilled, openTime);
+                        registerPromise.then(
+                          function(process) {
+                            LoadingService.hide();
+                            if (process.data.errorCode == 0) {
+                              $state.go('activate', {
+                                email: $scope.newUser.email
+                              });
+                            } else {
+                              PopupService.alert('Error', process.data.errorCode);
+                            }
+                          },
+                          function(errorPayload) {
+                            LoadingService.hide();
+                            PopupService.alert('Error', 999);
+                          });
+                      } else {
+                        LoadingService.hide();
+                        PopupService.alert('Error', 999);
+                      }
+                    },
+                    function(errorPayload) {
+                      LoadingService.hide();
+                      PopupService.alert('Error', 999);
+                    });
+                } else if ($scope.imageName == '' && $scope.licenseImageName != '') {
+                  if ($scope.licenseImageType == 0)
+                    var imagePath = $scope.licenseImageName;
+                  else
+                    var imagePath = cordova.file.dataDirectory + $scope.licenseImageName;
+
+                  var uploadPromise = RegisterService.uploadLicensePicture(imagePath, $scope.newUser.email);
+                  uploadPromise.then(
+                    function(upload) {
+                      var json = JSON.stringify(eval("(" + upload.response + ")"));
+                      json = JSON.parse(json);
+                      if (json.status == 'OK') {
+
+
+                        var registerPromise = RegisterService.registerUser($scope.data.clientSide, $scope.newUser, 'noPicture.jpg', fullFilled, openTime, json.imageName);
+                        registerPromise.then(
+                          function(process) {
+                            LoadingService.hide();
+                            if (process.data.errorCode == 0) {
+                              $state.go('activate', {
+                                email: $scope.newUser.email
+                              });
+                            } else {
+                              PopupService.alert('Error', process.data.errorCode);
+                            }
+                          },
+                          function(errorPayload) {
+                            LoadingService.hide();
+                            PopupService.alert('Error', 999);
+                          });
+                      } else {
+                        LoadingService.hide();
+                        PopupService.alert('Error', 999);
+                      }
+                    },
+                    function(errorPayload) {
+                      LoadingService.hide();
+                      PopupService.alert('Error', 999);
+                    });
+                }
+                //-- Both of them (profile and license images) are not empty.Upload first profile picture then upload license picture
+                else {
+                  if ($scope.licenseImageType == 0)
+                    var imagePathLicense = $scope.licenseImageName;
+                  else
+                    var imagePathLicense = cordova.file.dataDirectory + $scope.licenseImageName;
+
+                  if ($scope.imageType == 0)
+                    var imagePath = $scope.imageName;
+                  else
+                    var imagePath = cordova.file.dataDirectory + $scope.imageName;
+
+                  var uploadPromise = RegisterService.uploadPicture(imagePath, $scope.newUser.email);
+                  uploadPromise.then(
+                    function(upload) {
+                      var jsonProfile = JSON.stringify(eval("(" + upload.response + ")"));
+                      jsonProfile = JSON.parse(jsonProfile);
+                      if (jsonProfile.status == 'OK') {
+                        //-- Profile picture uploaded successfully.So start upload license picture
+                        var uploadPromiseLicense = RegisterService.uploadLicensePicture(imagePathLicense, $scope.newUser.email);
+                        uploadPromiseLicense.then(
+                          function(uploadLincese) {
+                            var json = JSON.stringify(eval("(" + uploadLincese.response + ")"));
+                            json = JSON.parse(json);
+                            if (json.status == 'OK') {
+
+
+                              var registerPromise = RegisterService.registerUser($scope.data.clientSide, $scope.newUser, jsonProfile.imageName, fullFilled, openTime, json.imageName);
+                              registerPromise.then(
+                                function(process) {
+                                  LoadingService.hide();
+                                  if (process.data.errorCode == 0) {
+                                    $state.go('activate', {
+                                      email: $scope.newUser.email
+                                    });
+                                  } else {
+                                    PopupService.alert('Error', process.data.errorCode);
+                                  }
+                                },
+                                function(errorPayload) {
+                                  LoadingService.hide();
+                                  PopupService.alert('Error', 999);
+                                });
+                            } else {
+                              LoadingService.hide();
+                              PopupService.alert('Error', 999);
+                            }
+                          },
+                          function(errorPayload) {
+                            LoadingService.hide();
+                            PopupService.alert('Error', 999);
+                          });
+                      } else {
+                        LoadingService.hide();
+                        PopupService.alert('Error', 999);
+                      }
+                    },
+                    function(errorPayload) {
+                      LoadingService.hide();
+                      PopupService.alert('Error', 999);
+                    });
+
+                }
               }
             });
           }
-          else {
+        } else {
 
-            RegisterFlow.registerUser(fullFilled, $scope.data.clientSide, $scope.newUser, $scope.imageName,
-              $scope.imageType, $scope.licenseImageName, $scope.licenseImageType, openTime).then(function(serviceResult) {
-                if (serviceResult.errorCode == 0) {
+          if ($scope.imageName == '' && $scope.licenseImageName == '') {
+            //Resmi yuklemedyse
+            if ($scope.data.clientSide == 'hub') {
+              if ($scope.newUser.address1 != undefined || $scope.newUser.city != undefined || $scope.newUser.state != undefined) {
+
+                //Eger gps konumu sec isaretlendi ise,
+                if ($scope.isCurrentLocationSelected) {
+
+
+                  var registerPromise = RegisterService.registerUser($scope.data.clientSide, $scope.newUser, 'noPicture.jpg', fullFilled, openTime);
+                  registerPromise.then(
+                    function(process) {
+                      LoadingService.hide();
+                      if (process.data.errorCode == 0) {
+
+                        $state.go('activate', {
+                          email: $scope.newUser.email
+                        });
+
+                      } else {
+                        PopupService.alert('Error', process.data.errorCode);
+                      }
+                    },
+                    function(errorPayload) {
+                      LoadingService.hide();
+
+                      PopupService.alert('Error', 999);
+                    });
+
+                } else {
+                  var geoApiPromise = RegisterService.getCurrentLocationByAddress($scope.newUser.address1, $scope.newUser.address2, $scope.newUser.city, $scope.newUser.state);
+
+                  geoApiPromise.then(
+                    function(response) {
+
+                      if (response.status == 200) {
+
+                        var resultLocation = {
+                          "location": [response.data.results[0].geometry.location.lng,
+                            response.data.results[0].geometry.location.lat
+                          ]
+                        }
+
+                        $scope.newUser.currentLocation = resultLocation;
+
+                        var registerPromise = RegisterService.registerUser($scope.data.clientSide, $scope.newUser, 'noPicture.jpg', fullFilled, openTime);
+                        registerPromise.then(
+                          function(process) {
+                            LoadingService.hide();
+                            if (process.data.errorCode == 0) {
+
+                              $state.go('activate', {
+                                email: $scope.newUser.email
+                              });
+
+                            } else {
+                              PopupService.alert('Error', process.data.errorCode);
+                            }
+                          },
+                          function(errorPayload) {
+
+                            LoadingService.hide();
+                            PopupService.alert('Error', 999);
+
+                          });
+                      } else {
+                        LoadingService.hide();
+                        PopupService.alert('Error', response.data.errorCode);
+                      }
+                    },
+                    function(errorPayload) {
+
+
+                      var registerPromise = RegisterService.registerUser($scope.data.clientSide, $scope.newUser, 'noPicture.jpg', fullFilled, openTime);
+                      registerPromise.then(
+                        function(process) {
+                          LoadingService.hide();
+                          if (process.data.errorCode == 0) {
+
+                            $state.go('activate', {
+                              email: $scope.newUser.email
+                            });
+
+
+                          } else {
+                            PopupService.alert('Error', process.data.errorCode);
+                          }
+                        },
+                        function(errorPayload) {
+                          LoadingService.hide();
+
+                          PopupService.alert('Error', 999);
+                        });
+                    });
+                }
+              }
+            } else {
+
+              var registerPromise = RegisterService.registerUser($scope.data.clientSide, $scope.newUser, 'noPicture.jpg', fullFilled, openTime);
+              registerPromise.then(
+                function(process) {
                   LoadingService.hide();
-                  $state.go('activate', {
-                    email: $scope.newUser.email
-                  });
+                  if (process.data.errorCode == 0) {
+
+                    $state.go('activate', {
+                      email: $scope.newUser.email
+                    });
+
+
+                  } else {
+                    PopupService.alert('Error', process.data.errorCode);
+                  }
+                },
+                function(errorPayload) {
+                  LoadingService.hide();
+
+                  PopupService.alert('Error', 999);
+                });
+            }
+
+          } else if ($scope.imageName != '' && $scope.licenseImageName == '') {
+            if ($scope.imageType == 0)
+              var imagePath = $scope.imageName;
+            else
+              var imagePath = cordova.file.dataDirectory + $scope.imageName;
+
+            var uploadPromise = RegisterService.uploadPicture(imagePath, $scope.newUser.email);
+            uploadPromise.then(
+              function(upload) {
+                var json = JSON.stringify(eval("(" + upload.response + ")"));
+                json = JSON.parse(json);
+                if (json.status == 'OK') {
+
+                  if ($scope.data.clientSide == 'hub') {
+                    if ($scope.newUser.address1 != undefined || $scope.newUser.city != undefined || $scope.newUser.state != undefined) {
+
+                      if ($scope.isCurrentLocationSelected) {
+
+                        var registerPromise = RegisterService.registerUser($scope.data.clientSide, $scope.newUser, json.imageName, fullFilled, openTime);
+                        registerPromise.then(
+                          function(process) {
+                            LoadingService.hide();
+                            if (process.data.errorCode == 0) {
+
+                              $state.go('activate', {
+                                email: $scope.newUser.email
+                              });
+
+
+                            } else {
+                              PopupService.alert('Error', process.data.errorCode);
+                            }
+                          },
+                          function(errorPayload) {
+                            LoadingService.hide();
+
+                            PopupService.alert('Error', 999);
+                          });
+
+                      } else {
+
+                        var geoApiPromise = RegisterService.getCurrentLocationByAddress($scope.newUser.address1, $scope.newUser.address2, $scope.newUser.city, $scope.newUser.state);
+
+                        geoApiPromise.then(
+                          function(response) {
+
+                            console.log(response);
+
+                            if (response.status == 200) {
+
+                              var resultLocation = {
+                                "location": [response.data.results[0].geometry.location.lng,
+                                  response.data.results[0].geometry.location.lat
+                                ]
+                              }
+
+                              $scope.newUser.currentLocation = resultLocation;
+
+                              var registerPromise = RegisterService.registerUser($scope.data.clientSide, $scope.newUser, json.imageName, fullFilled, openTime);
+                              registerPromise.then(
+                                function(process) {
+                                  LoadingService.hide();
+                                  if (process.data.errorCode == 0) {
+
+                                    $state.go('activate', {
+                                      email: $scope.newUser.email
+                                    });
+
+
+                                  } else {
+                                    PopupService.alert('Error', process.data.errorCode);
+                                  }
+                                },
+                                function(errorPayload) {
+                                  LoadingService.hide();
+
+                                  PopupService.alert('Error', 999);
+                                });
+
+                            } else {
+                              LoadingService.hide();
+                              PopupService.alert('Error', response.data.errorCode);
+                            }
+                          },
+                          function(errorPayload) {
+
+
+                            var registerPromise = RegisterService.registerUser($scope.data.clientSide, $scope.newUser, json.imageName, fullFilled, openTime);
+                            registerPromise.then(
+                              function(process) {
+                                LoadingService.hide();
+                                if (process.data.errorCode == 0) {
+
+                                  $state.go('activate', {
+                                    email: $scope.newUser.email
+                                  });
+
+
+                                } else {
+                                  PopupService.alert('Error', process.data.errorCode);
+                                }
+                              },
+                              function(errorPayload) {
+                                LoadingService.hide();
+
+                                PopupService.alert('Error', 999);
+                              });
+                          });
+
+
+                      }
+
+
+                    }
+                  } else {
+
+                    var registerPromise = RegisterService.registerUser($scope.data.clientSide, $scope.newUser, json.imageName, fullFilled, openTime);
+                    registerPromise.then(
+                      function(process) {
+                        LoadingService.hide();
+                        if (process.data.errorCode == 0) {
+
+                          $state.go('activate', {
+                            email: $scope.newUser.email
+                          });
+
+
+                        } else {
+                          PopupService.alert('Error', process.data.errorCode);
+                        }
+                      },
+                      function(errorPayload) {
+                        LoadingService.hide();
+
+                        PopupService.alert('Error', 999);
+                      });
+                  }
+
                 } else {
                   LoadingService.hide();
-                  PopupService.alert('Error', serviceResult.errorCode);
+                  PopupService.alert('Error', 999);
                 }
               },
-              function(technicalError) {
-                //--TODO:Log also this to Fabric
+              function(errorPayload) {
+                LoadingService.hide();
+                PopupService.alert('Error', 999);
+              });
+
+          } else if ($scope.imageName == '' && $scope.licenseImageName != '') {
+            if ($scope.licenseImageType == 0)
+              var imagePath = $scope.licenseImageName;
+            else
+              var imagePath = cordova.file.dataDirectory + $scope.licenseImageName;
+
+            var uploadPromise = RegisterService.uploadLicensePicture(imagePath, $scope.newUser.email);
+            uploadPromise.then(
+              function(upload) {
+                var json = JSON.stringify(eval("(" + upload.response + ")"));
+                json = JSON.parse(json);
+                if (json.status == 'OK') {
+
+
+                  var registerPromise = RegisterService.registerUser($scope.data.clientSide, $scope.newUser, 'noPicture.jpg', fullFilled, openTime, json.imageName);
+                  registerPromise.then(
+                    function(process) {
+                      LoadingService.hide();
+                      if (process.data.errorCode == 0) {
+                        $state.go('activate', {
+                          email: $scope.newUser.email
+                        });
+                      } else {
+                        PopupService.alert('Error', process.data.errorCode);
+                      }
+                    },
+                    function(errorPayload) {
+                      LoadingService.hide();
+                      PopupService.alert('Error', 999);
+                    });
+                } else {
+                  LoadingService.hide();
+                  PopupService.alert('Error', 999);
+                }
+              },
+              function(errorPayload) {
                 LoadingService.hide();
                 PopupService.alert('Error', 999);
               });
           }
+          //-- Both of them (profile and license images) are not empty.Upload first profile picture then upload license picture
+          else {
+            if ($scope.licenseImageType == 0)
+              var imagePathLicense = $scope.licenseImageName;
+            else
+              var imagePathLicense = cordova.file.dataDirectory + $scope.licenseImageName;
+
+            if ($scope.imageType == 0)
+              var imagePath = $scope.imageName;
+            else
+              var imagePath = cordova.file.dataDirectory + $scope.imageName;
+
+            var uploadPromise = RegisterService.uploadPicture(imagePath, $scope.newUser.email);
+            uploadPromise.then(
+              function(upload) {
+                var jsonProfile = JSON.stringify(eval("(" + upload.response + ")"));
+                jsonProfile = JSON.parse(jsonProfile);
+                if (jsonProfile.status == 'OK') {
+                  //-- Profile picture uploaded successfully.So start upload license picture
+                  var uploadPromiseLicense = RegisterService.uploadLicensePicture(imagePathLicense, $scope.newUser.email);
+                  uploadPromiseLicense.then(
+                    function(uploadLincese) {
+                      var json = JSON.stringify(eval("(" + uploadLincese.response + ")"));
+                      json = JSON.parse(json);
+                      if (json.status == 'OK') {
+
+                        var registerPromise = RegisterService.registerUser($scope.data.clientSide, $scope.newUser, jsonProfile.imageName, fullFilled, openTime, json.imageName);
+                        registerPromise.then(
+                          function(process) {
+                            LoadingService.hide();
+                            if (process.data.errorCode == 0) {
+                              $state.go('activate', {
+                                email: $scope.newUser.email
+                              });
+                            } else {
+                              PopupService.alert('Error', process.data.errorCode);
+                            }
+                          },
+                          function(errorPayload) {
+                            LoadingService.hide();
+                            PopupService.alert('Error', 999);
+                          });
+                      } else {
+                        LoadingService.hide();
+                        PopupService.alert('Error', 999);
+                      }
+                    },
+                    function(errorPayload) {
+                      LoadingService.hide();
+                      PopupService.alert('Error', 999);
+                    });
+                } else {
+                  LoadingService.hide();
+                  PopupService.alert('Error', 999);
+                }
+              },
+              function(errorPayload) {
+                LoadingService.hide();
+                PopupService.alert('Error', 999);
+              });
+
+          }
         }
-      }
+
+        };
+
+
 
   }])
 .controller('OpenTimeModalInstanceCtrl', function($scope, $uibModalInstance, opentimepicker) {

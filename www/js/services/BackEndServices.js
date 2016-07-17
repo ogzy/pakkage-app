@@ -54,13 +54,21 @@ angular.module('Pakkage.BackendServices', [])
       registerUser: function (userType, newUser, profilePicture, fullFilled, openTime, licensePicture) {
 
         //** Aynı objenin clonu olduğu için city obje olarak gidiyordu
-        var tempCity = "";
-        if (newUser.city.title != undefined)
-          tempCity = newUser.city.title;
-        else if(newUser.city.originalObject != undefined)
-          tempCity = newUser.city.originalObject.title;
-        newUser.city = tempCity;
         console.log(newUser.city);
+        if(newUser.city != undefined)
+        {
+          var tempCity = "";
+          if (newUser.city.title != undefined)
+            tempCity = newUser.city.title;
+          else if(newUser.city.originalObject != undefined)
+            tempCity = newUser.city.originalObject.title;
+          newUser.city = tempCity;
+          console.log(newUser.city);
+        }
+        else {
+          newUser.city = '';
+        }
+
         switch (userType) {
           case 'sender':
 
@@ -114,38 +122,22 @@ angular.module('Pakkage.BackendServices', [])
         }
       },
       uploadPicture: function (filePath, email) {
-        //-- If a picture exists upload to server
-        var responseJson= '';
-        if(filePath != undefined)
-        {
+
           var options = {
             fileName: email.split('@')[0] + '-' + filePath.substr(filePath.lastIndexOf('/') + 1)
           };
 
-          $cordovaFileTransfer.upload(uploadPictureURL, filePath, options).then(function(imageUploadStatus) {
-            return status = JSON.parse(JSON.stringify(eval("(" + imageUploadStatus.response + ")")));
-          });
-        }
-        //-- Picture not exists continue flow
-        else {
-            return $http();
-        }
+          return $cordovaFileTransfer.upload(uploadPictureURL, filePath, options);
 
       },
       uploadLicensePicture: function (filePath, email) {
-        if(!filePath)
-        {
+
           var options = {
             fileName: 'license-' + email.split('@')[0] + '-' + filePath.substr(filePath.lastIndexOf('/') + 1)
           };
-          $cordovaFileTransfer.upload(uploadLicensePictureURL, filePath, options).then(function(imageUploadStatus) {
-            return status = JSON.parse(JSON.stringify(eval("(" + imageUploadStatus.response + ")")));
-          });
-        }
-        //-- Picture not exists continue flow
-        else {
-            return { errorCode : "0",imageName : undefined};
-        }
+
+          return $cordovaFileTransfer.upload(uploadLicensePictureURL, filePath, options);
+
       },
       activateUser: function (email, activationCode) {
         var req = {
