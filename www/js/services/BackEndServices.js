@@ -440,7 +440,7 @@ angular.module('Pakkage.BackendServices', [])
         };
         return $http(req);
       },
-      scanQrCodeForHubAndDrive: function (qrCodeNumber, newStatus, oldStatus, packageId, hubId) {
+      scanQrCodeForHubAndDrive: function (newStatus, oldStatus, packageId, hubId) {
         var req = {
           method: 'POST',
           url: scanPakkageForHubAndDriverURL,
@@ -453,7 +453,6 @@ angular.module('Pakkage.BackendServices', [])
             oldStatus: oldStatus,
             newStatus: newStatus,
             packageId: packageId,
-            packageQRId: qrCodeNumber,
             hubId: hubId
           }
         };

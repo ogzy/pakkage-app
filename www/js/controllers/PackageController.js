@@ -507,7 +507,7 @@ angular.module('Pakkage.PackageController', [])
       function(package) {
         if (package.data.errorCode == 0) {
           //console.log(package.data.package);
-          $scope.newPackage._id =  package.data.package._id;
+          $scope.newPackage._id = package.data.package._id;
           $scope.newPackage.comment = package.data.package.comment;
           $scope.newPackage.name = package.data.package.receiver[0].name;
           $scope.newPackage.email = package.data.package.receiver[0].email;
@@ -930,45 +930,48 @@ angular.module('Pakkage.PackageController', [])
     };
 
     $scope.scanFromPackageButton = function() {
-      document.addEventListener("deviceready", function() {
-        cloudSky.zBar.scan(ScanQR.scanMessages('EditPackage-scanFromPackageButton'),
-          function(success) {
-            LoadingService.show();
-            var newStatus = -1,
-              oldStatus = -1,
-              errorCode = 'S107';
-            switch (LocalStorageService.get('userType')) {
-              case 'Hub':
-                newStatus = 3, oldStatus = 2, errorCode = 'S107';
-                break;
-              case 'Driver':
-                newStatus = 4, oldStatus = 3, errorCode = 'S108';
-                break;
-              default:
+      switch (LocalStorageService.get('userType')) {
+        case 'Hub':
+          newStatus = 3, oldStatus = 2, errorCode = 'S107';
+          break;
+        case 'Driver':
+          newStatus = 4, oldStatus = 3, errorCode = 'S108';
+          break;
+        default:
 
-            }
+      }
 
-            PackageService.scanQrCodeForHubAndDrive(success, newStatus, oldStatus, packageId, LocalStorageService.get('userId')).then(
-              function(response) {
-                if (response.data.errorCode == 0) {
-                  LoadingService.hide();
+      PackageService.scanQrCodeForHubAndDrive(newStatus, oldStatus, packageId, LocalStorageService.get('userId')).then(
+        function(response) {
+          if (response.data.errorCode == 0) {
+            LoadingService.hide();
 
-                  PopupService.alert('Successful', errorCode).then(function() {
-                    $state.go('app.home');
-                  })
-                } else {
-                  LoadingService.hide();
-                  PopupService.alert('Error', response.data.errorCode);
-                }
+            PopupService.alert('Successful', errorCode).then(function() {
+              $state.go('app.home');
+            })
+          } else {
+            LoadingService.hide();
+            PopupService.alert('Error', response.data.errorCode);
+          }
 
-              },
-              function(error) {
-                LoadingService.hide();
-                PopupService.alert('Error', 999);
-              });
-          },
-          function(error) {});
-      }, false);
+        },
+        function(error) {
+          LoadingService.hide();
+          PopupService.alert('Error', 999);
+        });
+
+
+      // document.addEventListener("deviceready", function() {
+      //   cloudSky.zBar.scan(ScanQR.scanMessages('EditPackage-scanFromPackageButton'),
+      //     function(success) {
+      //       LoadingService.show();
+      //       var newStatus = -1,
+      //         oldStatus = -1,
+      //         errorCode = 'S107';
+      //
+      //     },
+      //     function(error) {});
+      // }, false);
 
     };
 

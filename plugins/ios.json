@@ -33,6 +33,27 @@
         "cordova-plugin-googlemaps": {
             "API_KEY_FOR_IOS": "AIzaSyCAnL2v1y5zIQPlOcqz4DWIY42kDXVDeQ4",
             "PACKAGE_NAME": "net.pakkage.beta"
+        },
+        "cordova-plugin-inappbrowser": {
+            "PACKAGE_NAME": "net.pakkage.beta"
+        },
+        "cordova-plugin-network-information": {
+            "PACKAGE_NAME": "net.pakkage.beta"
+        },
+        "cordova-plugin-splashscreen": {
+            "PACKAGE_NAME": "net.pakkage.beta"
+        },
+        "cordova-plugin-statusbar": {
+            "PACKAGE_NAME": "net.pakkage.beta"
+        },
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "net.pakkage.beta"
+        },
+        "ionic-plugin-keyboard": {
+            "PACKAGE_NAME": "net.pakkage.beta"
+        },
+        "org.apache.cordova.camera": {
+            "PACKAGE_NAME": "net.pakkage.beta"
         }
     },
     "dependent_plugins": {
