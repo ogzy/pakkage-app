@@ -56,5 +56,9 @@
             "PACKAGE_NAME": "net.pakkage.beta"
         }
     },
-    "dependent_plugins": {}
+    "dependent_plugins": {
+        "com.googlemaps.ios": {
+            "PACKAGE_NAME": "net.pakkage.beta"
+        }
+    }
 }
