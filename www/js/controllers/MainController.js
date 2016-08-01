@@ -252,8 +252,11 @@ angular.module('Pakkage.MainController', [])
 
             console.log('konum bulunduuuuuuuuu');
 
-            var lat = position.coords.latitude;
-            var lng = position.coords.longitude;
+            //--var lat = position.coords.latitude;
+            //--var lng = position.coords.longitude;
+
+            var lat = 46.811992;
+            var lng = -100.777357;
 
             $scope.currentLocationLat = lat;
             $scope.currentLocationLng = lng;
@@ -416,7 +419,7 @@ angular.module('Pakkage.MainController', [])
 
     $scope.navigateHubPackageList = function() {
       console.log('SELECTED HUB ID :' + $scope.driverHubModel.Id);
-
+      map.setZoom(17);
       $state.go("app.packagesListByHub", {
         selectedHubId: $scope.driverHubModel.Id
       });
@@ -491,23 +494,5 @@ angular.module('Pakkage.MainController', [])
       $scope.cancel = function() {
         $uibModalInstance.dismiss('cancel');
       };
-    }
-  ])
-  .controller('PackagesListByHubCntrl', ['$scope', 'moment',
-    'LocalStorageService', '$filter', '$rootScope', 'PackageFilterService',
-    'PopupService', '$stateParams',
-    function($scope, moment, LocalStorageService, $filter,
-      $rootScope, PackageFilterService, PopupService, $stateParams) {
-
-      var selectedHub = $stateParams.selectedHubId;
-      //$scope.packageList = $filter('filter')(LocalStorageService.get('packages'), function (err, packages) {
-      // return packages.hubs._id = $stateParams.selectedHubId
-      //});
-
-      $scope.myPackages = PackageFilterService.filterPackagesByHubId(selectedHub);
-
-      console.log('CONTROLLER PACKAGES :' + $scope.myPackages);
-
-
     }
   ]);

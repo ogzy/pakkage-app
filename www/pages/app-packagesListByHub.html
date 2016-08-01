@@ -1,7 +1,7 @@
-<ion-view view-title="Avaible Packages" ng-controller="PackagesListByHubCntrl">
+<ion-view view-title="Available Packages" cache-view="false" ng-controller="PackagesListByHubCntrl">
   <ion-content>
     <ion-list>
-     <ion-item collection-repeat="pItem in myPackages" class="item-thumbnail-left">
+     <ion-item collection-repeat="pItem in availablePackages" class="item-thumbnail-left" ng-click="editPackage(pItem._id)">
 
        <img src="http://46.101.115.69:9096/uploads/packageImages/thumbnail/{{pItem.packageImage}}">
        <h2>{{pItem.title}}</h2>
@@ -11,9 +11,7 @@
 
        <p>{{pItem.comment}}</p>
 
-       <ion-reorder-button class="ion-navicon"
-                           >
-       </ion-reorder-button>
+       <ion-reorder-button class="ion-navicon"></ion-reorder-button>
 
      </ion-item>
     </ion-list>

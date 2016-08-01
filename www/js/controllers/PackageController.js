@@ -1089,4 +1089,62 @@ angular.module('Pakkage.PackageController', [])
 
     };
 
-  }]);
+
+    $scope.scanFromMapForDriver = function() {
+      document.addEventListener("deviceready", function() {
+        cloudSky.zBar.scan(ScanQR.scanMessages('EditPackage-scanFromPackageForSender'),
+          function(success) {
+            LoadingService.show();
+            PackageService.scanQrCode(success, 4, 3, packageId).then(
+              function(response) {
+                if (response.data.errorCode == 0) {
+                  LoadingService.hide();
+                  PopupService.alert('Successful', 'S106').then(function() {
+                    $state.go('app.home');
+                  })
+                } else {
+                  LoadingService.hide();
+                  PopupService.alert('Error', response.data.errorCode);
+                }
+
+              },
+              function(error) {
+                LoadingService.hide();
+                PopupService.alert('Error', 999);
+              });
+          },
+          function(error) {});
+      }, false);
+
+    };
+
+  }])
+  .controller('PackagesListByHubCntrl', ['$scope', 'PackageService', '$stateParams','LocalStorageService','LoadingService','PopupService','$state',
+    function($scope, PackageService, $stateParams,LocalStorageService,LoadingService,PopupService,$state) {
+      LoadingService.show();
+      var selectedHub = $stateParams.selectedHubId;
+
+      PackageService.getHubsAvailablePackages(selectedHub,LocalStorageService.get('email'),3)
+      .then(function(response) {
+          if (response.data.errorCode == 0) {
+            LoadingService.hide();
+            $scope.availablePackages = response.data.packages;
+          } else {
+            LoadingService.hide();
+            PopupService.alert('Error', response.data.errorCode);
+          }
+
+        },
+        function(error) {
+          LoadingService.hide();
+          PopupService.alert('Error', 999);
+        });
+
+        $scope.editPackage = function(packageId){
+          $state.go('app.editPackage', {
+            packageId: packageId,
+            mode: 'readonlyForDriver'
+          });
+        };
+    }
+  ])

@@ -30,8 +30,8 @@ var registerServiceURL = hostPath + '/register',
   updateUserCurrentLocationURL=hostPath+ '/api/updateUserCurrentLocation',
   getAvailableHubsByDriverCurrentLocationURL = hostPath + '/api/getHubsByDriverCurrentLocation',
   googleGeocodingApiUrl = 'https://maps.googleapis.com/maps/api/geocode/json?',
-  googleGeocodingApiKey = 'AIzaSyCCfYkorenMmME5xnyrap72br25T99R5RU'
-  ;
+  googleGeocodingApiKey = 'AIzaSyCCfYkorenMmME5xnyrap72br25T99R5RU',
+  getHubsAvailablePackagesURL = hostPath + '/api/getHubsAvailablePackages';
 
 angular.module('Pakkage.BackendServices', [])
   .factory('LocalStorageService', function ($http, localStorageService) {
@@ -370,6 +370,20 @@ angular.module('Pakkage.BackendServices', [])
         var req = {
           method: 'GET',
           url: getPackagesURL + '/' + userid + '/' + email + '/' + LocalStorageService.get('version'),
+          headers: {
+            'x-access-token': LocalStorageService.get('token'),
+            'Content-Type': 'application/json; charset=utf-8'
+          },
+          data: {}
+        };
+
+        return $http(req);
+      },
+      getHubsAvailablePackages: function (userid, email, status) {
+
+        var req = {
+          method: 'GET',
+          url: getHubsAvailablePackagesURL + '/' + userid + '/' + email + '/' + status ,
           headers: {
             'x-access-token': LocalStorageService.get('token'),
             'Content-Type': 'application/json; charset=utf-8'
