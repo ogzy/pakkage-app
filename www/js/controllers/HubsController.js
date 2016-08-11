@@ -1,5 +1,5 @@
 angular.module('Pakkage.HubsController', [])
-  .controller('AvailableHubsCtrl', ['$scope', 'HubService', 'LoadingService', 'PopupService', 'moment', '$filter', '$state', '$rootScope', 'LocalStorageService', '$stateParams', 'PackageService', 'ScanQR', function($scope, HubService, LoadingService, PopupService, moment, $filter, $state, $rootScope, LocalStorageService, $stateParams, PackageService, ScanQR) {
+  .controller('AvailableHubsCtrl', ['$scope', 'HubService', 'LoadingService', 'PopupService', 'moment', '$filter', '$state', '$rootScope', 'LocalStorageService', '$stateParams', 'PackageService', 'ScanQR','LogService', function($scope, HubService, LoadingService, PopupService, moment, $filter, $state, $rootScope, LocalStorageService, $stateParams, PackageService, ScanQR,LogService) {
     $scope.$on('$ionicView.beforeEnter', function(e, config) {
       config.enableBack = false;
     });
@@ -70,31 +70,37 @@ angular.module('Pakkage.HubsController', [])
     };
 
     $scope.scanQRAvailableHubs = function() {
-      document.addEventListener("deviceready", function() {
-        cloudSky.zBar.scan(ScanQR.scanMessages('AvailableHubs-scanQRAvailableHubs'),
-          function(success) {
-            LoadingService.show();
-            PackageService.scanQrCode(success, 2, 1, $scope.packageId).then(
-              function(response) {
-                if (response.data.errorCode == 0) {
-                  LoadingService.hide();
-                  PopupService.alert('Successful', 'S106').then(function() {
-                    $state.go('app.home');
-                  })
-                } else {
-                  LoadingService.hide();
-                  PopupService.alert('Error', response.data.errorCode);
-                }
+      try {
+        document.addEventListener("deviceready", function() {
+          cloudSky.zBar.scan(ScanQR.scanMessages('AvailableHubs-scanQRAvailableHubs'),
+            function(success) {
+              LoadingService.show();
 
-              },
-              function(error) {
-                LoadingService.hide();
-                PopupService.alert('Error', 999);
-              });
-          },
-          function(error) {});
-      }, false);
+              PackageService.scanQrCode(success, 2, 1, $scope.packageId).then(
+                function(response) {
 
+                  if (response.data.errorCode == 0) {
+                    LoadingService.hide();
+                    PopupService.alert('Successful', 'S106').then(function() {
+                      $state.go('app.home');
+                    })
+                  } else {
+                    LoadingService.hide();
+                    PopupService.alert('Error', response.data.errorCode);
+                  }
+
+                },
+                function(error) {
+                  LoadingService.hide();
+                  PopupService.alert('Error', 999);
+                });
+            },
+            function(error) {});
+        }, false);
+       }
+       catch(e) {
+         $exceptionHandler(e);
+        }
     };
 
 
@@ -142,31 +148,36 @@ angular.module('Pakkage.HubsController', [])
   }
 
   $scope.scanQRHubsDetail = function() {
-    document.addEventListener("deviceready", function() {
-      cloudSky.zBar.scan(ScanQR.scanMessages('HubDetail-scanQRHubsDetail'),
-        function(success) {
-          LoadingService.show();
-          PackageService.scanQrCodeFromHubPage(success, 2, 1, $stateParams.packageId, $stateParams.hubId).then(
-            function(response) {
-              if (response.data.errorCode == 0) {
+    try{
+      document.addEventListener("deviceready", function() {
+        cloudSky.zBar.scan(ScanQR.scanMessages('HubDetail-scanQRHubsDetail'),
+          function(success) {
+            LoadingService.show();
+            PackageService.scanQrCodeFromHubPage(success, 2, 1, $stateParams.packageId, $stateParams.hubId).then(
+              function(response) {
+                if (response.data.errorCode == 0) {
+                  LoadingService.hide();
+                  PopupService.alert('Successful', 'S106').then(function() {
+                    $state.go('app.home');
+                  })
+                } else {
+                  LoadingService.hide();
+                  PopupService.alert('Error', response.data.errorCode);
+                }
+
+              },
+              function(error) {
                 LoadingService.hide();
-                PopupService.alert('Successful', 'S106').then(function() {
-                  $state.go('app.home');
-                })
-              } else {
-                LoadingService.hide();
-                PopupService.alert('Error', response.data.errorCode);
-              }
+                PopupService.alert('Error', 999);
+              });
 
-            },
-            function(error) {
-              LoadingService.hide();
-              PopupService.alert('Error', 999);
-            });
-
-        },
-        function(error) {});
-    }, false);
-
+          },
+          function(error) {});
+      }, false);
+    }
+    catch(e)
+    {
+      $exceptionHandler(e);
+    }
   };
 }]);

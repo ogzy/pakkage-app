@@ -391,7 +391,7 @@ angular.module('Pakkage.PackageController', [])
     };
 
     $scope.addMedia = function() {
-
+      try {
       $scope.hideSheet = $ionicActionSheet.show({
         buttons: [{
           text: 'Take photo'
@@ -423,6 +423,7 @@ angular.module('Pakkage.PackageController', [])
                 $scope.imageName = imageData;
               }, function(err) {
                 //$scope.debug += 'cameradan yüklenme error: ' + err + '\n';
+                $exceptionHandler(err);
               });
               break;
             case 1:
@@ -459,11 +460,11 @@ angular.module('Pakkage.PackageController', [])
                     $scope.packagePicture = cordova.file.dataDirectory + newName;
 
                   }, function(e) {
-                    //$scope.debug += 'galeriden yüklenme error: ' + e + '\n';
+                    $exceptionHandler(err);
                   });
                 //-- $scope.profilePicture =  imageData;
               }, function(err) {
-                //$scope.debug += 'galeriden yüklenme error: ' + err + '\n';
+                $exceptionHandler(err);
               });
               break;
             default:
@@ -473,7 +474,9 @@ angular.module('Pakkage.PackageController', [])
         }
 
       });
-
+    } catch (e) {
+      $exceptionHandler(e);
+    }
     };
 
   }])
@@ -1062,35 +1065,40 @@ angular.module('Pakkage.PackageController', [])
     };
 
     $scope.scanFromPackageForSender = function() {
-      document.addEventListener("deviceready", function() {
-        cloudSky.zBar.scan(ScanQR.scanMessages('EditPackage-scanFromPackageForSender'),
-          function(success) {
-            LoadingService.show();
-            PackageService.scanQrCode(success, 2, 1, packageId).then(
-              function(response) {
-                if (response.data.errorCode == 0) {
-                  LoadingService.hide();
-                  PopupService.alert('Successful', 'S106').then(function() {
-                    $state.go('app.home');
-                  })
-                } else {
-                  LoadingService.hide();
-                  PopupService.alert('Error', response.data.errorCode);
-                }
+      try {
+        document.addEventListener("deviceready", function() {
+          cloudSky.zBar.scan(ScanQR.scanMessages('EditPackage-scanFromPackageForSender'),
+            function(success) {
+              LoadingService.show();
+              PackageService.scanQrCode(success, 2, 1, packageId).then(
+                function(response) {
+                  if (response.data.errorCode == 0) {
+                    LoadingService.hide();
+                    PopupService.alert('Successful', 'S106').then(function() {
+                      $state.go('app.home');
+                    })
+                  } else {
+                    LoadingService.hide();
+                    PopupService.alert('Error', response.data.errorCode);
+                  }
 
-              },
-              function(error) {
-                LoadingService.hide();
-                PopupService.alert('Error', 999);
-              });
-          },
-          function(error) {});
-      }, false);
-
+                },
+                function(error) {
+                  LoadingService.hide();
+                  PopupService.alert('Error', 999);
+                });
+            },
+            function(error) {});
+        }, false);
+      } catch (e) {
+         $exceptionHandler('$scope.scanFromPackageForSender' + JSON.stringify(e));
+      }
     };
 
 
     $scope.scanFromMapForDriver = function() {
+      try {
+
       document.addEventListener("deviceready", function() {
         cloudSky.zBar.scan(ScanQR.scanMessages('EditPackage-scanFromPackageForSender'),
           function(success) {
@@ -1115,7 +1123,9 @@ angular.module('Pakkage.PackageController', [])
           },
           function(error) {});
       }, false);
-
+    } catch (e) {
+       $exceptionHandler('$scope.scanFromMapForDriver' + JSON.stringify(e));
+    }
     };
 
   }])

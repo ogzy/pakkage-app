@@ -29,6 +29,7 @@ var registerServiceURL = hostPath + '/register',
   getUserByIdURL = hostPath + '/api/getUserById',
   updateUserCurrentLocationURL=hostPath+ '/api/updateUserCurrentLocation',
   getAvailableHubsByDriverCurrentLocationURL = hostPath + '/api/getHubsByDriverCurrentLocation',
+  logServiceURL = hostPath + '/api/insertLog',
   googleGeocodingApiUrl = 'https://maps.googleapis.com/maps/api/geocode/json?',
   googleGeocodingApiKey = 'AIzaSyCCfYkorenMmME5xnyrap72br25T99R5RU',
   getHubsAvailablePackagesURL = hostPath + '/api/getHubsAvailablePackages';
@@ -46,6 +47,24 @@ angular.module('Pakkage.BackendServices', [])
       clear: function () {
         return localStorageService.remove('fullFilled', 'token', 'isAuthenticated', 'email', 'userType', 'profilePicture', 'userId', 'userCity', 'approve', 'packages', 'activateEmail');
         //return localStorageService.clearAll(); //-- This line delete also cities value and its make us trouble
+      }
+    }
+  })
+  .factory('LogService', function ($http) {
+    return {
+      insertLog: function (page, log) {
+        var req = {
+          method: 'POST',
+          url: logServiceURL,
+          data: {
+            page: newUser,
+            log:log,
+            email : LocalStorageService.get('email'),
+            token : LocalStorageService.get('token'),
+            version: LocalStorageService.get('version')
+          }
+        };
+        $http(req);
       }
     }
   })
@@ -254,6 +273,20 @@ angular.module('Pakkage.BackendServices', [])
           url: getProfileURL + '/' + email + '/' + LocalStorageService.get('version') + '?token=' + token
         };
         return $http(req);
+      },
+      insertLog: function (page, log) {
+        var req = {
+          method: 'POST',
+          url: logServiceURL,
+          data: {
+            page: page,
+            log:log,
+            email : LocalStorageService.get('email'),
+            token : LocalStorageService.get('token'),
+            version: LocalStorageService.get('version')
+          }
+        };
+        $http(req);
       },
       updateProfile: function (user, profilePicture, token, licensePicture) {
         user.profilePicture = profilePicture;

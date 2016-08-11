@@ -1,7 +1,14 @@
 angular.module('Pakkage', ['ionic', 'ngCordova','Pakkage.LoginController', 'Pakkage.RegisterController', 'Pakkage.MainController', 'Pakkage.PackageController', 'Pakkage.ProfileController', 'Pakkage.HubsController', 'Pakkage.MapController', 'Pakkage.BackendServices', 'Pakkage.ErrorcodeServices', 'Pakkage.UIServices', 'Pakkage.FormControlServices', 'Pakkage.SocialLoginService', 'Pakkage.ScanQrCodeService','Pakkage.TestService', 'Pakkage.ChangePassword', 'Pakkage.routes', 'Pakkage.directives', 'ui.bootstrap', 'LocalStorageModule', 'ngOpenFB', 'angucomplete-alt', 'angularMoment','Pakkage.RegisterWorkflowService'])
   .config(
-    function(localStorageServiceProvider) {
+    function(localStorageServiceProvider,$provide) {
       localStorageServiceProvider.setPrefix('pakkage').setStorageType('localStorage');
+      $provide.decorator("$exceptionHandler", function ($delegate, $injector) {
+          return function (exception, cause) {
+              var $rootScope = $injector.get("$rootScope");
+              $rootScope.addExceptionAlert({message: "Exception", reason: exception}); // This represents a custom method that exists within $rootScope
+              $delegate(exception, cause);
+          };
+      });
     }
   )
   .run(function($ionicPlatform, $templateCache,$cordovaGeolocation, $rootScope, LocalStorageService, ProfileService, $cordovaNetwork, PopupService, LoadingService, $location, StateService, $interval, $state) {
@@ -15,6 +22,9 @@ angular.module('Pakkage', ['ionic', 'ngCordova','Pakkage.LoginController', 'Pakk
         StatusBar.styleDefault();
       }
 
+      $rootScope.addExceptionAlert =function (exception) {
+        ProfileService.insertLog('general',exception);
+      }
 
       /*var type = $cordovaNetwork.getNetwork();
 

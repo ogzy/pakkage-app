@@ -7,8 +7,8 @@ angular.module('Pakkage.MainController', [])
       $state.go('tab.register');
     };
   }])
-  .controller('MainCtrl', ['$scope', 'LocalStorageService', '$state', function($scope, LocalStorageService, $state) {
-
+  .controller('MainCtrl', ['$scope', 'LocalStorageService', '$state','$exceptionHandler', function($scope, LocalStorageService, $state,$exceptionHandler) {
+     //$exceptionHandler('herhangi birlog');
   }])
   .controller('MenuCtrl', ['$scope', 'LocalStorageService', '$state', 'PopupService', 'ProfileService', function($scope, LocalStorageService, $state, PopupService, ProfileService) {
 
@@ -178,35 +178,40 @@ angular.module('Pakkage.MainController', [])
     };
 
     $scope.scanQRFromHomePage = function() {
-      document.addEventListener("deviceready", function() {
-        cloudSky.zBar.scan(ScanQR.scanMessages({
-            text_title: 'Package Scanner',
-            text_instructions: 'Search package with this QRCode',
-            drawSight: true
-          }),
-          function(success) {
-            LoadingService.show();
-            PackageService.getPackageByQrCodeId(success, LocalStorageService.get('email'), LocalStorageService.get('token')).then(
-              function(response) {
-                if (response.data.errorCode == 0) {
-                  LoadingService.hide();
-                  $state.go('app.editPackage', {
-                    packageId: response.data.packageId._id,
-                    mode: 'readonly'
-                  });
-                } else {
-                  LoadingService.hide();
-                  PopupService.alert('Error', response.data.errorCode);
-                }
+      try {
+        document.addEventListener("deviceready", function() {
+          cloudSky.zBar.scan(ScanQR.scanMessages({
+              text_title: 'Package Scanner',
+              text_instructions: 'Search package with this QRCode',
+              drawSight: true
+            }),
+            function(success) {
+              LoadingService.show();
+              PackageService.getPackageByQrCodeId(success, LocalStorageService.get('email'), LocalStorageService.get('token')).then(
+                function(response) {
+                  if (response.data.errorCode == 0) {
+                    LoadingService.hide();
+                    $state.go('app.editPackage', {
+                      packageId: response.data.packageId._id,
+                      mode: 'readonly'
+                    });
+                  } else {
+                    LoadingService.hide();
+                    PopupService.alert('Error', response.data.errorCode);
+                  }
 
-              },
-              function(error) {
-                LoadingService.hide();
-                PopupService.alert('Error', 999);
-              });
-          },
-          function(error) {});
-      }, false);
+                },
+                function(error) {
+                  LoadingService.hide();
+                  PopupService.alert('Error', 999);
+                });
+            },
+            function(error) {});
+        }, false);
+      } catch (e) {
+        $exceptionHandler(e);
+      }
+
 
     };
 
