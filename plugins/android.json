@@ -13,6 +13,10 @@
                             "count": 1
                         },
                         {
+                            "xml": "<feature name=\"Camera\"><param name=\"android-package\" value=\"org.apache.cordova.camera.CameraLauncher\" /></feature>",
+                            "count": 1
+                        },
+                        {
                             "xml": "<feature name=\"CsZBar\"><param name=\"android-package\" value=\"org.cloudsky.cordovaPlugins.ZBar\" /></feature>",
                             "count": 1
                         },
@@ -55,10 +59,6 @@
                         {
                             "xml": "<feature name=\"Keyboard\"><param name=\"android-package\" value=\"io.ionic.keyboard.IonicKeyboard\" /><param name=\"onload\" value=\"true\" /></feature>",
                             "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"Camera\"><param name=\"android-package\" value=\"org.apache.cordova.camera.CameraLauncher\" /></feature>",
-                            "count": 1
                         }
                     ]
                 }
@@ -69,6 +69,10 @@
                         {
                             "xml": "<uses-permission android:name=\"android.permission.INTERNET\" />",
                             "count": 1
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\" />",
+                            "count": 3
                         },
                         {
                             "xml": "<uses-feature android:name=\"android.hardware.camera\" />",
@@ -89,10 +93,6 @@
                         {
                             "xml": "<uses-permission android:name=\"android.permission.CAMERA\" />",
                             "count": 1
-                        },
-                        {
-                            "xml": "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\" />",
-                            "count": 3
                         },
                         {
                             "xml": "<uses-permission android:name=\"android.permission.ACCESS_COARSE_LOCATION\" />",
@@ -163,6 +163,9 @@
             "FABRIC_API_SECRET": "4e57a8baae4e709047520a14f8e72cb31e912d26062cabb8c99096d197af6208",
             "PACKAGE_NAME": "net.pakkage.beta"
         },
+        "cordova-plugin-camera": {
+            "PACKAGE_NAME": "net.pakkage.beta"
+        },
         "cordova-plugin-console": {
             "PACKAGE_NAME": "net.pakkage.beta"
         },
@@ -198,13 +201,10 @@
         },
         "ionic-plugin-keyboard": {
             "PACKAGE_NAME": "net.pakkage.beta"
-        },
-        "org.apache.cordova.camera": {
-            "PACKAGE_NAME": "net.pakkage.beta"
         }
     },
     "dependent_plugins": {
-        "com.googlemaps.ios": {
+        "cordova-plugin-compat": {
             "PACKAGE_NAME": "net.pakkage.beta"
         }
     }

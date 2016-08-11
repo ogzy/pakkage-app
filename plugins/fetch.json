@@ -39,14 +39,6 @@
         "is_top_level": true,
         "variables": {}
     },
-    "org.apache.cordova.camera": {
-        "source": {
-            "type": "registry",
-            "id": "org.apache.cordova.camera"
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
     "cordova-plugin-file-transfer": {
         "source": {
             "type": "registry",
@@ -132,6 +124,22 @@
             "url": "https://bitbucket.org/nightstomp/cordova-plugin-googlemaps-sdk.git",
             "subdir": ".",
             "ref": "master"
+        },
+        "is_top_level": false,
+        "variables": {}
+    },
+    "cordova-plugin-camera": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-camera"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-compat": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-compat"
         },
         "is_top_level": false,
         "variables": {}
